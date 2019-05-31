@@ -1,12 +1,17 @@
-# file_manager
+# AutoScanning
 
-> fork于[YouXianMing/FileManager](https://github.com/YouXianMing/FileManager)
+>  [yanshigou/FileManager](https://github.com/yanshigou/FileManager) Fork 于 [YouXianMing/FileManager ](https://github.com/YouXianMing/FileManager)
+>
+> 添加其他功能开新库 [AutoScanning](https://github.com/yanshigou/AutoScanning)
 >
 > 待新增内容：
 >
 > ​	扫描文件夹下所有图片，使用requests库上传图片至某服务器
 >
->
+
+
+
+
 
 > 递归文件扫描
 
