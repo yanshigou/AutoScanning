@@ -4,9 +4,13 @@ __date__ = "2019/5/31"
 
 from file_manager import FileObjectManager, FileObject
 import requests
+import os
+import shutil
+
 
 # 给定文件夹路径
 filesList = FileObjectManager(FileObject("G:\dzt\资料\交警\image_test")).scan_with_depth(2).all_file_objects()
+# filesList = FileObjectManager(FileObject("C:\\Users\\Administrator\\Desktop\\20190605_111136")).scan_with_depth(6).all_file_objects()
 
 # 拼接路径数组
 filesString = ""
@@ -27,7 +31,6 @@ for file in filesList:
         if file.file_name[-3:] == 'jpg':
             file_path = file.file_path
             file_name = file.file_name
-            print(file_path)
             file_name_list = file_name.split('_')
             print(file_name_list)
             ip = file_name_list[4]
@@ -41,6 +44,13 @@ for file in filesList:
                 csrfmiddlewaretoken=csrftoken, data_type='WT', ip=ip, car_id=car_id, car_type=car_type, wf_time=wf_time
             )
 
-            res = client.post('http://127.0.0.1:8000/dataInfo/wtDataInfoUpload/', files=files, data=data)
+            res = client.post('http://127.0.0.1:8000/dataInfo/wtDataInfoUpload/', files=files, data=data).json()
+            print(res['is_del'])
             f.close()
+            if res['is_del']:
+                os.remove(file_path)
+                print('删除成功')
+            else:
+                shutil.move(file_path, 'G:\dzt\资料\交警\image_backup')
+                print('移动成功')
 
