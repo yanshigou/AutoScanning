@@ -17,6 +17,14 @@ filesList = FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\�
 # 拼接路径数组
 filesString = ""
 # 建立连接 获取csrftoken
+client = requests.session()
+# client.get('http://127.0.0.1:8000/users/login/')
+# if 'csrftoken' in client.cookies:
+#     csrftoken = client.cookies['csrftoken']
+#     print(csrftoken)
+# else:
+#     csrftoken = client.cookies['csrf']
+#     print(csrftoken)
 count = 0
 
 
