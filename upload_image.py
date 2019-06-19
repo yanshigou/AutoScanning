@@ -192,6 +192,7 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time):
                 except Exception as exc:
                     print(exc)
                     pass
+        return {"status": "over", "count": count}
     except Exception as e:
         print(e)
         return {"status": "error", "e": e, "res_status": "error", "count": count}
