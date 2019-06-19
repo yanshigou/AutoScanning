@@ -89,7 +89,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time):
                     folder_day = datetime.strftime(now_time, '%Y%m%d')
                     if not os.listdir(folder_path) and (folder_day not in folder_path) and folder_val != split_val:
                         print("空文件夹，删除")
-                        os.removedirs(folder_path)
+                        os.rmdir(folder_path)
                 except Exception as exc:
                     print(exc)
                     pass
@@ -112,6 +112,7 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time):
         for file in files_list:
             # 如果是文件,则打印
             split_val = qz_path.split("\\")[-1]
+            print(split_val)
             if file.is_file:
                 if file.file_name[-3:] == 'jpg':
                     count += 1
@@ -187,19 +188,18 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time):
                     folder_day = datetime.strftime(now_time, '%Y%m%d')
                     if not os.listdir(folder_path) and (folder_day not in folder_path) and folder_val != split_val:
                         print("空文件夹，删除")
-                        os.removedirs(folder_path)
+                        os.rmdir(folder_path)
                 except Exception as exc:
                     print(exc)
                     pass
-        return {"status": "over", "count": count}
     except Exception as e:
         print(e)
         return {"status": "error", "e": e, "res_status": "error", "count": count}
 
 
 if __name__ == '__main__':
-    a = event(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\事件")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54', "G:\dzt\资料\交警\测试文件夹\事件", datetime.now())
-    print(a)
+    # a = event(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\事件")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54', "G:\dzt\资料\交警\测试文件夹\事件", datetime.now())
+    # print(a)
 
     b = QZ(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\取证")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54', "G:\dzt\资料\交警\测试文件夹\取证", datetime.now())
     print(b)
