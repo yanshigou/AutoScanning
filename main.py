@@ -47,6 +47,7 @@ def basic_info():
 
 
 def event_run(event_path, move_folder, ip_val):
+    log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
     f.write("开始扫描事件文件夹：%s" % event_path)
@@ -54,6 +55,7 @@ def event_run(event_path, move_folder, ip_val):
     count = 0
     event_bt.config(state="disabled", text='正在扫描事件文件夹')
     while True:
+        log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
         try:
             f = open(log_file, 'a+', encoding='utf-8')
             # sleep(1)
@@ -103,6 +105,7 @@ def event_run(event_path, move_folder, ip_val):
 
 
 def QZ_run(qz_path, move_folder, ip_val):
+    log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描取证文件夹：%s\n" % qz_path)
     f.write("开始扫描取证文件夹：%s" % event_path)
@@ -110,6 +113,7 @@ def QZ_run(qz_path, move_folder, ip_val):
     count = 0
     qz_bt.config(state="disabled", text='正在扫描取证文件夹')
     while True:
+        log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
         try:
             f = open(log_file, 'a+', encoding='utf-8')
             # sleep(1)
@@ -179,7 +183,6 @@ def thread_it(func, *args):
 
 if __name__ == '__main__':
     event_path, qz_path, move_folder, ip_val, white_list = basic_info()
-    log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
 
     root = tk.Tk()
 
@@ -212,7 +215,7 @@ if __name__ == '__main__':
     count_qz_lb = tk.Label(lf, text="\n已处理取证图片数：0\n")
     count_qz_lb.grid()
 
-    event_bt = tk.Button(lf, text='开始扫描事件文件夹',
+    event_bt = tk.Button(lf, text='开始扫描事件文件夹', fg='red',
                          command=lambda: thread_it(event_run, event_path, move_folder, ip_val))
     qz_bt = tk.Button(lf, text='开始扫描取证文件夹', fg='red',
                       command=lambda: thread_it(QZ_run, qz_path, move_folder, ip_val))
