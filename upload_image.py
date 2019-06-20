@@ -63,7 +63,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time):
                             wf_time=wf_time
                         )
 
-                        res = requests.post('http://%s:8000/dataInfo/wtDataEventUpload/' % ip_val, files=files, data=data).json()
+                        res = requests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files, data=data).json()
                         status = res['status']
                         print(status)
                         print(res['is_del'])
@@ -162,7 +162,7 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time):
                             data_type='WT', ip=ip, car_id=car_id, car_type=car_type, wf_time=wf_time
                         )
 
-                        res = requests.post('http://%s:8000/dataInfo/wtDataInfoUpload/' % ip_val, files=files, data=data).json()
+                        res = requests.post('http://%s/dataInfo/wtDataInfoUpload/' % ip_val, files=files, data=data).json()
                         status = res['status']
                         print(status)
                         print(res['is_del'])
