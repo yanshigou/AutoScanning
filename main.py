@@ -27,23 +27,27 @@ white_list = ['渝DJD020', '渝AZC452']
 
 
 def basic_info():
-    f = open("ACconfig.txt", 'r', encoding='utf-8')
-    all_data = f.readlines()
-    event_path = all_data[0].split('=')[-1].strip()
-    qz_path = all_data[1].split('=')[-1].strip()
-    move_folder = all_data[2].split('=')[-1].strip()
-    ip_val = all_data[3].split('=')[-1].strip()
-    car_id = all_data[4].split('=')[-1].split(' ')
-    for i in car_id:
-        white_list.append(i)
-    f.close()
+    try:
+        f = open("ACconfig.txt", 'r', encoding='utf-8')
+        all_data = f.readlines()
+        event_path = all_data[0].split('=')[-1].strip()
+        qz_path = all_data[1].split('=')[-1].strip()
+        move_folder = all_data[2].split('=')[-1].strip()
+        ip_val = all_data[3].split('=')[-1].strip()
+        car_id = all_data[4].split('=')[-1].split(' ')
+        for i in car_id:
+            white_list.append(i)
+        f.close()
 
-    print(event_path)
-    print(qz_path)
-    print(move_folder)
-    print(ip_val)
-    print(white_list)
-    return event_path, qz_path, move_folder, ip_val, white_list
+        print(event_path)
+        print(qz_path)
+        print(move_folder)
+        print(ip_val)
+        print(white_list)
+        return event_path, qz_path, move_folder, ip_val, white_list
+    except Exception as e:
+        print(e)
+        return False
 
 
 def event_run(event_path, move_folder, ip_val):
@@ -182,47 +186,80 @@ def thread_it(func, *args):
 
 
 if __name__ == '__main__':
-    event_path, qz_path, move_folder, ip_val, white_list = basic_info()
+    if not basic_info():
+        root = tk.Tk()
 
-    root = tk.Tk()
+        root.title('违法图片扫描器v2.10')
 
-    root.title('违法图片扫描器')
+        # 滚动条
+        scroll = tk.Scrollbar()
 
-    # 滚动条
-    scroll = tk.Scrollbar()
+        text = scrolledtext.ScrolledText(root, width=90, height=60)
+        text.grid(row=0, column=0)
+        root.geometry('1000x800+600+50')
+        lf = tk.LabelFrame(root, text='请检查配置文件ACconfig.txt是否在同级目录下')
+        lf.grid(row=0, column=1)
+        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
+        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
+        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
+        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
+        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
+        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
+        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
+        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
+        text.insert(tk.END, "\n并且仅支持如下格式\n")
+        text.insert(tk.END, "\n事件地址=G:\dzt\资料\交警\测试文件夹\事件\n")
+        text.insert(tk.END, "取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
+        text.insert(tk.END, "移动地址=G:\dzt\资料\交警\备份\n")
+        text.insert(tk.END, "IP=192.168.31.54:8000\n")
+        text.insert(tk.END, "白名单=渝DDD000 渝ADA233\n")
 
-    text = scrolledtext.ScrolledText(root, width=90, height=60)
-    text.grid(row=0, column=0)
-    root.geometry('1000x800+600+50')
-    lf = tk.LabelFrame(root, text='')
-    lf.grid(row=0, column=1)
+        q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
+        q.grid(padx=5, pady=10)
 
-    event_lb = tk.Label(lf, text="事件文件夹路径为：")
-    event_lb.grid()
+        root.mainloop()
+    else:
+        event_path, qz_path, move_folder, ip_val, white_list = basic_info()
 
-    event_val = tk.Label(lf, text=event_path, wraplength=400)
-    event_val.grid()
+        root = tk.Tk()
 
-    count_event_lb = tk.Label(lf, text="\n已处理事件图片数：0\n")
-    count_event_lb.grid()
+        root.title('违法图片扫描器v2.10')
 
-    qz_lb = tk.Label(lf, text="取证文件夹路径为：")
-    qz_lb.grid()
+        # 滚动条
+        scroll = tk.Scrollbar()
 
-    qz_val = tk.Label(lf, text=qz_path, wraplength=400)
-    qz_val.grid()
+        text = scrolledtext.ScrolledText(root, width=90, height=60)
+        text.grid(row=0, column=0)
+        root.geometry('1000x800+600+50')
+        lf = tk.LabelFrame(root, text='')
+        lf.grid(row=0, column=1)
 
-    count_qz_lb = tk.Label(lf, text="\n已处理取证图片数：0\n")
-    count_qz_lb.grid()
+        event_lb = tk.Label(lf, text="事件文件夹路径为：")
+        event_lb.grid()
 
-    event_bt = tk.Button(lf, text='开始扫描事件文件夹', fg='red',
-                         command=lambda: thread_it(event_run, event_path, move_folder, ip_val))
-    qz_bt = tk.Button(lf, text='开始扫描取证文件夹', fg='red',
-                      command=lambda: thread_it(QZ_run, qz_path, move_folder, ip_val))
-    event_bt.grid(padx=5, pady=20)
-    qz_bt.grid(padx=5, pady=20)
+        event_val = tk.Label(lf, text=event_path, wraplength=400)
+        event_val.grid()
 
-    q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
-    q.grid(padx=5, pady=10)
+        count_event_lb = tk.Label(lf, text="\n已处理事件图片数：0\n")
+        count_event_lb.grid()
 
-    root.mainloop()
+        qz_lb = tk.Label(lf, text="取证文件夹路径为：")
+        qz_lb.grid()
+
+        qz_val = tk.Label(lf, text=qz_path, wraplength=400)
+        qz_val.grid()
+
+        count_qz_lb = tk.Label(lf, text="\n已处理取证图片数：0\n")
+        count_qz_lb.grid()
+
+        event_bt = tk.Button(lf, text='开始扫描事件文件夹', fg='red',
+                             command=lambda: thread_it(event_run, event_path, move_folder, ip_val))
+        qz_bt = tk.Button(lf, text='开始扫描取证文件夹', fg='red',
+                          command=lambda: thread_it(QZ_run, qz_path, move_folder, ip_val))
+        event_bt.grid(padx=5, pady=20)
+        qz_bt.grid(padx=5, pady=20)
+
+        q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
+        q.grid(padx=5, pady=10)
+
+        root.mainloop()
