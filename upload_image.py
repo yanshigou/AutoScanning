@@ -9,7 +9,7 @@ from time import sleep
 from datetime import datetime
 
 
-def event(event_files_list, move_folder, ip_val, event_path, now_time):
+def event(event_files_list, move_folder, ip_val, event_path, now_time, white_list):
     count = 0
     try:
         for file in event_files_list:
@@ -43,16 +43,19 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time):
                         # 进行对事件进行操作
                         ip = file_name_list[4]
                         car_id = file_name_list[5]
-
+                        if car_id in white_list:
+                            os.remove(file_path)
+                            print('在白名单内，删除成功')
+                            continue
                         car_color = file_name_list[-1][0]
                         print(car_color)
                         car_type = '00'
                         if car_color == "蓝":
-                            car_type = '00'
+                            car_type = '02'
                         elif car_color == '黄':
                             car_type = '01'
                         elif car_color == '绿':
-                            car_type = '04'
+                            car_type = '19'
 
                         wf_time = file_name_list[1] + file_name_list[2]
                         f = open(file_path, 'rb')
@@ -99,7 +102,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time):
         return {"status": "error", "e": e, "res_status": "error", "count": count}
 
 
-def QZ(files_list, move_folder, ip_val, qz_path, now_time):
+def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
     count = 0
     # for path, dirs, files in os.walk(qz_path):
     #     print("path", path)
@@ -145,15 +148,19 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time):
                         # 对取证进行操作
                         ip = file_name_list[4]
                         car_id = file_name_list[5]
+                        if car_id in white_list:
+                            os.remove(file_path)
+                            print('在白名单内，删除成功')
+                            continue
                         car_color = file_name_list[-1][0]
                         print(car_color)
                         car_type = '00'
                         if car_color == "蓝":
-                            car_type = '00'
+                            car_type = '02'
                         elif car_color == '黄':
                             car_type = '01'
                         elif car_color == '绿':
-                            car_type = '04'
+                            car_type = '19'
                         wf_time = file_name_list[1]+file_name_list[2]
                         f = open(file_path, 'rb')
                         files = {'image_file': (file_name, f, 'image/jpg')}
@@ -199,8 +206,8 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time):
 
 
 if __name__ == '__main__':
-    # a = event(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\事件")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54', "G:\dzt\资料\交警\测试文件夹\事件", datetime.now())
+    # a = event(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\事件")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54', "G:\dzt\资料\交警\测试文件夹\事件", datetime.now(), ['渝DJD020', '渝AZC452'])
     # print(a)
 
-    b = QZ(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\取证")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54', "G:\dzt\资料\交警\测试文件夹\取证", datetime.now())
+    b = QZ(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\取证")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54', "G:\dzt\资料\交警\测试文件夹\取证", datetime.now(), ['渝DJD020', '渝AZC452'])
     print(b)

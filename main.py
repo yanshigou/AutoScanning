@@ -187,7 +187,7 @@ if __name__ == '__main__':
     if not basic_info():
         root = tk.Tk()
 
-        root.title('违法图片扫描器v2.12')
+        root.title('违法图片扫描器v3.0')
 
         # 滚动条
         scroll = tk.Scrollbar()
