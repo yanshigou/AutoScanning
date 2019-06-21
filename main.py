@@ -23,10 +23,8 @@ client = requests.session()
 # else:
 #     csrftoken = client.cookies['csrf']
 #     print(csrftoken)
-white_list = ['渝DJD020', '渝AZC452']
-
-
 def basic_info():
+    white_list = ['渝DJD020', '渝AZC452']
     try:
         f = open("ACconfig.txt", 'r', encoding='utf-8')
         all_data = f.readlines()
@@ -50,7 +48,7 @@ def basic_info():
         return False
 
 
-def event_run(event_path, move_folder, ip_val):
+def event_run(event_path, move_folder, ip_val, white_list):
     log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
@@ -65,7 +63,7 @@ def event_run(event_path, move_folder, ip_val):
             # sleep(1)
             now_time = datetime.now()
             res = event(FileObjectManager(FileObject(event_path)).scan_with_depth(10).all_file_objects(), move_folder,
-                        ip_val, event_path, now_time)
+                        ip_val, event_path, now_time, white_list)
             print(res)
             status = res.get('status')
             res_status = res.get('res_status')
@@ -108,7 +106,7 @@ def event_run(event_path, move_folder, ip_val):
             f.close()
 
 
-def QZ_run(qz_path, move_folder, ip_val):
+def QZ_run(qz_path, move_folder, ip_val, white_list):
     log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描取证文件夹：%s\n" % qz_path)
@@ -123,7 +121,7 @@ def QZ_run(qz_path, move_folder, ip_val):
             # sleep(1)
             now_time = datetime.now()
             res = QZ(FileObjectManager(FileObject(qz_path)).scan_with_depth(10).all_file_objects(), move_folder,
-                     ip_val, qz_path, now_time)
+                     ip_val, qz_path, now_time, white_list)
             print(res)
             status = res.get('status')
             res_status = res.get('res_status')
@@ -154,8 +152,8 @@ def QZ_run(qz_path, move_folder, ip_val):
                 f.write("\n%s 【取证】【上传出错，请检查日志】：%s" % (now_time, e))
             elif status == "over":
                 print("1")
-                text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息2分钟】\n" % (now_time, file_path))
-                f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息2分钟】\n" % (now_time, file_path))
+                text.insert(tk.END, "\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息2分钟】\n" % (now_time, file_path))
+                f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息2分钟】\n" % (now_time, file_path))
                 text.see(tk.END)
                 sleep(60 * 2)
             text.see(tk.END)
@@ -189,7 +187,7 @@ if __name__ == '__main__':
     if not basic_info():
         root = tk.Tk()
 
-        root.title('违法图片扫描器v2.10')
+        root.title('违法图片扫描器v2.12')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -223,12 +221,32 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('违法图片扫描器v2.10')
+        root.title('违法图片扫描器v3.0')
 
         # 滚动条
         scroll = tk.Scrollbar()
 
         text = scrolledtext.ScrolledText(root, width=90, height=60)
+
+        text.insert(tk.END, "配置信息如下：\n")
+        text.insert(tk.END, "事件文件夹路径：%s\n" % event_path)
+        text.insert(tk.END, "取证文件夹路径：%s\n" % qz_path)
+        text.insert(tk.END, "移动文件夹路径：%s\n" % move_folder)
+        text.insert(tk.END, "服务器及端口：%s\n" % ip_val)
+        # text.insert(tk.END, "白名单：%s\n" % white_list)
+
+        log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+        f = open(log_file, 'a+', encoding='utf-8')
+        text.insert(tk.END, "开始删除服务器上打包的文件\n")
+        res = requests.post('http://%s/dataInfo/autoDelView/' % ip_val).json()
+        if res["status"] == "success":
+            f.write("删除服务器上打包的文件成功\n")
+            text.insert(tk.END, "删除服务器上打包的文件成功\n")
+        else:
+            f.write("删除服务器上打包的文件失败 %s\n" % res['e'])
+            text.insert(tk.END, "删除服务器上打包的文件失败\n")
+        f.close()
+
         text.grid(row=0, column=0)
         root.geometry('1000x800+600+50')
         lf = tk.LabelFrame(root, text='')
@@ -253,9 +271,9 @@ if __name__ == '__main__':
         count_qz_lb.grid()
 
         event_bt = tk.Button(lf, text='开始扫描事件文件夹', fg='red',
-                             command=lambda: thread_it(event_run, event_path, move_folder, ip_val))
+                             command=lambda: thread_it(event_run, event_path, move_folder, ip_val, white_list))
         qz_bt = tk.Button(lf, text='开始扫描取证文件夹', fg='red',
-                          command=lambda: thread_it(QZ_run, qz_path, move_folder, ip_val))
+                          command=lambda: thread_it(QZ_run, qz_path, move_folder, ip_val, white_list))
         event_bt.grid(padx=5, pady=20)
         qz_bt.grid(padx=5, pady=20)
 
