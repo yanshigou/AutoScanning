@@ -24,7 +24,7 @@ client = requests.session()
 #     csrftoken = client.cookies['csrf']
 #     print(csrftoken)
 def basic_info():
-    white_list = ['渝DJD020', '渝AZC452']
+    white_list = ['渝DJD020']
     try:
         f = open("ACconfig.txt", 'r', encoding='utf-8')
         all_data = f.readlines()
@@ -33,8 +33,8 @@ def basic_info():
         move_folder = all_data[2].split('=')[-1].strip()
         ip_val = all_data[3].split('=')[-1].strip()
         car_id = all_data[4].split('=')[-1].split(' ')
-        for i in car_id:
-            white_list.append(i)
+        # for i in car_id:
+        #     white_list.append(i)
         f.close()
 
         print(event_path)
