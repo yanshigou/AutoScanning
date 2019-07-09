@@ -72,6 +72,7 @@ def event_run(event_path, move_folder, ip_val, white_list):
             file_path = res.get('file_path')
             folder = res.get('folder')
             count_event_lb.config(text='\n已处理事件图片数：%s\n' % count)
+            f.write('\n已处理事件图片数：%s\n' % count)
             now_time = datetime.now()
             if status == "success":
 
@@ -130,6 +131,7 @@ def QZ_run(qz_path, move_folder, ip_val, white_list):
             file_path = res.get('file_path')
             folder = res.get('folder')
             count_qz_lb.config(text='\n已处理取证图片数：%s\n' % str(count))
+            f.write('\n已处理取证图片数：%s\n' % str(count))
 
             if status == "success":
                 if res_status == "success":
@@ -184,10 +186,16 @@ def thread_it(func, *args):
 
 
 if __name__ == '__main__':
+
+    log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+    f = open(log_file, 'a+', encoding='utf-8')
+    f.write('%s 正在读取配置文件...\n' % datetime.now())
+    f.close()
+
     if not basic_info():
         root = tk.Tk()
 
-        root.title('违法图片扫描器v3.1')
+        root.title('违法图片扫描器v3.3')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -197,20 +205,22 @@ if __name__ == '__main__':
         root.geometry('1000x800+600+50')
         lf = tk.LabelFrame(root, text='请检查配置文件ACconfig.txt是否在同级目录下')
         lf.grid(row=0, column=1)
-        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
-        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
-        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
-        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
-        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
-        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
-        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
-        text.insert(tk.END, "未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n")
+        log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+        f = open(log_file, 'a+', encoding='utf-8')
+        f.write("%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
+        f.write("\n并且仅支持如下格式\n")
+        f.write("\n事件地址=G:\dzt\资料\交警\测试文件夹\事件\n")
+        f.write("取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
+        f.write("移动地址=G:\dzt\资料\交警\备份\n")
+        f.write("IP=192.168.31.54:8000\n")
+        f.close()
+        text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
+        text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
         text.insert(tk.END, "\n并且仅支持如下格式\n")
         text.insert(tk.END, "\n事件地址=G:\dzt\资料\交警\测试文件夹\事件\n")
         text.insert(tk.END, "取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
         text.insert(tk.END, "移动地址=G:\dzt\资料\交警\备份\n")
         text.insert(tk.END, "IP=192.168.31.54:8000\n")
-        text.insert(tk.END, "白名单=渝DDD000 渝ADA233\n")
 
         q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
         q.grid(padx=5, pady=10)
@@ -221,7 +231,7 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('违法图片扫描器v3.1')
+        root.title('违法图片扫描器v3.3')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -237,8 +247,16 @@ if __name__ == '__main__':
 
         log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
         f = open(log_file, 'a+', encoding='utf-8')
+        f.write('%s 配置读取成功\n ' % datetime.now())
+        f.write("\n%s 配置信息如下\n" % datetime.now())
+        f.write("事件文件夹路径：%s\n" % event_path)
+        f.write("取证文件夹路径：%s\n" % qz_path)
+        f.write("移动文件夹路径：%s\n" % move_folder)
+        f.write("服务器及端口：%s\n" % ip_val)
+
         try:
             text.insert(tk.END, "%s 开始删除服务器上打包的文件\n" % datetime.now())
+            f.write("%s 开始删除服务器上打包的文件\n" % datetime.now())
             res = requests.post('http://%s/dataInfo/autoDelView/' % ip_val).json()
             if res["status"] == "success":
                 f.write("%s 删除服务器上打包的文件成功\n" % datetime.now())
