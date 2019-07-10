@@ -7,6 +7,7 @@ import os
 import shutil
 from time import sleep
 from datetime import datetime
+import base64
 
 
 def event(event_files_list, move_folder, ip_val, event_path, now_time, white_list):
@@ -19,7 +20,9 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                 if file.file_name[-3:] == 'jpg':
                     count += 1
                     file_path = file.file_path
-
+                    print(file_path)
+                    image_folder = "\\".join(file_path.split("\\")[:-1]) + '\\'
+                    print(image_folder)
                     # path_list = file_path.split('\\')
                     # path_list[4] = "备份"
                     # folder = "\\".join(path_list[:-1])
@@ -38,7 +41,9 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                     file_name_list = file_name.split('_')
                     print(file_name_list)
                     i_type = file_name_list[0]
-                    if i_type == '2':
+                    last_str = file_name_list[-1]
+                    print(last_str)
+                    if i_type == '2' and ('短信' not in last_str):
                         print('事件图片')
                         # 进行对事件进行操作
                         ip = file_name_list[4]
@@ -69,6 +74,18 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                         res = requests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files, data=data).json()
                         status = res['status']
                         print(status)
+                        zp = res.get('zp')
+                        image_file = res.get('sms_image')
+                        print(image_file)
+                        zpname = ""
+                        if zp:
+                            # 存在本机后再传图片至服务器
+                            imgdata = base64.b64decode(zp)
+                            l = image_file.split('.jpg')
+                            zpname = image_folder + l[0] + '_短信' + '.jpg'
+                            img = open(zpname, 'wb')
+                            img.write(imgdata)
+                            img.close()
                         print(res['is_del'])
                         f.close()
                         try:
@@ -83,7 +100,54 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             print('删除成功')
                         finally:
                             sleep(0.1)
-                            return {"status": "success", "count": count, "res_status": status, "file_path": file_path, "folder": folder}
+                            return {"status": "success", "count": count, "res_status": status, "file_path": file_path, "folder": folder, "zpname": zpname}
+                    elif i_type == '2' and '短信' in last_str:
+                        print('凭证图片')
+                        # 进行对凭证进行操作
+                        ip = file_name_list[4]
+                        car_id = file_name_list[5]
+                        wf_time = file_name_list[1] + file_name_list[2]
+                        if car_id in white_list:
+                            os.remove(file_path)
+                            print('在白名单内，删除成功')
+                            continue
+                        car_color = file_name_list[-2][0]
+                        print(car_color)
+                        car_type = '00'
+                        if car_color == "蓝":
+                            car_type = '02'
+                        elif car_color == '黄':
+                            car_type = '01'
+                        elif car_color == '绿':
+                            car_type = '19'
+                        f = open(file_path, 'rb')
+                        files = {'image_file': (file_name, f, 'image/jpg')}
+
+                        data = dict(
+                            data_type='WT', ip=ip, car_id=car_id, car_type=car_type,
+                            wf_time=wf_time
+                        )
+
+                        res = requests.post('http://%s/dataInfo/wtDataEventSMSUpload/' % ip_val, files=files,
+                                            data=data).json()
+                        status = res['status']
+                        print(status)
+                        print(res['is_del'])
+                        f.close()
+                        try:
+                            if res['is_del']:
+                                os.remove(file_path)
+                                print('删除成功')
+                            else:
+                                shutil.move(file_path, folder)
+                                print('移动成功')
+                        except Exception as ex:
+                            os.remove(file_path)
+                            print('删除成功')
+                        finally:
+                            sleep(0.1)
+                            return {"status": "success", "count": count, "res_status": status, "file_path": file_path,
+                                    "folder": folder, "zp": "success"}
             else:
                 try:
                     folder_path = file.file_path
@@ -206,8 +270,8 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
 
 
 if __name__ == '__main__':
-    # a = event(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\事件")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54', "G:\dzt\资料\交警\测试文件夹\事件", datetime.now(), ['渝DJD020', '渝AZC452'])
-    # print(a)
+    a = event(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '127.0.0.1:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹", datetime.now(), [])
+    print(a)
 
-    b = QZ(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\取证")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54', "G:\dzt\资料\交警\测试文件夹\取证", datetime.now(), ['渝DJD020', '渝AZC452'])
+    b = QZ(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '127.0.0.1:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹", datetime.now(), [])
     print(b)
