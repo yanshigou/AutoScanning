@@ -52,7 +52,7 @@ def event_run(event_path, move_folder, ip_val, white_list):
     log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
-    f.write("开始扫描事件文件夹：%s" % event_path)
+    f.write("开始扫描事件文件夹：%s\n" % event_path)
     f.close()
     count = 0
     event_bt.config(state="disabled", text='正在扫描事件文件夹')
@@ -71,10 +71,13 @@ def event_run(event_path, move_folder, ip_val, white_list):
             e = res.get('e')
             file_path = res.get('file_path')
             folder = res.get('folder')
-            count_event_lb.config(text='\n已处理事件图片数：%s\n' % count)
-            f.write('\n已处理事件图片数：%s\n' % count)
+            zpname = res.get('zpname')
+            zp = res.get('zp')
+
             now_time = datetime.now()
-            if status == "success":
+            if zpname:
+                f.write('\n%s 短信发送成功，已收到短信图片%s，等待扫描上传' % (now_time, zpname))
+            if status == "success" and zp != 'success':
 
                 if res_status == "success":
                     res_status = '成功'
@@ -86,6 +89,17 @@ def event_run(event_path, move_folder, ip_val, white_list):
                     res_status = '失败'
                 text.insert(tk.END, "\n%s 【事件】【扫描到文件】%s，上传文件【%s】，【移动至】%s\n" % (now_time, file_path, res_status, folder))
                 f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】，【移动至】%s" % (now_time, file_path, res_status, folder))
+            elif status == "success" and zp == 'success':
+                if res_status == "success":
+                    res_status = '成功'
+                elif res_status == "error":
+                    res_status = '出错'
+                    text.insert(tk.END, "\n%s 【事件-短信】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    f.write("\n%s 【事件-短信】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                else:
+                    res_status = '失败'
+                text.insert(tk.END, "\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】，【移动至】%s\n" % (now_time, file_path, res_status, folder))
+                f.write("\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】，【移动至】%s" % (now_time, file_path, res_status, folder))
             elif status == "fail":
                 text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】\n" % (now_time, file_path))
                 f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】" % (now_time, file_path))
@@ -97,6 +111,8 @@ def event_run(event_path, move_folder, ip_val, white_list):
                 f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息2分钟】\n" % (now_time, file_path))
                 text.see(tk.END)
                 sleep(60 * 2)
+            count_event_lb.config(text='\n已处理事件图片数：%s\n' % count)
+            f.write('\n%s 已处理事件图片数：%s\n' % (now_time, count))
             text.see(tk.END)
         except Exception as e:
             text.insert(tk.END, "\n%s 【事件】程序出错：%s\n" % (datetime.now(), e))
@@ -111,7 +127,7 @@ def QZ_run(qz_path, move_folder, ip_val, white_list):
     log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描取证文件夹：%s\n" % qz_path)
-    f.write("开始扫描取证文件夹：%s" % event_path)
+    f.write("%s 开始扫描取证文件夹：%s" % (event_path, datetime.now()))
     f.close()
     count = 0
     qz_bt.config(state="disabled", text='正在扫描取证文件夹')
@@ -130,8 +146,7 @@ def QZ_run(qz_path, move_folder, ip_val, white_list):
             e = res.get('e')
             file_path = res.get('file_path')
             folder = res.get('folder')
-            count_qz_lb.config(text='\n已处理取证图片数：%s\n' % str(count))
-            f.write('\n已处理取证图片数：%s\n' % str(count))
+
 
             if status == "success":
                 if res_status == "success":
@@ -158,6 +173,8 @@ def QZ_run(qz_path, move_folder, ip_val, white_list):
                 f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息2分钟】\n" % (now_time, file_path))
                 text.see(tk.END)
                 sleep(60 * 2)
+            count_qz_lb.config(text='\n已处理取证图片数：%s\n' % str(count))
+            f.write('\n%s 已处理取证图片数：%s\n' % (now_time, str(count)))
             text.see(tk.END)
         except Exception as e:
             text.insert(tk.END, "\n%s 【取证】程序出错：%s\n" % (datetime.now(), e))
@@ -195,7 +212,7 @@ if __name__ == '__main__':
     if not basic_info():
         root = tk.Tk()
 
-        root.title('违法图片扫描器v3.3')
+        root.title('违法图片扫描器v4.2')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -231,7 +248,7 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('违法图片扫描器v3.3')
+        root.title('违法图片扫描器v4.2')
 
         # 滚动条
         scroll = tk.Scrollbar()
