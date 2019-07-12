@@ -32,6 +32,7 @@ def basic_info():
         qz_path = all_data[1].split('=')[-1].strip()
         move_folder = all_data[2].split('=')[-1].strip()
         ip_val = all_data[3].split('=')[-1].strip()
+        sleep_time = all_data[4].split('=')[-1]
         # car_id = all_data[4].split('=')[-1].split(' ')
         # for i in car_id:
         #     white_list.append(i)
@@ -42,13 +43,14 @@ def basic_info():
         print(move_folder)
         print(ip_val)
         print(white_list)
-        return event_path, qz_path, move_folder, ip_val, white_list
+        print(sleep_time)
+        return event_path, qz_path, move_folder, ip_val, white_list, sleep_time
     except Exception as e:
         print(e)
         return False
 
 
-def event_run(event_path, move_folder, ip_val, white_list):
+def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
@@ -108,9 +110,9 @@ def event_run(event_path, move_folder, ip_val, white_list):
                 f.write("\n%s 【事件】【上传图片出错，请检查日志】：%s" % (now_time, e))
             elif status == "over":
                 text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息2分钟】\n" % (now_time, file_path))
-                f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息2分钟】\n" % (now_time, file_path))
+                f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, file_path, sleep_time))
                 text.see(tk.END)
-                sleep(60 * 2)
+                sleep(int(sleep_time))
             count_event_lb.config(text='\n已处理事件图片数：%s\n' % count)
             f.write('\n%s 已处理事件图片数：%s\n' % (now_time, count))
             text.see(tk.END)
@@ -123,7 +125,7 @@ def event_run(event_path, move_folder, ip_val, white_list):
             f.close()
 
 
-def QZ_run(qz_path, move_folder, ip_val, white_list):
+def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描取证文件夹：%s\n" % qz_path)
@@ -170,9 +172,9 @@ def QZ_run(qz_path, move_folder, ip_val, white_list):
             elif status == "over":
                 print("1")
                 text.insert(tk.END, "\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息2分钟】\n" % (now_time, file_path))
-                f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息2分钟】\n" % (now_time, file_path))
+                f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, file_path, sleep_time))
                 text.see(tk.END)
-                sleep(60 * 2)
+                sleep(int(sleep_time))
             count_qz_lb.config(text='\n已处理取证图片数：%s\n' % str(count))
             f.write('\n%s 已处理取证图片数：%s\n' % (now_time, str(count)))
             text.see(tk.END)
@@ -212,7 +214,7 @@ if __name__ == '__main__':
     if not basic_info():
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.2')
+        root.title('违法图片扫描器v4.3')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -244,11 +246,11 @@ if __name__ == '__main__':
 
         root.mainloop()
     else:
-        event_path, qz_path, move_folder, ip_val, white_list = basic_info()
+        event_path, qz_path, move_folder, ip_val, white_list, sleep_time = basic_info()
 
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.2')
+        root.title('违法图片扫描器v4.3')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -312,9 +314,9 @@ if __name__ == '__main__':
         count_qz_lb.grid()
 
         event_bt = tk.Button(lf, text='开始扫描事件文件夹', fg='red',
-                             command=lambda: thread_it(event_run, event_path, move_folder, ip_val, white_list))
+                             command=lambda: thread_it(event_run, event_path, move_folder, ip_val, white_list, sleep_time))
         qz_bt = tk.Button(lf, text='开始扫描取证文件夹', fg='red',
-                          command=lambda: thread_it(QZ_run, qz_path, move_folder, ip_val, white_list))
+                          command=lambda: thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time))
         event_bt.grid(padx=5, pady=20)
         qz_bt.grid(padx=5, pady=20)
 
