@@ -57,6 +57,7 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
     f.write("开始扫描事件文件夹：%s\n" % event_path)
     f.close()
     count = 0
+    sms_count = 0
     event_bt.config(state="disabled", text='正在扫描事件文件夹')
     while True:
         log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
@@ -70,6 +71,7 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
             status = res.get('status')
             res_status = res.get('res_status')
             count += res.get('count')
+            sms_count += res.get('sms_count')
             e = res.get('e')
             file_path = res.get('file_path')
             folder = res.get('folder')
@@ -109,12 +111,14 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
                 text.insert(tk.END, "\n%s 【事件】【上传图片出错，请查看日志】：%s\n" % (now_time, e))
                 f.write("\n%s 【事件】【上传图片出错，请检查日志】：%s" % (now_time, e))
             elif status == "over":
-                text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息2分钟】\n" % (now_time, file_path))
+                text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, file_path, sleep_time))
                 f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, file_path, sleep_time))
                 text.see(tk.END)
                 sleep(int(sleep_time))
             count_event_lb.config(text='\n已处理事件图片数：%s\n' % count)
-            f.write('\n%s 已处理事件图片数：%s\n' % (now_time, count))
+            sms_lb.config(text='\n已处理短信图片数：%s\n' % sms_count)
+            f.write('\n%s 【事件】已处理事件图片数：%s\n' % (now_time, count))
+            f.write('\n%s 【事件-短信】已处理短信图片数：%s\n' % (now_time, sms_count))
             text.see(tk.END)
         except Exception as e:
             text.insert(tk.END, "\n%s 【事件】程序出错：%s\n" % (datetime.now(), e))
@@ -171,7 +175,7 @@ def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time):
                 f.write("\n%s 【取证】【上传出错，请检查日志】：%s" % (now_time, e))
             elif status == "over":
                 print("1")
-                text.insert(tk.END, "\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息2分钟】\n" % (now_time, file_path))
+                text.insert(tk.END, "\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, file_path, sleep_time))
                 f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, file_path, sleep_time))
                 text.see(tk.END)
                 sleep(int(sleep_time))
@@ -214,7 +218,7 @@ if __name__ == '__main__':
     if not basic_info():
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.3')
+        root.title('违法图片扫描器v4.4')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -232,6 +236,7 @@ if __name__ == '__main__':
         f.write("取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
         f.write("移动地址=G:\dzt\资料\交警\备份\n")
         f.write("IP=192.168.31.54:8000\n")
+        f.write("空闲间隔(秒)=60\n")
         f.close()
         text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
         text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
@@ -240,6 +245,7 @@ if __name__ == '__main__':
         text.insert(tk.END, "取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
         text.insert(tk.END, "移动地址=G:\dzt\资料\交警\备份\n")
         text.insert(tk.END, "IP=192.168.31.54:8000\n")
+        text.insert(tk.END, "空闲间隔(秒)=60\n")
 
         q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
         q.grid(padx=5, pady=10)
@@ -250,7 +256,7 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.3')
+        root.title('违法图片扫描器v4.4')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -262,6 +268,7 @@ if __name__ == '__main__':
         text.insert(tk.END, "取证文件夹路径：%s\n" % qz_path)
         text.insert(tk.END, "移动文件夹路径：%s\n" % move_folder)
         text.insert(tk.END, "服务器及端口：%s\n" % ip_val)
+        text.insert(tk.END, "空闲间隔(秒)：%s\n" % sleep_time)
         # text.insert(tk.END, "白名单：%s\n" % white_list)
 
         log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
@@ -272,6 +279,7 @@ if __name__ == '__main__':
         f.write("取证文件夹路径：%s\n" % qz_path)
         f.write("移动文件夹路径：%s\n" % move_folder)
         f.write("服务器及端口：%s\n" % ip_val)
+        f.write("空闲间隔(秒)：%s\n" % sleep_time)
 
         try:
             text.insert(tk.END, "%s 开始删除服务器上打包的文件\n" % datetime.now())
@@ -303,6 +311,9 @@ if __name__ == '__main__':
 
         count_event_lb = tk.Label(lf, text="\n已处理事件图片数：0\n")
         count_event_lb.grid()
+
+        sms_lb = tk.Label(lf, text="已处理短信图片数：0\n")
+        sms_lb.grid()
 
         qz_lb = tk.Label(lf, text="取证文件夹路径为：")
         qz_lb.grid()
