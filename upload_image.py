@@ -12,13 +12,13 @@ import base64
 
 def event(event_files_list, move_folder, ip_val, event_path, now_time, white_list):
     count = 0
+    sms_count = 0
     try:
         for file in event_files_list:
             # 如果是文件,则打印
             split_val = event_path.split("\\")[-1]
             if file.is_file:
                 if file.file_name[-3:] == 'jpg':
-                    count += 1
                     file_path = file.file_path
                     print(file_path)
                     image_folder = "\\".join(file_path.split("\\")[:-1]) + '\\'
@@ -27,12 +27,17 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                     # path_list[4] = "备份"
                     # folder = "\\".join(path_list[:-1])
 
+                    print("event_path", event_path)
+                    print("split_val", split_val)
                     split_path_list = file_path.split(split_val)[-1]
+                    print('split_path_list', split_path_list)
                     path_list = split_path_list.split("\\")[:-1]
+                    print('path_list', path_list)
                     path_list_folder = "\\".join(path_list)
+                    print('path_list_folder', path_list_folder)
                     folder = move_folder + ("\\%s" % split_val) + path_list_folder
 
-                    print(folder)
+                    print("folder", folder)
 
                     if not os.path.exists(folder):
                         os.makedirs(folder)
@@ -44,6 +49,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                     last_str = file_name_list[-1]
                     print(last_str)
                     if i_type == '2' and ('短信' not in last_str):
+                        count += 1
                         print('事件图片')
                         # 进行对事件进行操作
                         ip = file_name_list[4]
@@ -100,8 +106,9 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             print('删除成功')
                         finally:
                             sleep(0.1)
-                            return {"status": "success", "count": count, "res_status": status, "file_path": file_path, "folder": folder, "zpname": zpname}
+                            return {"status": "success", "count": count, "sms_count": sms_count, "res_status": status, "file_path": file_path, "folder": folder, "zpname": zpname}
                     elif i_type == '2' and '短信' in last_str:
+                        sms_count += 1
                         print('凭证图片')
                         # 进行对凭证进行操作
                         ip = file_name_list[4]
@@ -146,7 +153,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             print('删除成功')
                         finally:
                             sleep(0.1)
-                            return {"status": "success", "count": count, "res_status": status, "file_path": file_path,
+                            return {"status": "success", "count": count, "sms_count": sms_count, "res_status": status, "file_path": file_path,
                                     "folder": folder, "zp": "success"}
             else:
                 try:
@@ -154,16 +161,16 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                     print(folder_path)
                     folder_val = folder_path.split('\\')[-1]
                     folder_day = datetime.strftime(now_time, '%Y%m%d')
-                    if not os.listdir(folder_path) and (folder_day not in folder_path) and folder_val != split_val:
+                    if not os.listdir(folder_path) and (folder_day not in folder_path) and folder_val != split_val and ('.' not in folder_val):
                         print("空文件夹，删除")
                         os.rmdir(folder_path)
                 except Exception as exc:
                     print(exc)
                     pass
-        return {"status": "over", "count": count}
+        return {"status": "over", "count": count, "sms_count": sms_count}
     except Exception as e:
         print(e)
-        return {"status": "error", "e": e, "res_status": "error", "count": count}
+        return {"status": "error", "e": e, "res_status": "error", "count": count, "sms_count": sms_count}
 
 
 def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
@@ -256,8 +263,9 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                     folder_path = file.file_path
                     print(folder_path)
                     folder_val = folder_path.split('\\')[-1]
+                    print(folder_val)
                     folder_day = datetime.strftime(now_time, '%Y%m%d')
-                    if not os.listdir(folder_path) and (folder_day not in folder_path) and folder_val != split_val:
+                    if not os.listdir(folder_path) and (folder_day not in folder_path) and folder_val != split_val and ('.' not in folder_val):
                         print("空文件夹，删除")
                         os.rmdir(folder_path)
                 except Exception as exc:
@@ -270,8 +278,8 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
 
 
 if __name__ == '__main__':
-    a = event(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '127.0.0.1:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹", datetime.now(), [])
+    a = event(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹\梭梭树")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹\梭梭树", datetime.now(), [])
     print(a)
 
-    b = QZ(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '127.0.0.1:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹", datetime.now(), [])
+    b = QZ(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对", datetime.now(), [])
     print(b)
