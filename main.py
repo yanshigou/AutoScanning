@@ -218,7 +218,7 @@ if __name__ == '__main__':
     if not basic_info():
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.4')
+        root.title('违法图片扫描器v4.5')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -256,7 +256,7 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.4')
+        root.title('违法图片扫描器v4.5')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -291,6 +291,16 @@ if __name__ == '__main__':
             else:
                 f.write("%s 删除服务器上打包的文件失败 %s\n" % (datetime.now(), res['e']))
                 text.insert(tk.END, "%s 删除服务器上打包的文件失败 %s\n" % (datetime.now(), res['e']))
+
+            text.insert(tk.END, "%s 开始删除服务器上90天以前的事件、取证、短信图片\n" % datetime.now())
+            f.write("%s 开始删除服务器上90天以前的事件、取证、短信图片\n" % datetime.now())
+            res = requests.post('http://%s/dataInfo/delWTImage/' % ip_val).json()
+            if res["status"] == "success":
+                f.write("%s 删除服务器上90天以前的事件、取证、短信图片成功\n" % datetime.now())
+                text.insert(tk.END, "删除服务器上90天以前的事件、取证、短信图片成功\n")
+            else:
+                f.write("%s 删除服务器上90天以前的事件、取证、短信图片失败 %s\n" % (datetime.now(), res['e']))
+                text.insert(tk.END, "%s 删除服务器上90天以前的事件、取证、短信图片失败 %s\n" % (datetime.now(), res['e']))
         except Exception as e:
             print(e)
             f.write("%s 删除服务器上打包的文件出错，请检查服务器是否开启\n" % datetime.now())
