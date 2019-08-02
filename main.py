@@ -8,6 +8,7 @@ import tkinter as tk
 import threading
 from tkinter import scrolledtext
 from upload_image import event, QZ
+from deviceStatus import ping
 from datetime import datetime
 from time import sleep
 
@@ -80,6 +81,7 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
 
             now_time = datetime.now()
             if zpname:
+                text.insert(tk.END, '\n%s 短信发送成功，已收到短信图片%s，等待扫描上传' % (now_time, zpname))
                 f.write('\n%s 短信发送成功，已收到短信图片%s，等待扫描上传' % (now_time, zpname))
             if status == "success" and zp != 'success':
 
@@ -208,6 +210,47 @@ def thread_it(func, *args):
     # t.join()
 
 
+def check_device_online(ip_val):
+    log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+    f = open(log_file, 'a+', encoding='utf-8')
+    text.insert(tk.END, "开始检测设备状态")
+    f.write("开始检测设备状态")
+    f.close()
+    ping_bt.config(state="disabled", text='开始检测设备状态')
+    while True:
+
+        f = open(log_file, 'a+', encoding='utf-8')
+        res = requests.get('http://%s/devices/allDevices/' % ip_val)
+        print(res.json())
+        ip_list = res.json().get('devices')
+        for ip in ip_list:
+            now_time = datetime.now()
+            is_online = ping(ip)
+            print(ip, is_online)
+            if is_online:
+                text.insert(tk.END, '\n%s 设备 %s 在线' % (now_time, ip))
+                f.write('\n%s 设备 %s 在线' % (now_time, ip))
+                res = requests.get('http://%s/devices/statusModify/?is_online=1&ip=%s' % (ip_val, ip))
+            else:
+                text.insert(tk.END, '\n%s 设备 %s 离线' % (now_time, ip))
+                f.write('\n%s 设备 %s 离线' % (now_time, ip))
+                res = requests.get('http://%s/devices/statusModify/?is_online=0&ip=%s' % (ip_val, ip))
+        sleep(60*5)
+
+
+def auto_run(event_path, move_folder, ip_val, white_list, sleep_time):
+
+    log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+    f = open(log_file, 'a+', encoding='utf-8')
+    text.insert(tk.END, "%s 5秒后自动开始运行 \n" % datetime.now())
+    f.write("%s 5秒后自动开始运行 \n" % datetime.now())
+    f.close()
+    sleep(5)
+    thread_it(event_run, event_path, move_folder, ip_val, white_list, sleep_time)
+    thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time)
+    thread_it(check_device_online, ip_val)
+
+
 if __name__ == '__main__':
 
     log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
@@ -306,8 +349,6 @@ if __name__ == '__main__':
             f.write("%s 删除服务器上打包的文件出错，请检查服务器是否开启\n" % datetime.now())
             text.insert(tk.END, "%s 删除服务器上打包的文件出错，请检查服务器是否开启\n" %datetime.now())
 
-        f.close()
-
         text.grid(row=0, column=0)
         root.geometry('1000x800+600+50')
         lf = tk.LabelFrame(root, text='')
@@ -338,8 +379,13 @@ if __name__ == '__main__':
                              command=lambda: thread_it(event_run, event_path, move_folder, ip_val, white_list, sleep_time))
         qz_bt = tk.Button(lf, text='开始扫描取证文件夹', fg='red',
                           command=lambda: thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time))
+        ping_bt = tk.Button(lf, text='开始检测设备状态', fg='red',
+                          command=lambda: thread_it(check_device_online, ip_val))
         event_bt.grid(padx=5, pady=20)
         qz_bt.grid(padx=5, pady=20)
+        ping_bt.grid(padx=5, pady=20)
+
+        thread_it(auto_run, event_path, move_folder, ip_val, white_list, sleep_time)
 
         q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
         q.grid(padx=5, pady=10)
