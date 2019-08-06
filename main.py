@@ -25,7 +25,7 @@ client = requests.session()
 #     csrftoken = client.cookies['csrf']
 #     print(csrftoken)
 def basic_info():
-    white_list = ['渝DJD020']
+    white_list = []
     try:
         f = open("ACconfig.txt", 'r', encoding='utf-8')
         all_data = f.readlines()
@@ -34,6 +34,7 @@ def basic_info():
         move_folder = all_data[2].split('=')[-1].strip()
         ip_val = all_data[3].split('=')[-1].strip()
         sleep_time = all_data[4].split('=')[-1]
+        qz_time = all_data[5].split('=')[-1]
         # car_id = all_data[4].split('=')[-1].split(' ')
         # for i in car_id:
         #     white_list.append(i)
@@ -45,7 +46,8 @@ def basic_info():
         print(ip_val)
         print(white_list)
         print(sleep_time)
-        return event_path, qz_path, move_folder, ip_val, white_list, sleep_time
+        print(qz_time)
+        return event_path, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time
     except Exception as e:
         print(e)
         return False
@@ -122,6 +124,7 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
             f.write('\n%s 【事件】已处理事件图片数：%s\n' % (now_time, count))
             f.write('\n%s 【事件-短信】已处理短信图片数：%s\n' % (now_time, sms_count))
             text.see(tk.END)
+            sleep(0.1)
         except Exception as e:
             text.insert(tk.END, "\n%s 【事件】程序出错：%s\n" % (datetime.now(), e))
             text.see(tk.END)
@@ -131,7 +134,7 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
             f.close()
 
 
-def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time):
+def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time, qz_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描取证文件夹：%s\n" % qz_path)
@@ -154,7 +157,6 @@ def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time):
             e = res.get('e')
             file_path = res.get('file_path')
             folder = res.get('folder')
-
 
             if status == "success":
                 if res_status == "success":
@@ -184,6 +186,8 @@ def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time):
             count_qz_lb.config(text='\n已处理取证图片数：%s\n' % str(count))
             f.write('\n%s 已处理取证图片数：%s\n' % (now_time, str(count)))
             text.see(tk.END)
+            # 大量同时推送集成平台时，会出错
+            sleep(int(qz_time))
         except Exception as e:
             text.insert(tk.END, "\n%s 【取证】程序出错：%s\n" % (datetime.now(), e))
             text.see(tk.END)
@@ -238,7 +242,7 @@ def check_device_online(ip_val):
         sleep(60*5)
 
 
-def auto_run(event_path, move_folder, ip_val, white_list, sleep_time):
+def auto_run(event_path, move_folder, ip_val, white_list, sleep_time, qz_time):
 
     log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
@@ -247,7 +251,7 @@ def auto_run(event_path, move_folder, ip_val, white_list, sleep_time):
     f.close()
     sleep(5)
     thread_it(event_run, event_path, move_folder, ip_val, white_list, sleep_time)
-    thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time)
+    thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time)
     thread_it(check_device_online, ip_val)
 
 
@@ -261,7 +265,7 @@ if __name__ == '__main__':
     if not basic_info():
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.5')
+        root.title('违法图片扫描器v4.7.1')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -279,7 +283,8 @@ if __name__ == '__main__':
         f.write("取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
         f.write("移动地址=G:\dzt\资料\交警\备份\n")
         f.write("IP=192.168.31.54:8000\n")
-        f.write("空闲间隔(秒)=60\n")
+        f.write("空闲间隔(秒)=5\n")
+        f.write("集成平台推送间隔(秒)=30\n")
         f.close()
         text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
         text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
@@ -288,18 +293,19 @@ if __name__ == '__main__':
         text.insert(tk.END, "取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
         text.insert(tk.END, "移动地址=G:\dzt\资料\交警\备份\n")
         text.insert(tk.END, "IP=192.168.31.54:8000\n")
-        text.insert(tk.END, "空闲间隔(秒)=60\n")
+        text.insert(tk.END, "空闲间隔(秒)=5\n")
+        text.insert(tk.END, "集成平台推送间隔(秒)=30\n")
 
         q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
         q.grid(padx=5, pady=10)
 
         root.mainloop()
     else:
-        event_path, qz_path, move_folder, ip_val, white_list, sleep_time = basic_info()
+        event_path, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time = basic_info()
 
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.5')
+        root.title('违法图片扫描器v4.7.1')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -312,6 +318,7 @@ if __name__ == '__main__':
         text.insert(tk.END, "移动文件夹路径：%s\n" % move_folder)
         text.insert(tk.END, "服务器及端口：%s\n" % ip_val)
         text.insert(tk.END, "空闲间隔(秒)：%s\n" % sleep_time)
+        text.insert(tk.END, "集成平台推送间隔(秒)：%s\n" % qz_time)
         # text.insert(tk.END, "白名单：%s\n" % white_list)
 
         log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
@@ -323,6 +330,7 @@ if __name__ == '__main__':
         f.write("移动文件夹路径：%s\n" % move_folder)
         f.write("服务器及端口：%s\n" % ip_val)
         f.write("空闲间隔(秒)：%s\n" % sleep_time)
+        f.write("集成平台推送间隔(秒)：%s\n" % qz_time)
 
         try:
             text.insert(tk.END, "%s 开始删除服务器上打包的文件\n" % datetime.now())
@@ -378,14 +386,14 @@ if __name__ == '__main__':
         event_bt = tk.Button(lf, text='开始扫描事件文件夹', fg='red',
                              command=lambda: thread_it(event_run, event_path, move_folder, ip_val, white_list, sleep_time))
         qz_bt = tk.Button(lf, text='开始扫描取证文件夹', fg='red',
-                          command=lambda: thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time))
+                          command=lambda: thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time))
         ping_bt = tk.Button(lf, text='开始检测设备状态', fg='red',
                           command=lambda: thread_it(check_device_online, ip_val))
         event_bt.grid(padx=5, pady=20)
         qz_bt.grid(padx=5, pady=20)
         ping_bt.grid(padx=5, pady=20)
 
-        thread_it(auto_run, event_path, move_folder, ip_val, white_list, sleep_time)
+        thread_it(auto_run, event_path, move_folder, ip_val, white_list, sleep_time, qz_time)
 
         q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
         q.grid(padx=5, pady=10)
