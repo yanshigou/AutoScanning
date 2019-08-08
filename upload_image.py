@@ -11,8 +11,6 @@ import base64
 
 
 def event(event_files_list, move_folder, ip_val, event_path, now_time, white_list):
-    count = 0
-    sms_count = 0
     try:
         for file in event_files_list:
             # 如果是文件,则打印
@@ -49,7 +47,6 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                     last_str = file_name_list[-1]
                     print(last_str)
                     if i_type == '2' and ('短信' not in last_str):
-                        count += 1
                         print('事件图片')
                         # 进行对事件进行操作
                         ip = file_name_list[4]
@@ -69,7 +66,17 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             car_type = '19'
 
                         wf_time = file_name_list[1] + file_name_list[2]
-                        f = open(file_path, 'rb')
+                        # 提前移动  再打开移动后的文件
+                        move_name = folder + '\\' + file_name  # 移动后的文件路径
+                        try:
+                            shutil.move(file_path, folder)
+                            print('移动成功')
+                            print(move_name)
+                        except Exception as e:
+                            if "exists" in str(e):
+                                os.remove(file_path)
+
+                        f = open(move_name, 'rb')
                         files = {'image_file': (file_name, f, 'image/jpg')}
 
                         data = dict(
@@ -78,6 +85,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                         )
 
                         res = requests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files, data=data).json()
+                        f.close()
                         status = res['status']
                         print(status)
                         zp = res.get('zp')
@@ -93,22 +101,25 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             img.write(imgdata)
                             img.close()
                         print(res['is_del'])
-                        f.close()
+                        count = 0
                         try:
                             if res['is_del']:
-                                os.remove(file_path)
+                                count = 1
+                                # os.remove(file_path)
+                                os.remove(move_name)
                                 print('删除成功')
                             else:
-                                shutil.move(file_path, folder)
+                                count = 1
+                                # shutil.move(file_path, folder)
                                 print('移动成功')
                         except Exception as ex:
                             os.remove(file_path)
                             print('删除成功')
                         finally:
                             sleep(0.1)
-                            return {"status": "success", "count": count, "sms_count": sms_count, "res_status": status, "file_path": file_path, "folder": folder, "zpname": zpname}
+                            f.close()
+                            return {"status": "success", "count": count, "sms_count": 0, "res_status": status, "file_path": file_path, "folder": folder, "zpname": zpname, "e": res.get('e')}
                     elif i_type == '2' and '短信' in last_str:
-                        sms_count += 1
                         print('凭证图片')
                         # 进行对凭证进行操作
                         ip = file_name_list[4]
@@ -141,11 +152,14 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                         print(status)
                         print(res['is_del'])
                         f.close()
+                        sms_count = 0
                         try:
                             if res['is_del']:
+                                sms_count = 1
                                 os.remove(file_path)
                                 print('删除成功')
                             else:
+                                sms_count = 1
                                 shutil.move(file_path, folder)
                                 print('移动成功')
                         except Exception as ex:
@@ -153,7 +167,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             print('删除成功')
                         finally:
                             sleep(0.1)
-                            return {"status": "success", "count": count, "sms_count": sms_count, "res_status": status, "file_path": file_path,
+                            return {"status": "success", "count": 0, "sms_count": sms_count, "res_status": status, "file_path": file_path,
                                     "folder": folder, "zp": "success"}
             else:
                 try:
@@ -167,14 +181,14 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                 except Exception as exc:
                     print(exc)
                     pass
-        return {"status": "over", "count": count, "sms_count": sms_count}
+        return {"status": "over", "count": 0, "sms_count": 0}
     except Exception as e:
         print(e)
-        return {"status": "error", "e": e, "res_status": "error", "count": count, "sms_count": sms_count}
+        sleep(1)
+        return {"status": "error", "e": str(e), "res_status": "error", "count": 0, "sms_count": 0}
 
 
 def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
-    count = 0
     # for path, dirs, files in os.walk(qz_path):
     #     print("path", path)
     #     print("dirs", dirs)
@@ -189,7 +203,6 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
             print(split_val)
             if file.is_file:
                 if file.file_name[-3:] == 'jpg':
-                    count += 1
                     file_path = file.file_path
 
                     # path_list = file_path.split('\\')
@@ -201,7 +214,7 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                     path_list_folder = "\\".join(path_list)
                     folder = move_folder + ("\\%s" % split_val) + path_list_folder
 
-                    print(folder)
+                    print("folder", folder)
 
                     if not os.path.exists(folder):
                         os.makedirs(folder)
@@ -209,7 +222,9 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                     file_path = file.file_path
                     file_name = file.file_name
                     file_name_list = file_name.split('_')
-                    print(file_name_list)
+                    print("file_path", file_path)
+                    print("file_name", file_name)
+                    print("file_name_list", file_name_list)
                     i_type = file_name_list[0]
                     print(i_type)
                     print(type(i_type))
@@ -233,7 +248,18 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                         elif car_color == '绿':
                             car_type = '19'
                         wf_time = file_name_list[1]+file_name_list[2]
-                        f = open(file_path, 'rb')
+
+                        move_name = folder + '\\' + file_name  # 移动后的文件路径
+                        # 先移动，再打开图片
+                        try:
+                            shutil.move(file_path, folder)
+                            print('移动成功')
+                            print(move_name)
+                        except Exception as e:
+                            if "exists" in str(e):
+                                os.remove(file_path)
+
+                        f = open(move_name, 'rb')
                         files = {'image_file': (file_name, f, 'image/jpg')}
 
                         data = dict(
@@ -241,22 +267,31 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                         )
 
                         res = requests.post('http://%s/dataInfo/wtDataInfoUpload/' % ip_val, files=files, data=data).json()
+                        f.close()
                         status = res['status']
                         print(status)
                         print(res['is_del'])
-                        f.close()
+                        count = 0
+                        # 只有删除才去使用移动后的路径，
                         try:
                             if res['is_del']:
-                                os.remove(file_path)
+                                count = 1
+                                # os.remove(file_path)
+                                os.remove(move_name)
                                 print('删除成功')
+                            elif res['is_del'] == 2:
+                                count = 0
+                                print("未发现事件，等待下一次上传")
                             else:
-                                shutil.move(file_path, folder)
+                                count = 1
+                                # shutil.move(file_path, folder)
                                 print('移动成功')
                         except Exception as ex:
-                            os.remove(file_path)
-                            print('删除成功')
+                            print(ex)
+                            print('删除或移动出错')
                         finally:
-                            sleep(0.5)
+                            sleep(1)
+                            f.close()
                             return {"status": "success", "count": count, "res_status": status, "file_path": file_path, "folder": folder}
             else:
                 try:
@@ -271,10 +306,11 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                 except Exception as exc:
                     print(exc)
                     pass
-        return {"status": "over", "count": count}
+        return {"status": "over", "count": 0}
     except Exception as e:
         print(e)
-        return {"status": "error", "e": e, "res_status": "error", "count": count}
+        sleep(1)
+        return {"status": "error", "e": str(e), "res_status": "error", "count": 0}
 
 
 if __name__ == '__main__':
