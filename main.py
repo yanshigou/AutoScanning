@@ -137,8 +137,8 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
 def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time, qz_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
-    text.insert(tk.END, "开始扫描取证文件夹：%s\n" % qz_path)
-    f.write("%s 开始扫描取证文件夹：%s" % (event_path, datetime.now()))
+    text.insert(tk.END, "\n开始扫描取证文件夹：%s\n" % qz_path)
+    f.write("%s \n开始扫描取证文件夹：%s" % (event_path, datetime.now()))
     f.close()
     count = 0
     qz_bt.config(state="disabled", text='正在扫描取证文件夹')
@@ -241,11 +241,18 @@ def check_device_online(ip_val):
             if is_online:
                 text.insert(tk.END, '\n%s 设备 %s 在线' % (now_time, ip))
                 f.write('\n%s 设备 %s 在线' % (now_time, ip))
-                res = requests.get('http://%s/devices/statusModify/?is_online=1&ip=%s' % (ip_val, ip))
+                requests.get('http://%s/devices/statusModify/?is_online=1&ip=%s' % (ip_val, ip))
             else:
                 text.insert(tk.END, '\n%s 设备 %s 离线' % (now_time, ip))
                 f.write('\n%s 设备 %s 离线' % (now_time, ip))
-                res = requests.get('http://%s/devices/statusModify/?is_online=0&ip=%s' % (ip_val, ip))
+                requests.get('http://%s/devices/statusModify/?is_online=0&ip=%s' % (ip_val, ip))
+        #
+        # # 加入再次推送失败的
+        # r = requests.get('http://%s/dataInfo/push/' % ip_val)
+        # if r.json().get('status') == "success":
+        #     text.insert(tk.END, '\n%s 再次推送未成功入库的数据' % datetime.now())
+        #     f.write('\n%s 再次推送未成功入库的数据' % datetime.now())
+        f.close()
         sleep(60 * 5)
 
 
@@ -274,7 +281,7 @@ if __name__ == '__main__':
     if not basic_info():
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.7.2')
+        root.title('违法图片扫描器v4.7.4')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -314,7 +321,7 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.7.2')
+        root.title('违法图片扫描器v4.7.4')
 
         # 滚动条
         scroll = tk.Scrollbar()
