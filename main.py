@@ -76,7 +76,7 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
             sms_count += res.get('sms_count')
             e = res.get('e')
             file_path = res.get('file_path')
-            folder = res.get('folder')
+
             zpname = res.get('zpname')
             zp = res.get('zp')
 
@@ -94,8 +94,8 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
                     f.write("\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
                 else:
                     res_status = '失败'
-                text.insert(tk.END, "\n%s 【事件】【扫描到文件】%s，上传文件【%s】，【移动至】%s\n" % (now_time, file_path, res_status, folder))
-                f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】，【移动至】%s" % (now_time, file_path, res_status, folder))
+                text.insert(tk.END, "\n%s 【事件】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
             elif status == "success" and zp == 'success':
                 if res_status == "success":
                     res_status = '成功'
@@ -106,8 +106,8 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
                 else:
                     res_status = '失败'
                 text.insert(tk.END,
-                            "\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】，【移动至】%s\n" % (now_time, file_path, res_status, folder))
-                f.write("\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】，【移动至】%s" % (now_time, file_path, res_status, folder))
+                            "\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                f.write("\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
             elif status == "fail":
                 text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】\n" % (now_time, file_path))
                 f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】" % (now_time, file_path))
@@ -156,14 +156,14 @@ def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time, qz_time):
             count += res.get('count')
             e = res.get('e')
             file_path = res.get('file_path')
-            folder = res.get('folder')
+
 
             if status == "success":
                 if res_status == "success":
                     res_status = '成功'
                     text.insert(tk.END,
-                                "\n%s【取证】【扫描到文件】%s，上传文件【%s】，【移动至】%s\n" % (now_time, file_path, res_status, folder))
-                    f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】，【移动至】%s" % (now_time, file_path, res_status, folder))
+                                "\n%s【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
                 elif res_status == "error":
                     res_status = '出错'
                     text.insert(tk.END, "\n%s 【取证】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
@@ -176,8 +176,8 @@ def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time, qz_time):
                 else:
                     res_status = '失败'
                     text.insert(tk.END,
-                                "\n%s【取证】【扫描到文件】%s，上传文件【%s】，【移动至】%s\n" % (now_time, file_path, res_status, folder))
-                    f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】，【移动至】%s" % (now_time, file_path, res_status, folder))
+                                "\n%s【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
             elif status == "fail":
                 text.insert(tk.END, "\n%s【取证】【扫描到文件夹】 %s，【未发现图片】\n" % (now_time, file_path))
                 f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现图片】" % (now_time, file_path))
@@ -247,11 +247,14 @@ def check_device_online(ip_val):
                 f.write('\n%s 设备 %s 离线' % (now_time, ip))
                 requests.get('http://%s/devices/statusModify/?is_online=0&ip=%s' % (ip_val, ip))
         #
-        # # 加入再次推送失败的
-        # r = requests.get('http://%s/dataInfo/push/' % ip_val)
-        # if r.json().get('status') == "success":
-        #     text.insert(tk.END, '\n%s 再次推送未成功入库的数据' % datetime.now())
-        #     f.write('\n%s 再次推送未成功入库的数据' % datetime.now())
+        # 加入再次推送失败的
+        r = requests.get('http://%s/dataInfo/push/' % ip_val)
+        if r.json().get('status') == "success":
+            text.insert(tk.END, '\n%s 再次推送未成功入库的数据' % datetime.now())
+            f.write('\n%s 再次推送未成功入库的数据' % datetime.now())
+        else:
+            text.insert(tk.END, '\n%s 没有未成功入库的数据' % datetime.now())
+            f.write('\n%s 没有未成功入库的数据' % datetime.now())
         f.close()
         sleep(60 * 5)
 
@@ -281,7 +284,7 @@ if __name__ == '__main__':
     if not basic_info():
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.7.4')
+        root.title('违法图片扫描器v4.8.0')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -297,20 +300,20 @@ if __name__ == '__main__':
         f.write("\n并且仅支持如下格式\n")
         f.write("\n事件地址=G:\dzt\资料\交警\测试文件夹\事件\n")
         f.write("取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
-        f.write("移动地址=G:\dzt\资料\交警\备份\n")
+        f.write("移动地址(暂取消备份)=G:\dzt\资料\交警\备份\n")
         f.write("IP=192.168.31.54:8000\n")
         f.write("空闲间隔(秒)=5\n")
-        f.write("集成平台推送间隔(秒)=30\n")
+        f.write("取证图片上传间隔(秒)=30\n")
         f.close()
         text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
         text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
         text.insert(tk.END, "\n并且仅支持如下格式\n")
         text.insert(tk.END, "\n事件地址=G:\dzt\资料\交警\测试文件夹\事件\n")
         text.insert(tk.END, "取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
-        text.insert(tk.END, "移动地址=G:\dzt\资料\交警\备份\n")
+        text.insert(tk.END, "移动地址(暂取消备份)=G:\dzt\资料\交警\备份\n")
         text.insert(tk.END, "IP=192.168.31.54:8000\n")
         text.insert(tk.END, "空闲间隔(秒)=5\n")
-        text.insert(tk.END, "集成平台推送间隔(秒)=30\n")
+        text.insert(tk.END, "取证图片上传间隔(秒)=30\n")
 
         q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
         q.grid(padx=5, pady=10)
@@ -321,7 +324,7 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.7.4')
+        root.title('违法图片扫描器v4.8.0')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -331,10 +334,10 @@ if __name__ == '__main__':
         text.insert(tk.END, "配置信息如下：\n")
         text.insert(tk.END, "事件文件夹路径：%s\n" % event_path)
         text.insert(tk.END, "取证文件夹路径：%s\n" % qz_path)
-        text.insert(tk.END, "移动文件夹路径：%s\n" % move_folder)
+        text.insert(tk.END, "移动文件夹路径(暂取消备份)：%s\n" % move_folder)
         text.insert(tk.END, "服务器及端口：%s\n" % ip_val)
         text.insert(tk.END, "空闲间隔(秒)：%s\n" % sleep_time)
-        text.insert(tk.END, "集成平台推送间隔(秒)：%s\n" % qz_time)
+        text.insert(tk.END, "取证图片上传间隔(秒)：%s\n" % qz_time)
         # text.insert(tk.END, "白名单：%s\n" % white_list)
 
         log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
@@ -343,10 +346,10 @@ if __name__ == '__main__':
         f.write("\n%s 配置信息如下\n" % datetime.now())
         f.write("事件文件夹路径：%s\n" % event_path)
         f.write("取证文件夹路径：%s\n" % qz_path)
-        f.write("移动文件夹路径：%s\n" % move_folder)
+        f.write("移动文件夹路径(暂取消备份)：%s\n" % move_folder)
         f.write("服务器及端口：%s\n" % ip_val)
         f.write("空闲间隔(秒)：%s\n" % sleep_time)
-        f.write("集成平台推送间隔(秒)：%s\n" % qz_time)
+        f.write("取证图片上传间隔(秒)：%s\n" % qz_time)
 
         try:
             text.insert(tk.END, "%s 开始删除服务器上打包的文件\n" % datetime.now())
