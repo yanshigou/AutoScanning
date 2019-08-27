@@ -25,20 +25,20 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                     # path_list[4] = "备份"
                     # folder = "\\".join(path_list[:-1])
 
-                    print("event_path", event_path)
-                    print("split_val", split_val)
-                    split_path_list = file_path.split(split_val)[-1]
-                    print('split_path_list', split_path_list)
-                    path_list = split_path_list.split("\\")[:-1]
-                    print('path_list', path_list)
-                    path_list_folder = "\\".join(path_list)
-                    print('path_list_folder', path_list_folder)
-                    folder = move_folder + ("\\%s" % split_val) + path_list_folder
-
-                    print("folder", folder)
-
-                    if not os.path.exists(folder):
-                        os.makedirs(folder)
+                    # print("event_path", event_path)
+                    # print("split_val", split_val)
+                    # split_path_list = file_path.split(split_val)[-1]
+                    # print('split_path_list', split_path_list)
+                    # path_list = split_path_list.split("\\")[:-1]
+                    # print('path_list', path_list)
+                    # path_list_folder = "\\".join(path_list)
+                    # print('path_list_folder', path_list_folder)
+                    # folder = move_folder + ("\\%s" % split_val) + path_list_folder
+                    #
+                    # print("folder", folder)
+                    #
+                    # if not os.path.exists(folder):
+                    #     os.makedirs(folder)
 
                     file_name = file.file_name
                     file_name_list = file_name.split('_')
@@ -66,17 +66,18 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             car_type = '19'
 
                         wf_time = file_name_list[1] + file_name_list[2]
-                        # 提前移动  再打开移动后的文件
-                        move_name = folder + '\\' + file_name  # 移动后的文件路径
-                        try:
-                            shutil.move(file_path, folder)
-                            print('移动成功')
-                            print(move_name)
-                        except Exception as e:
-                            if "exists" in str(e):
-                                os.remove(file_path)
-
-                        f = open(move_name, 'rb')
+                        # # 提前移动  再打开移动后的文件
+                        # move_name = folder + '\\' + file_name  # 移动后的文件路径
+                        # try:
+                        #     shutil.move(file_path, folder)
+                        #     print('移动成功')
+                        #     print(move_name)
+                        # except Exception as e:
+                        #     if "exists" in str(e):
+                        #         os.remove(file_path)
+                        #
+                        # f = open(move_name, 'rb')
+                        f = open(file_path, 'rb')
                         files = {'image_file': (file_name, f, 'image/jpg')}
 
                         data = dict(
@@ -103,22 +104,25 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                         print(res['is_del'])
                         count = 0
                         try:
-                            if res['is_del']:
-                                count = 1
-                                # os.remove(file_path)
-                                os.remove(move_name)
-                                print('删除成功')
-                            else:
-                                count = 1
-                                # shutil.move(file_path, folder)
-                                print('移动成功')
+                            # if res['is_del']:
+                            #     count = 1
+                            #     # os.remove(file_path)
+                            #     os.remove(move_name)
+                            #     print('删除成功')
+                            # else:
+                            #     count = 1
+                            #     # shutil.move(file_path, folder)
+                            #     print('移动成功')
+                            # 直接删除不进行备份
+                            os.remove(file_path)
+                            count = 1
                         except Exception as ex:
                             os.remove(file_path)
                             print('删除成功')
                         finally:
                             sleep(0.1)
                             f.close()
-                            return {"status": "success", "count": count, "sms_count": 0, "res_status": status, "file_path": file_path, "folder": folder, "zpname": zpname, "e": res.get('e')}
+                            return {"status": "success", "count": count, "sms_count": 0, "res_status": status, "file_path": file_path, "zpname": zpname, "e": res.get('e')}
                     elif i_type == '2' and '短信' in last_str:
                         print('凭证图片')
                         # 进行对凭证进行操作
@@ -154,21 +158,24 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                         f.close()
                         sms_count = 0
                         try:
-                            if res['is_del']:
-                                sms_count = 1
-                                os.remove(file_path)
-                                print('删除成功')
-                            else:
-                                sms_count = 1
-                                shutil.move(file_path, folder)
-                                print('移动成功')
+                            # if res['is_del']:
+                            #     sms_count = 1
+                            #     os.remove(file_path)
+                            #     print('删除成功')
+                            # else:
+                            #     sms_count = 1
+                            #     shutil.move(file_path, folder)
+                            #     print('移动成功')
+                            # 直接删除不进行备份
+                            os.remove(file_path)
+                            sms_count = 1
                         except Exception as ex:
                             os.remove(file_path)
                             print('删除成功')
                         finally:
                             sleep(0.1)
                             return {"status": "success", "count": 0, "sms_count": sms_count, "res_status": status, "file_path": file_path,
-                                    "folder": folder, "zp": "success"}
+                                    "zp": "success"}
             else:
                 try:
                     folder_path = file.file_path
@@ -203,21 +210,21 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
             print(split_val)
             if file.is_file:
                 if file.file_name[-3:] == 'jpg':
-                    file_path = file.file_path
+                    # file_path = file.file_path
 
                     # path_list = file_path.split('\\')
                     # path_list[4] = "备份"
                     # folder = "\\".join(path_list[:-1])
 
-                    split_path_list = file_path.split(split_val)[-1]
-                    path_list = split_path_list.split("\\")[:-1]
-                    path_list_folder = "\\".join(path_list)
-                    folder = move_folder + ("\\%s" % split_val) + path_list_folder
+                    # split_path_list = file_path.split(split_val)[-1]
+                    # path_list = split_path_list.split("\\")[:-1]
+                    # path_list_folder = "\\".join(path_list)
+                    # folder = move_folder + ("\\%s" % split_val) + path_list_folder
 
-                    print("folder", folder)
-
-                    if not os.path.exists(folder):
-                        os.makedirs(folder)
+                    # print("folder", folder)
+                    #
+                    # if not os.path.exists(folder):
+                    #     os.makedirs(folder)
 
                     file_path = file.file_path
                     file_name = file.file_name
@@ -249,17 +256,17 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                             car_type = '19'
                         wf_time = file_name_list[1]+file_name_list[2]
 
-                        move_name = folder + '\\' + file_name  # 移动后的文件路径
-                        # 先移动，再打开图片
-                        try:
-                            shutil.move(file_path, folder)
-                            print('移动成功')
-                            print(move_name)
-                        except Exception as e:
-                            if "exists" in str(e):
-                                os.remove(file_path)
+                        # move_name = folder + '\\' + file_name  # 移动后的文件路径
+                        # # 先移动，再打开图片
+                        # try:
+                        #     shutil.move(file_path, folder)
+                        #     print('移动成功')
+                        #     print(move_name)
+                        # except Exception as e:
+                        #     if "exists" in str(e):
+                        #         os.remove(file_path)
 
-                        f = open(move_name, 'rb')
+                        f = open(file_path, 'rb')
                         files = {'image_file': (file_name, f, 'image/jpg')}
 
                         data = dict(
@@ -274,25 +281,29 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                         count = 0
                         # 只有删除才去使用移动后的路径，
                         try:
-                            if res['is_del']:
-                                count = 1
-                                # os.remove(file_path)
-                                os.remove(move_name)
-                                print('删除成功')
-                            elif res['is_del'] == 2:
-                                count = 0
-                                print("未发现事件，等待下一次上传")
-                            else:
-                                count = 1
-                                # shutil.move(file_path, folder)
-                                print('移动成功')
+                            # if res['is_del']:
+                            #     count = 1
+                            #     # os.remove(file_path)
+                            #     os.remove(move_name)
+                            #     print('删除成功')
+                            # elif res['is_del'] == 2:
+                            #     count = 0
+                            #     print("未发现事件，等待下一次上传")
+                            # else:
+                            #     count = 1
+                            #     # shutil.move(file_path, folder)
+                            #     print('移动成功')
+
+                            # 直接删除不进行备份
+                            os.remove(file_path)
+                            count = 1
                         except Exception as ex:
                             print(ex)
                             print('删除或移动出错')
                         finally:
                             sleep(1)
                             f.close()
-                            return {"status": "success", "count": count, "res_status": status, "file_path": file_path, "folder": folder}
+                            return {"status": "success", "count": count, "res_status": status, "file_path": file_path}
             else:
                 try:
                     folder_path = file.file_path
