@@ -246,7 +246,18 @@ def check_device_online(ip_val):
                 text.insert(tk.END, '\n%s 设备 %s 离线' % (now_time, ip))
                 f.write('\n%s 设备 %s 离线' % (now_time, ip))
                 requests.get('http://%s/devices/statusModify/?is_online=0&ip=%s' % (ip_val, ip))
-        #
+
+        sleep(60 * 5)
+
+
+def push(ip_val):
+    log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+    f = open(log_file, 'a+', encoding='utf-8')
+    text.insert(tk.END, "开始推送至集成平台")
+    f.write("开始推送至集成平台")
+    f.close()
+    while True:
+        f = open(log_file, 'a+', encoding='utf-8')
         # 加入再次推送失败的
         r = requests.get('http://%s/dataInfo/push/' % ip_val)
         if r.json().get('status') == "success":
@@ -256,7 +267,7 @@ def check_device_online(ip_val):
             text.insert(tk.END, '\n%s 没有未成功入库的数据' % datetime.now())
             f.write('\n%s 没有未成功入库的数据' % datetime.now())
         f.close()
-        sleep(60 * 5)
+        sleep(60*3)
 
 
 def auto_run(event_path, move_folder, ip_val, white_list, sleep_time, qz_time):
@@ -270,6 +281,7 @@ def auto_run(event_path, move_folder, ip_val, white_list, sleep_time, qz_time):
     sleep(5)
     thread_it(event_run, event_path, move_folder, ip_val, white_list, sleep_time)
     thread_it(check_device_online, ip_val)
+    thread_it(push, ip_val)
     sleep(25)
     thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time)
 
