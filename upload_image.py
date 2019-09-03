@@ -4,7 +4,7 @@ __date__ = "2019/6/18"
 from file_manager import FileObjectManager, FileObject
 import requests
 import os
-import shutil
+# import shutil
 from time import sleep
 from datetime import datetime
 import base64
@@ -62,8 +62,9 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             car_type = '02'
                         elif car_color == '黄':
                             car_type = '01'
+                        # 修改新能源为小型汽车
                         elif car_color == '绿':
-                            car_type = '19'
+                            car_type = '02'
 
                         wf_time = file_name_list[1] + file_name_list[2]
                         # # 提前移动  再打开移动后的文件
@@ -141,7 +142,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                         elif car_color == '黄':
                             car_type = '01'
                         elif car_color == '绿':
-                            car_type = '19'
+                            car_type = '02'
                         f = open(file_path, 'rb')
                         files = {'image_file': (file_name, f, 'image/jpg')}
 
@@ -253,7 +254,7 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                         elif car_color == '黄':
                             car_type = '01'
                         elif car_color == '绿':
-                            car_type = '19'
+                            car_type = '02'
                         wf_time = file_name_list[1]+file_name_list[2]
 
                         # move_name = folder + '\\' + file_name  # 移动后的文件路径
