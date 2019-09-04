@@ -75,6 +75,7 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
             count += res.get('count')
             sms_count += res.get('sms_count')
             e = res.get('e')
+            file_path = res.get('file_path')
 
             zpname = res.get('zpname')
             zp = res.get('zp')
@@ -89,24 +90,24 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
                     res_status = '成功'
                 elif res_status == "error":
                     res_status = '出错'
-                    text.insert(tk.END, "\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, event_path, res_status, e))
-                    f.write("\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, event_path, res_status, e))
+                    text.insert(tk.END, "\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    f.write("\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
                 else:
                     res_status = '失败'
-                text.insert(tk.END, "\n%s 【事件】【扫描到文件】%s，上传文件【%s】\n" % (now_time, event_path, res_status))
-                f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】\n" % (now_time, event_path, res_status))
+                text.insert(tk.END, "\n%s 【事件】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
             elif status == "success" and zp == 'success':
                 if res_status == "success":
                     res_status = '成功'
                 elif res_status == "error":
                     res_status = '出错'
-                    text.insert(tk.END, "\n%s 【事件-短信】【扫描到文件】%s，服务器【%s】，%s" % (now_time, event_path, res_status, e))
-                    f.write("\n%s 【事件-短信】【扫描到文件】%s，服务器【%s】，%s" % (now_time, event_path, res_status, e))
+                    text.insert(tk.END, "\n%s 【事件-短信】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    f.write("\n%s 【事件-短信】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
                 else:
                     res_status = '失败'
                 text.insert(tk.END,
-                            "\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】\n" % (now_time, event_path, res_status))
-                f.write("\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】\n" % (now_time, event_path, res_status))
+                            "\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                f.write("\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
             elif status == "fail":
                 text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】\n" % (now_time, event_path))
                 f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】" % (now_time, event_path))
@@ -154,27 +155,28 @@ def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time, qz_time):
             res_status = res.get('res_status')
             count += res.get('count')
             e = res.get('e')
+            file_path = res.get('file_path')
 
             if status == "success":
                 if res_status == "success":
                     res_status = '成功'
                     text.insert(tk.END,
-                                "\n%s【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, qz_path, res_status))
-                    f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, qz_path, res_status))
+                                "\n%s【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
                 elif res_status == "error":
                     res_status = '出错'
-                    text.insert(tk.END, "\n%s 【取证】【扫描到文件】%s，服务器【%s】，%s" % (now_time, qz_path, res_status, e))
-                    f.write("\n%s 【取证】【扫描到文件】%s，服务器【%s】，%s" % (now_time, qz_path, res_status, e))
+                    text.insert(tk.END, "\n%s 【取证】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    f.write("\n%s 【取证】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
                 elif res_status == "wait":
                     res_status = '再次推送'
                     text.insert(tk.END,
-                                "\n%s 【取证】【扫描到文件】%s，已上传取证图片，未推送成功，【%s】，%s" % (now_time, qz_path, res_status, e))
-                    f.write("\n%s 【取证】【扫描到文件】%s，已上传取证图片，未推送成功，【%s】，%s" % (now_time, qz_path, res_status, e))
+                                "\n%s 【取证】【扫描到文件】%s，已上传取证图片，未推送成功，【%s】，%s" % (now_time, file_path, res_status, e))
+                    f.write("\n%s 【取证】【扫描到文件】%s，已上传取证图片，未推送成功，【%s】，%s" % (now_time, file_path, res_status, e))
                 else:
                     res_status = '失败'
                     text.insert(tk.END,
-                                "\n%s【取证】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, qz_path, res_status))
-                    f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, qz_path, res_status))
+                                "\n%s【取证】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
+                    f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
             elif status == "fail":
                 text.insert(tk.END, "\n%s【取证】【扫描到文件夹】 %s，【未发现图片】\n" % (now_time, qz_path))
                 f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现图片】" % (now_time, qz_path))
