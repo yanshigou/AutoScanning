@@ -24,7 +24,7 @@ client = requests.session()
 #     csrftoken = client.cookies['csrf']
 #     print(csrftoken)
 def basic_info():
-    white_list = []
+    white_list = ['渝DJD020', '渝AA6W72', '渝A015EY']
     try:
         f = open("ACconfig.txt", 'r', encoding='utf-8')
         all_data = f.readlines()
@@ -43,7 +43,7 @@ def basic_info():
         print(qz_path)
         print(move_folder)
         print(ip_val)
-        print(white_list)
+        # print(white_list)
         print(sleep_time)
         print(qz_time)
         return event_path, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time
@@ -303,7 +303,7 @@ if __name__ == '__main__':
     if not basic_info():
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.8.2')
+        root.title('违法图片扫描器v4.8.3_20190923')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -343,7 +343,7 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.8.2')
+        root.title('违法图片扫描器v4.8.3_20190923')
 
         # 滚动条
         scroll = tk.Scrollbar()
