@@ -34,10 +34,10 @@ def basic_info():
         ip_val = all_data[3].split('=')[-1].strip()
         sleep_time = all_data[4].split('=')[-1]
         qz_time = all_data[5].split('=')[-1]
+        push_time = all_data[6].split('=')[-1]
         # car_id = all_data[4].split('=')[-1].split(' ')
         # for i in car_id:
         #     white_list.append(i)
-        f.close()
 
         print(event_path)
         print(qz_path)
@@ -46,10 +46,13 @@ def basic_info():
         # print(white_list)
         print(sleep_time)
         print(qz_time)
-        return event_path, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time
+        print(push_time)
+        return event_path, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time
     except Exception as e:
         print(e)
         return False
+    finally:
+        f.close()
 
 
 def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
@@ -129,7 +132,6 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
             text.insert(tk.END, "\n%s 【事件】程序出错：%s\n" % (datetime.now(), str(ee)))
             text.see(tk.END)
             f.write("\n%s 【事件】程序出错：%s" % (datetime.now(), str(ee)))
-            f.close()
         finally:
             f.close()
 
@@ -198,7 +200,6 @@ def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time, qz_time):
             text.insert(tk.END, "\n%s 【取证】程序出错：%s\n" % (datetime.now(), str(ee)))
             text.see(tk.END)
             f.write("\n%s 【取证】程序出错：%s" % (datetime.now(), str(ee)))
-            f.close()
         finally:
             f.close()
 
@@ -228,28 +229,34 @@ def check_device_online(ip_val):
     f.close()
     ping_bt.config(state="disabled", text='开始检测设备状态')
     while True:
-
         f = open(log_file, 'a+', encoding='utf-8')
-        res = requests.get('http://%s/devices/allDevices/' % ip_val)
-        print(res.json())
-        ip_list = res.json().get('devices')
-        for ip in ip_list:
-            now_time = datetime.now()
-            is_online = ping(ip)
-            print(ip, is_online)
-            if is_online:
-                text.insert(tk.END, '\n%s 设备 %s 在线' % (now_time, ip))
-                f.write('\n%s 设备 %s 在线' % (now_time, ip))
-                requests.get('http://%s/devices/statusModify/?is_online=1&ip=%s' % (ip_val, ip))
-            else:
-                text.insert(tk.END, '\n%s 设备 %s 离线' % (now_time, ip))
-                f.write('\n%s 设备 %s 离线' % (now_time, ip))
-                requests.get('http://%s/devices/statusModify/?is_online=0&ip=%s' % (ip_val, ip))
+        try:
+            res = requests.get('http://%s/devices/allDevices/' % ip_val)
+            print(res.json())
+            ip_list = res.json().get('devices')
+            for ip in ip_list:
+                now_time = datetime.now()
+                is_online = ping(ip)
+                print(ip, is_online)
+                if is_online:
+                    text.insert(tk.END, '\n%s 设备 %s 在线' % (now_time, ip))
+                    f.write('\n%s 设备 %s 在线' % (now_time, ip))
+                    requests.get('http://%s/devices/statusModify/?is_online=1&ip=%s' % (ip_val, ip))
+                else:
+                    text.insert(tk.END, '\n%s 设备 %s 离线' % (now_time, ip))
+                    f.write('\n%s 设备 %s 离线' % (now_time, ip))
+                    requests.get('http://%s/devices/statusModify/?is_online=0&ip=%s' % (ip_val, ip))
 
-        sleep(60 * 5)
+            sleep(60 * 5)
+        except Exception as e:
+            print(e)
+            f.write("%s 检测设备在线状态出错 %s\n" % (datetime.now(), str(e)))
+            text.insert(tk.END, "%s 检测设备在线状态出错 %s\n" % (datetime.now(), str(e)))
+        finally:
+            f.close()
 
 
-def push(ip_val):
+def push(ip_val, push_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始推送至集成平台")
@@ -257,40 +264,52 @@ def push(ip_val):
     f.close()
     while True:
         f = open(log_file, 'a+', encoding='utf-8')
-        # 加入再次推送失败的
-        r = requests.get('http://%s/dataInfo/push/' % ip_val)
-        status = r.json().get('status')
-        if status == "success":
-            car_id = r.json().get('car_id')
-            text.insert(tk.END, '\n%s 再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
-            f.write('\n%s 再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
-        elif status == "fail":
-            push_result = r.json().get('push_result')
-            text.insert(tk.END, '\n%s 再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
-            f.write('\n%s 再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
-        else:
-            car_id = r.json().get('car_id')
-            push_result = r.json().get('push_result')
-            text.insert(tk.END, '\n%s 再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
-            f.write('\n%s 再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
-        f.close()
-        sleep(60*3)
+        try:
+            # 加入再次推送失败的
+            r = requests.get('http://%s/dataInfo/push/' % ip_val)
+            status = r.json().get('status')
+            if status == "success":
+                car_id = r.json().get('car_id')
+                text.insert(tk.END, '\n%s 再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+                f.write('\n%s 再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+            elif status == "fail":
+                push_result = r.json().get('push_result')
+                text.insert(tk.END, '\n%s 再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+                f.write('\n%s 再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+            else:
+                car_id = r.json().get('car_id')
+                push_result = r.json().get('push_result')
+                text.insert(tk.END, '\n%s 再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+                f.write('\n%s 再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+            sleep(int(push_time))
+        except Exception as e:
+            print(e)
+            f.write("%s 推送数据出错 %s\n" % (datetime.now(), str(e)))
+            text.insert(tk.END, "%s 推送数据出错 %s\n" % (datetime.now(), str(e)))
+        finally:
+            f.close()
 
 
-def auto_run(event_path, move_folder, ip_val, white_list, sleep_time, qz_time):
+def auto_run(event_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
-    text.insert(tk.END, "%s 5秒后自动开始运行 事件扫描、设备在线检测 \n" % datetime.now())
-    text.insert(tk.END, "%s 30秒后自动开始运行 取证扫描 \n" % datetime.now())
-    f.write("%s 5秒后自动开始运行 事件扫描、设备在线检测 \n" % datetime.now())
-    f.write("%s 30秒后自动开始运行 取证扫描  \n" % datetime.now())
-    f.close()
-    sleep(5)
-    thread_it(event_run, event_path, move_folder, ip_val, white_list, sleep_time)
-    thread_it(check_device_online, ip_val)
-    thread_it(push, ip_val)
-    sleep(25)
-    thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time)
+    try:
+        text.insert(tk.END, "%s 5秒后自动开始运行 事件扫描、设备在线检测 \n" % datetime.now())
+        text.insert(tk.END, "%s 30秒后自动开始运行 取证扫描 \n" % datetime.now())
+        f.write("%s 5秒后自动开始运行 事件扫描、设备在线检测 \n" % datetime.now())
+        f.write("%s 30秒后自动开始运行 取证扫描  \n" % datetime.now())
+        sleep(5)
+        thread_it(event_run, event_path, move_folder, ip_val, white_list, sleep_time)
+        thread_it(check_device_online, ip_val)
+        thread_it(push, ip_val, push_time)
+        sleep(25)
+        thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time)
+    except Exception as e:
+        print(e)
+        f.write("%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
+        text.insert(tk.END, "%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
+    finally:
+        f.close()
 
 
 if __name__ == '__main__':
@@ -301,49 +320,56 @@ if __name__ == '__main__':
     f.close()
 
     if not basic_info():
-        root = tk.Tk()
+        try:
+            root = tk.Tk()
 
-        root.title('违法图片扫描器v4.8.3_20190923')
+            root.title('违法图片扫描器v4.8.5_20190927')
 
-        # 滚动条
-        scroll = tk.Scrollbar()
+            # 滚动条
+            scroll = tk.Scrollbar()
 
-        text = scrolledtext.ScrolledText(root, width=90, height=60)
-        text.grid(row=0, column=0)
-        root.geometry('1000x800+600+50')
-        lf = tk.LabelFrame(root, text='请检查配置文件ACconfig.txt是否在同级目录下')
-        lf.grid(row=0, column=1)
-        log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
-        f = open(log_file, 'a+', encoding='utf-8')
-        f.write("%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
-        f.write("\n并且仅支持如下格式\n")
-        f.write("\n事件地址=G:\dzt\资料\交警\测试文件夹\事件\n")
-        f.write("取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
-        f.write("移动地址(暂取消备份)=G:\dzt\资料\交警\备份\n")
-        f.write("IP=192.168.31.54:8000\n")
-        f.write("空闲间隔(秒)=5\n")
-        f.write("取证图片上传间隔(秒)=30\n")
-        f.close()
-        text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
-        text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
-        text.insert(tk.END, "\n并且仅支持如下格式\n")
-        text.insert(tk.END, "\n事件地址=G:\dzt\资料\交警\测试文件夹\事件\n")
-        text.insert(tk.END, "取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
-        text.insert(tk.END, "移动地址(暂取消备份)=G:\dzt\资料\交警\备份\n")
-        text.insert(tk.END, "IP=192.168.31.54:8000\n")
-        text.insert(tk.END, "空闲间隔(秒)=5\n")
-        text.insert(tk.END, "取证图片上传间隔(秒)=30\n")
+            text = scrolledtext.ScrolledText(root, width=90, height=60)
+            text.grid(row=0, column=0)
+            root.geometry('1000x800+600+50')
+            lf = tk.LabelFrame(root, text='请检查配置文件ACconfig.txt是否在同级目录下')
+            lf.grid(row=0, column=1)
+            log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+            f = open(log_file, 'a+', encoding='utf-8')
+            f.write("%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
+            f.write("\n并且仅支持如下格式\n")
+            f.write("\n事件地址=G:\dzt\资料\交警\测试文件夹\事件\n")
+            f.write("取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
+            f.write("移动地址(暂取消备份)=G:\dzt\资料\交警\备份\n")
+            f.write("IP=192.168.31.54:8000\n")
+            f.write("空闲间隔(秒)=5\n")
+            f.write("取证图片上传间隔(秒)=30\n")
+            f.write("推送平台间隔(秒)=10\n")
 
-        q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
-        q.grid(padx=5, pady=10)
+            text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
+            text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
+            text.insert(tk.END, "\n并且仅支持如下格式\n")
+            text.insert(tk.END, "\n事件地址=G:\dzt\资料\交警\测试文件夹\事件\n")
+            text.insert(tk.END, "取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
+            text.insert(tk.END, "移动地址(暂取消备份)=G:\dzt\资料\交警\备份\n")
+            text.insert(tk.END, "IP=192.168.31.54:8000\n")
+            text.insert(tk.END, "空闲间隔(秒)=5\n")
+            text.insert(tk.END, "取证图片上传间隔(秒)=30\n")
+            text.insert(tk.END, "推送平台间隔(秒)=10\n")
 
-        root.mainloop()
+            q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
+            q.grid(padx=5, pady=10)
+
+            root.mainloop()
+        except Exception as e:
+            print(e)
+        finally:
+            f.close()
     else:
-        event_path, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time = basic_info()
+        event_path, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time = basic_info()
 
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.8.3_20190923')
+        root.title('违法图片扫描器v4.8.5_20190927')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -357,6 +383,7 @@ if __name__ == '__main__':
         text.insert(tk.END, "服务器及端口：%s\n" % ip_val)
         text.insert(tk.END, "空闲间隔(秒)：%s\n" % sleep_time)
         text.insert(tk.END, "取证图片上传间隔(秒)：%s\n" % qz_time)
+        text.insert(tk.END, "推送平台间隔(秒)：%s\n" % push_time)
         # text.insert(tk.END, "白名单：%s\n" % white_list)
 
         log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
@@ -369,6 +396,7 @@ if __name__ == '__main__':
         f.write("服务器及端口：%s\n" % ip_val)
         f.write("空闲间隔(秒)：%s\n" % sleep_time)
         f.write("取证图片上传间隔(秒)：%s\n" % qz_time)
+        f.write("推送平台间隔(秒)：%s\n" % push_time)
 
         try:
             text.insert(tk.END, "%s 开始删除服务器上打包的文件\n" % datetime.now())
@@ -394,6 +422,8 @@ if __name__ == '__main__':
             print(e)
             f.write("%s 删除服务器上打包的文件出错，请检查服务器是否开启\n" % datetime.now())
             text.insert(tk.END, "%s 删除服务器上打包的文件出错，请检查服务器是否开启\n" % datetime.now())
+        finally:
+            f.close()
 
         text.grid(row=0, column=0)
         root.geometry('1000x800+600+50')
@@ -433,7 +463,7 @@ if __name__ == '__main__':
         qz_bt.grid(padx=5, pady=20)
         ping_bt.grid(padx=5, pady=20)
 
-        thread_it(auto_run, event_path, move_folder, ip_val, white_list, sleep_time, qz_time)
+        thread_it(auto_run, event_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time)
 
         q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
         q.grid(padx=5, pady=10)
