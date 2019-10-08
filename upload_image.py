@@ -8,6 +8,7 @@ import os
 from time import sleep
 from datetime import datetime
 import base64
+import re
 
 
 def event(event_files_list, move_folder, ip_val, event_path, now_time, white_list):
@@ -45,12 +46,24 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                     print(file_name_list)
                     i_type = file_name_list[0]
                     last_str = file_name_list[-1]
+                    car_id = file_name_list[5]
+                    # # 匹配渝、有车牌、非警等特殊车辆
+                    # re_all = re.findall('^[渝]{1}[A-Z]{1}[A-Z0-9]{6}|[渝]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学]{1}', car_id, re.S)
+                    # if not re_all:
+                    #     print('%s 不在匹配中' % car_id)
+                    #     os.remove(file_path)
+                    #     continue
+                    # print('%s 在匹配中' % car_id)
+                    if '无' in car_id:
+                        print(car_id)
+                        os.remove(file_path)
+                        continue
                     print(last_str)
                     if i_type == '2' and ('短信' not in last_str):
                         print('事件图片')
                         # 进行对事件进行操作
                         ip = file_name_list[4]
-                        car_id = file_name_list[5]
+                        # car_id = file_name_list[5]
                         if car_id in white_list:
                             os.remove(file_path)
                             print('在白名单内，删除成功')
@@ -177,6 +190,8 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             sleep(0.1)
                             return {"status": "success", "count": 0, "sms_count": sms_count, "res_status": status, "file_path": file_path,
                                     "zp": "success"}
+                    else:
+                        os.remove(file_path)
             else:
                 try:
                     folder_path = file.file_path
@@ -236,12 +251,24 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                     i_type = file_name_list[0]
                     print(i_type)
                     print(type(i_type))
+                    car_id = file_name_list[5]
+                    # re_all = re.findall('^[渝]{1}[A-Z]{1}[A-Z0-9]{6}|[渝]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学]{1}', car_id,
+                    #                     re.S)
+                    # if not re_all:
+                    #     print('%s 不在匹配中' % car_id)
+                    #     os.remove(file_path)
+                    #     continue
+                    # print('%s 在匹配中' % car_id)
+                    if '无' in car_id:
+                        print(car_id)
+                        os.remove(file_path)
+                        continue
                     if i_type == ('1039' or "10396"):
 
                         print("取证图片")
                         # 对取证进行操作
                         ip = file_name_list[4]
-                        car_id = file_name_list[5]
+                        # car_id = file_name_list[5]
                         if car_id in white_list:
                             os.remove(file_path)
                             print('在白名单内，删除成功')
@@ -305,6 +332,8 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                             sleep(1)
                             f.close()
                             return {"status": "success", "count": count, "res_status": status, "file_path": file_path}
+                    else:
+                        os.remove(file_path)
             else:
                 try:
                     folder_path = file.file_path
@@ -329,5 +358,5 @@ if __name__ == '__main__':
     a = event(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹\梭梭树")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹\梭梭树", datetime.now(), [])
     print(a)
 
-    b = QZ(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对", datetime.now(), [])
-    print(b)
+    # b = QZ(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对", datetime.now(), [])
+    # print(b)
