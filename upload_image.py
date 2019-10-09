@@ -8,7 +8,7 @@ import os
 from time import sleep
 from datetime import datetime
 import base64
-import re
+# import re
 
 
 def event(event_files_list, move_folder, ip_val, event_path, now_time, white_list):
@@ -46,7 +46,12 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                     print(file_name_list)
                     i_type = file_name_list[0]
                     last_str = file_name_list[-1]
-                    car_id = file_name_list[5]
+                    try:
+                        car_id = file_name_list[5]
+                    except Exception as e:
+                        print(e)
+                        os.remove(file_path)
+                        continue
                     # # 匹配渝、有车牌、非警等特殊车辆
                     # re_all = re.findall('^[渝]{1}[A-Z]{1}[A-Z0-9]{6}|[渝]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学]{1}', car_id, re.S)
                     # if not re_all:
@@ -91,16 +96,25 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                         #         os.remove(file_path)
                         #
                         # f = open(move_name, 'rb')
-                        f = open(file_path, 'rb')
-                        files = {'image_file': (file_name, f, 'image/jpg')}
+                        try:
+                            f = open(file_path, 'rb')
+                            files = {'image_file': (file_name, f, 'image/jpg')}
+                            data = dict(
+                                data_type='WT', ip=ip, car_id=car_id, car_type=car_type,
+                                wf_time=wf_time
+                            )
+                            try:
+                                res = requests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files,
+                                                    data=data).json()
+                            except Exception as e:
+                                print(e)
+                                continue
+                            finally:
+                                f.close()
+                        except Exception as e:
+                            print(e)
+                            continue
 
-                        data = dict(
-                            data_type='WT', ip=ip, car_id=car_id, car_type=car_type,
-                            wf_time=wf_time
-                        )
-
-                        res = requests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files, data=data).json()
-                        f.close()
                         status = res['status']
                         print(status)
                         zp = res.get('zp')
@@ -135,7 +149,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             print('删除成功')
                         finally:
                             sleep(0.1)
-                            f.close()
+
                             return {"status": "success", "count": count, "sms_count": 0, "res_status": status, "file_path": file_path, "zpname": zpname, "e": res.get('e')}
                     elif i_type == '2' and '短信' in last_str:
                         print('凭证图片')
@@ -156,20 +170,31 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             car_type = '01'
                         elif car_color == '绿':
                             car_type = '02'
-                        f = open(file_path, 'rb')
-                        files = {'image_file': (file_name, f, 'image/jpg')}
+                        # with open(file_path, 'rb') as f:
+                        #     files = {'image_file': (file_name, f, 'image/jpg')}
+                        try:
+                            f = open(file_path, 'rb')
+                            files = {'image_file': (file_name, f, 'image/jpg')}
+                            data = dict(
+                                data_type='WT', ip=ip, car_id=car_id, car_type=car_type,
+                                wf_time=wf_time
+                            )
+                            try:
+                                res = requests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files,
+                                                    data=data).json()
+                            except Exception as e:
+                                print(e)
+                                continue
+                            finally:
+                                f.close()
+                        except Exception as e:
+                            print(e)
+                            continue
 
-                        data = dict(
-                            data_type='WT', ip=ip, car_id=car_id, car_type=car_type,
-                            wf_time=wf_time
-                        )
-
-                        res = requests.post('http://%s/dataInfo/wtDataEventSMSUpload/' % ip_val, files=files,
-                                            data=data).json()
                         status = res['status']
                         print(status)
                         print(res['is_del'])
-                        f.close()
+
                         sms_count = 0
                         try:
                             # if res['is_del']:
@@ -251,7 +276,12 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                     i_type = file_name_list[0]
                     print(i_type)
                     print(type(i_type))
-                    car_id = file_name_list[5]
+                    try:
+                        car_id = file_name_list[5]
+                    except Exception as e:
+                        print(e)
+                        os.remove(file_path)
+                        continue
                     # re_all = re.findall('^[渝]{1}[A-Z]{1}[A-Z0-9]{6}|[渝]{1}[A-Z]{1}[A-Z0-9]{4}[A-Z0-9挂学]{1}', car_id,
                     #                     re.S)
                     # if not re_all:
@@ -294,15 +324,27 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                         #     if "exists" in str(e):
                         #         os.remove(file_path)
 
-                        f = open(file_path, 'rb')
-                        files = {'image_file': (file_name, f, 'image/jpg')}
+                        # with open(file_path, 'rb') as f:
+                        #     files = {'image_file': (file_name, f, 'image/jpg')}
+                        try:
+                            f = open(file_path, 'rb')
+                            files = {'image_file': (file_name, f, 'image/jpg')}
+                            data = dict(
+                                data_type='WT', ip=ip, car_id=car_id, car_type=car_type,
+                                wf_time=wf_time
+                            )
+                            try:
+                                res = requests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files,
+                                                    data=data).json()
+                            except Exception as e:
+                                print(e)
+                                continue
+                            finally:
+                                f.close()
+                        except Exception as e:
+                            print(e)
+                            continue
 
-                        data = dict(
-                            data_type='WT', ip=ip, car_id=car_id, car_type=car_type, wf_time=wf_time
-                        )
-
-                        res = requests.post('http://%s/dataInfo/wtDataInfoUpload/' % ip_val, files=files, data=data).json()
-                        f.close()
                         status = res['status']
                         print(status)
                         print(res['is_del'])
@@ -330,7 +372,6 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                             print('删除或移动出错')
                         finally:
                             sleep(1)
-                            f.close()
                             return {"status": "success", "count": count, "res_status": status, "file_path": file_path}
                     else:
                         os.remove(file_path)
