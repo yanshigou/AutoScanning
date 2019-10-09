@@ -125,7 +125,10 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             # 存在本机后再传图片至服务器
                             imgdata = base64.b64decode(zp)
                             l = image_file.split('.jpg')
-                            zpname = image_folder + l[0] + '_短信' + '.jpg'
+                            l_name = l[0].split('_')
+                            l_name[0] = '1039'
+                            dx_name = '_'.join(l_name)
+                            zpname = image_folder + dx_name + '_短信' + '.jpg'
                             img = open(zpname, 'wb')
                             img.write(imgdata)
                             img.close()
@@ -151,7 +154,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             sleep(0.1)
 
                             return {"status": "success", "count": count, "sms_count": 0, "res_status": status, "file_path": file_path, "zpname": zpname, "e": res.get('e')}
-                    elif i_type == '2' and '短信' in last_str:
+                    elif '短信' in last_str:
                         print('凭证图片')
                         # 进行对凭证进行操作
                         ip = file_name_list[4]
@@ -180,7 +183,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                                 wf_time=wf_time
                             )
                             try:
-                                res = requests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files,
+                                res = requests.post('http://%s/dataInfo/wtDataEventSMSUpload/' % ip_val, files=files,
                                                     data=data).json()
                             except Exception as e:
                                 print(e)
@@ -334,7 +337,7 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                                 wf_time=wf_time
                             )
                             try:
-                                res = requests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files,
+                                res = requests.post('http://%s/dataInfo/wtDataInfoUpload/' % ip_val, files=files,
                                                     data=data).json()
                             except Exception as e:
                                 print(e)
@@ -396,8 +399,8 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
 
 
 if __name__ == '__main__':
-    a = event(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹\梭梭树")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹\梭梭树", datetime.now(), [])
-    print(a)
+    # a = event(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹\梭梭树")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹\梭梭树", datetime.now(), [])
+    # print(a)
 
-    # b = QZ(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对", datetime.now(), [])
-    # print(b)
+    b = QZ(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对", datetime.now(), [])
+    print(b)
