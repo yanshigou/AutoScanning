@@ -323,7 +323,7 @@ if __name__ == '__main__':
         try:
             root = tk.Tk()
 
-            root.title('违法图片扫描器v4.8.6_20191008')
+            root.title('违法图片扫描器v5.0.0_20191009')
 
             # 滚动条
             scroll = tk.Scrollbar()
@@ -369,7 +369,7 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('违法图片扫描器v4.8.6_20191008')
+        root.title('违法图片扫描器v5.0.0_20191009')
 
         # 滚动条
         scroll = tk.Scrollbar()
