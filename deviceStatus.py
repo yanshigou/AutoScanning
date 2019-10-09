@@ -2,8 +2,8 @@ __author__ = "dzt"
 __date__ = "2019/8/2"
 
 from platform import system as system_name
-from os import system, popen
-import requests
+# from os import system, popen
+# import requests
 import subprocess
 
 
