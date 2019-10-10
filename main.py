@@ -11,6 +11,7 @@ from upload_image import event, QZ
 from deviceStatus import ping
 from datetime import datetime
 from time import sleep
+import configparser
 
 # 建立连接 获取csrftoken
 client = requests.session()
@@ -24,35 +25,57 @@ client = requests.session()
 #     csrftoken = client.cookies['csrf']
 #     print(csrftoken)
 def basic_info():
-    white_list = ['渝DJD020', '渝AA6W72', '渝A015EY']
+    white_list = ['渝DJD020', '渝AA6W72', '渝A015EY', '渝AZC452']
     try:
-        f = open("ACconfig.txt", 'r', encoding='utf-8')
-        all_data = f.readlines()
-        event_path = all_data[0].split('=')[-1].strip()
-        qz_path = all_data[1].split('=')[-1].strip()
-        move_folder = all_data[2].split('=')[-1].strip()
-        ip_val = all_data[3].split('=')[-1].strip()
-        sleep_time = all_data[4].split('=')[-1]
-        qz_time = all_data[5].split('=')[-1]
-        push_time = all_data[6].split('=')[-1]
-        # car_id = all_data[4].split('=')[-1].split(' ')
-        # for i in car_id:
-        #     white_list.append(i)
+        cf = configparser.ConfigParser()
+        cf.read("ACconfig.ini", encoding="utf-8-sig")  # 读取配置文件，如果写文件的绝对路径，就可以不用os模块
 
-        print(event_path)
+        secs = cf.sections()
+        print(secs)
+
+        # options = cf.options("DJConfig")  # 获取某个section名为BasicConfig所对应的键
+        # print(options)
+        #
+        # items = cf.items("DJConfig")  # 获取section名为BasicConfig所对应的全部键值对
+        # print(items)
+
+        qz_path = cf.get("WTConfig", "qz_path")  # 获取[BasicConfig]中qz_path对应的值
         print(qz_path)
+
+        event_path = cf.get("WTConfig", "event_path")  # 获取[BasicConfig]中qz_path对应的值
+        print(event_path)
+
+        move_folder = cf.get("WTConfig", "move_folder")  # 获取[BasicConfig]中move_folder对应的值
         print(move_folder)
+
+        ip_val = cf.get("WTConfig", "ip_val")  # 获取[BasicConfig]中ip_val对应的值
         print(ip_val)
-        # print(white_list)
+
+        sleep_time = cf.get("WTConfig", "sleep_time")  # 获取[BasicConfig]中sleep_time对应的值
         print(sleep_time)
+
+        qz_time = cf.get("WTConfig", "qz_time")  # 获取[BasicConfig]中qz_time对应的值
         print(qz_time)
+
+        push_time = cf.get("WTConfig", "push_time")  # 获取[BasicConfig]中push_time对应的值
         print(push_time)
-        return event_path, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time
+
+        wf_list_str = cf.get("WTConfig", "wf_list")  # 获取[BasicConfig]中wf_list对应的值
+        wf_list = wf_list_str.split(',')
+        print(wf_list)
+
+        global is_check_online
+        is_check_online = cf.get("WTConfig", "is_check_online")  # 获取[BasicConfig]中is_check_online对应的值
+        print(is_check_online)
+
+        global is_push
+        is_push = cf.get("WTConfig", "is_push")  # 获取[BasicConfig]中is_push对应的值
+        print(is_push)
+
+        return event_path, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf_list
     except Exception as e:
         print(e)
         return False
-    finally:
-        f.close()
 
 
 def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
@@ -140,7 +163,7 @@ def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time, qz_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "\n开始扫描取证文件夹：%s\n" % qz_path)
-    f.write("%s \n开始扫描取证文件夹：%s" % (event_path, datetime.now()))
+    f.write("%s \n开始扫描取证文件夹：%s" % (qz_path, datetime.now()))
     f.close()
     count = 0
     qz_bt.config(state="disabled", text='正在扫描取证文件夹')
@@ -270,22 +293,22 @@ def push(ip_val, push_time):
             status = r.json().get('status')
             if status == "success":
                 car_id = r.json().get('car_id')
-                text.insert(tk.END, '\n%s 再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
-                f.write('\n%s 再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+                text.insert(tk.END, '\n%s 【违停】再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+                f.write('\n%s 【违停】再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
             elif status == "fail":
                 push_result = r.json().get('push_result')
-                text.insert(tk.END, '\n%s 再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
-                f.write('\n%s 再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+                text.insert(tk.END, '\n%s 【违停】再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+                f.write('\n%s 【违停】再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
             else:
                 car_id = r.json().get('car_id')
                 push_result = r.json().get('push_result')
-                text.insert(tk.END, '\n%s 再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
-                f.write('\n%s 再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+                text.insert(tk.END, '\n%s 【违停】再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+                f.write('\n%s 【违停】再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
             sleep(int(push_time))
         except Exception as e:
             print(e)
-            f.write("%s 推送数据出错 %s\n" % (datetime.now(), str(e)))
-            text.insert(tk.END, "%s 推送数据出错 %s\n" % (datetime.now(), str(e)))
+            f.write("%s 【违停】推送数据出错 %s\n" % (datetime.now(), str(e)))
+            text.insert(tk.END, "%s 【违停】推送数据出错 %s\n" % (datetime.now(), str(e)))
         finally:
             f.close()
 
@@ -319,57 +342,58 @@ if __name__ == '__main__':
     f.write('%s 正在读取配置文件...\n' % datetime.now())
     f.close()
 
-    if not basic_info():
-        try:
-            root = tk.Tk()
-
-            root.title('违法图片扫描器v5.0.0_20191009')
-
-            # 滚动条
-            scroll = tk.Scrollbar()
-
-            text = scrolledtext.ScrolledText(root, width=90, height=60)
-            text.grid(row=0, column=0)
-            root.geometry('1000x800+600+50')
-            lf = tk.LabelFrame(root, text='请检查配置文件ACconfig.txt是否在同级目录下')
-            lf.grid(row=0, column=1)
-            log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
-            f = open(log_file, 'a+', encoding='utf-8')
-            f.write("%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
-            f.write("\n并且仅支持如下格式\n")
-            f.write("\n事件地址=G:\dzt\资料\交警\测试文件夹\事件\n")
-            f.write("取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
-            f.write("移动地址(暂取消备份)=G:\dzt\资料\交警\备份\n")
-            f.write("IP=192.168.31.54:8000\n")
-            f.write("空闲间隔(秒)=5\n")
-            f.write("取证图片上传间隔(秒)=30\n")
-            f.write("推送平台间隔(秒)=10\n")
-
-            text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
-            text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
-            text.insert(tk.END, "\n并且仅支持如下格式\n")
-            text.insert(tk.END, "\n事件地址=G:\dzt\资料\交警\测试文件夹\事件\n")
-            text.insert(tk.END, "取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
-            text.insert(tk.END, "移动地址(暂取消备份)=G:\dzt\资料\交警\备份\n")
-            text.insert(tk.END, "IP=192.168.31.54:8000\n")
-            text.insert(tk.END, "空闲间隔(秒)=5\n")
-            text.insert(tk.END, "取证图片上传间隔(秒)=30\n")
-            text.insert(tk.END, "推送平台间隔(秒)=10\n")
-
-            q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
-            q.grid(padx=5, pady=10)
-
-            root.mainloop()
-        except Exception as e:
-            print(e)
-        finally:
-            f.close()
-    else:
-        event_path, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time = basic_info()
+    # if not basic_info():
+    #     try:
+    #         root = tk.Tk()
+    #
+    #         root.title('巴南区违停扫描器v5.0.1_20191010')
+    #
+    #         # 滚动条
+    #         scroll = tk.Scrollbar()
+    #
+    #         text = scrolledtext.ScrolledText(root, width=90, height=60)
+    #         text.grid(row=0, column=0)
+    #         root.geometry('1000x800+600+50')
+    #         lf = tk.LabelFrame(root, text='请检查配置文件ACconfig.txt是否在同级目录下')
+    #         lf.grid(row=0, column=1)
+    #         log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+    #         f = open(log_file, 'a+', encoding='utf-8')
+    #         f.write("%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
+    #         f.write("\n并且仅支持如下格式\n")
+    #         f.write("\n事件地址=G:\dzt\资料\交警\测试文件夹\事件\n")
+    #         f.write("取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
+    #         f.write("移动地址(暂取消备份)=G:\dzt\资料\交警\备份\n")
+    #         f.write("IP=192.168.31.54:8000\n")
+    #         f.write("空闲间隔(秒)=5\n")
+    #         f.write("取证图片上传间隔(秒)=30\n")
+    #         f.write("推送平台间隔(秒)=10\n")
+    #
+    #         text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
+    #         text.insert(tk.END, "%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
+    #         text.insert(tk.END, "\n并且仅支持如下格式\n")
+    #         text.insert(tk.END, "\n事件地址=G:\dzt\资料\交警\测试文件夹\事件\n")
+    #         text.insert(tk.END, "取证地址=G:\dzt\资料\交警\测试文件夹\取证\n")
+    #         text.insert(tk.END, "移动地址(暂取消备份)=G:\dzt\资料\交警\备份\n")
+    #         text.insert(tk.END, "IP=192.168.31.54:8000\n")
+    #         text.insert(tk.END, "空闲间隔(秒)=5\n")
+    #         text.insert(tk.END, "取证图片上传间隔(秒)=30\n")
+    #         text.insert(tk.END, "推送平台间隔(秒)=10\n")
+    #
+    #         q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
+    #         q.grid(padx=5, pady=10)
+    #
+    #         root.mainloop()
+    #     except Exception as e:
+    #         print(e)
+    #     finally:
+    #         f.close()
+    # else:
+    if basic_info():
+        event_path, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf_list = basic_info()
 
         root = tk.Tk()
 
-        root.title('违法图片扫描器v5.0.0_20191009')
+        root.title('巴南区违停扫描器v5.0.1_20191010')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -399,29 +423,29 @@ if __name__ == '__main__':
         f.write("推送平台间隔(秒)：%s\n" % push_time)
 
         try:
-            text.insert(tk.END, "%s 开始删除服务器上打包的文件\n" % datetime.now())
-            f.write("%s 开始删除服务器上打包的文件\n" % datetime.now())
+            text.insert(tk.END, "%s 开始删除服务器上打包的【违停】文件\n" % datetime.now())
+            f.write("%s 开始删除服务器上打包的【违停】文件\n" % datetime.now())
             res = requests.post('http://%s/dataInfo/autoDelView/' % ip_val).json()
             if res["status"] == "success":
-                f.write("%s 删除服务器上打包的文件成功\n" % datetime.now())
-                text.insert(tk.END, "删除服务器上打包的文件成功\n")
+                f.write("%s 删除服务器上打包的【违停】文件成功\n" % datetime.now())
+                text.insert(tk.END, "删除服务器上打包的【违停】文件成功\n")
             else:
-                f.write("%s 删除服务器上打包的文件失败 %s\n" % (datetime.now(), res['e']))
-                text.insert(tk.END, "%s 删除服务器上打包的文件失败 %s\n" % (datetime.now(), res['e']))
+                f.write("%s 删除服务器上打包的【违停】文件失败 %s\n" % (datetime.now(), res['e']))
+                text.insert(tk.END, "%s 删除服务器上打包的【违停】文件失败 %s\n" % (datetime.now(), res['e']))
 
-            text.insert(tk.END, "%s 开始删除服务器上90天以前的事件、取证、短信图片\n" % datetime.now())
-            f.write("%s 开始删除服务器上90天以前的事件、取证、短信图片\n" % datetime.now())
+            text.insert(tk.END, "%s 开始删除服务器上90天以前的【违停】事件、取证、短信图片\n" % datetime.now())
+            f.write("%s 开始删除服务器上90天以前的【违停】事件、取证、短信图片\n" % datetime.now())
             res = requests.post('http://%s/dataInfo/delWTImage/' % ip_val).json()
             if res["status"] == "success":
-                f.write("%s 删除服务器上90天以前的事件、取证、短信图片成功\n" % datetime.now())
-                text.insert(tk.END, "删除服务器上90天以前的事件、取证、短信图片成功\n")
+                f.write("%s 删除服务器上90天以前的【违停】事件、取证、短信图片成功\n" % datetime.now())
+                text.insert(tk.END, "删除服务器上90天以前的【违停】事件、取证、短信图片成功\n")
             else:
-                f.write("%s 删除服务器上90天以前的事件、取证、短信图片失败 %s\n" % (datetime.now(), res['e']))
-                text.insert(tk.END, "%s 删除服务器上90天以前的事件、取证、短信图片失败 %s\n" % (datetime.now(), res['e']))
+                f.write("%s 删除服务器上90天以前的【违停】事件、取证、短信图片失败 %s\n" % (datetime.now(), res['e']))
+                text.insert(tk.END, "%s 删除服务器上90天以前的【违停】事件、取证、短信图片失败 %s\n" % (datetime.now(), res['e']))
         except Exception as e:
             print(e)
-            f.write("%s 删除服务器上打包的文件出错，请检查服务器是否开启\n" % datetime.now())
-            text.insert(tk.END, "%s 删除服务器上打包的文件出错，请检查服务器是否开启\n" % datetime.now())
+            f.write("%s 删除服务器上【违停】打包的文件出错，请检查服务器是否开启\n" % datetime.now())
+            text.insert(tk.END, "%s 删除服务器上【违停】打包的文件出错，请检查服务器是否开启\n" % datetime.now())
         finally:
             f.close()
 
