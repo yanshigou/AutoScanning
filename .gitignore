@@ -2,7 +2,6 @@
 .git
 __pycache__/
 .gitignore
-main.spec
-favicon.spec
+*.spec
 build/
 *.txt
