@@ -323,8 +323,10 @@ def auto_run(event_path, move_folder, ip_val, white_list, sleep_time, qz_time, p
         f.write("%s 30秒后自动开始运行 取证扫描  \n" % datetime.now())
         sleep(5)
         thread_it(event_run, event_path, move_folder, ip_val, white_list, sleep_time)
-        thread_it(check_device_online, ip_val)
-        thread_it(push, ip_val, push_time)
+        if is_check_online == "1":
+            thread_it(check_device_online, ip_val)
+        if is_push == "1":
+            thread_it(push, ip_val, push_time)
         sleep(25)
         thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time)
     except Exception as e:
@@ -393,7 +395,7 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('巴南区违停扫描器v5.0.1_20191010')
+        root.title('巴南区违停扫描器v5.0.2_20191012')
 
         # 滚动条
         scroll = tk.Scrollbar()
