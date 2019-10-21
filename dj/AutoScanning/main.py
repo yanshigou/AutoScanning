@@ -7,7 +7,7 @@ import requests
 import tkinter as tk
 import threading
 from tkinter import scrolledtext
-from upload_image import QZ
+from 电警扫描器.AutoScanning.upload_image import QZ
 from deviceStatus import ping
 from datetime import datetime
 from time import sleep
