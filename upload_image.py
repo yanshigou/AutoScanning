@@ -19,9 +19,9 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
             if file.is_file:
                 if file.file_name[-3:] == 'jpg':
                     file_path = file.file_path
-                    print(file_path)
+                    # print(file_path)
                     image_folder = "\\".join(file_path.split("\\")[:-1]) + '\\'
-                    print(image_folder)
+                    # print(image_folder)
                     # path_list = file_path.split('\\')
                     # path_list[4] = "备份"
                     # folder = "\\".join(path_list[:-1])
@@ -43,7 +43,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
 
                     file_name = file.file_name
                     file_name_list = file_name.split('_')
-                    print(file_name_list)
+                    # print(file_name_list)
                     i_type = file_name_list[0]
                     last_str = file_name_list[-1]
                     try:
@@ -60,21 +60,21 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                     #     continue
                     # print('%s 在匹配中' % car_id)
                     if '无' in car_id:
-                        print(car_id)
+                        # print(car_id)
                         os.remove(file_path)
                         continue
-                    print(last_str)
+                    # print(last_str)
                     if i_type == '2' and ('短信' not in last_str):
-                        print('事件图片')
+
                         # 进行对事件进行操作
                         ip = file_name_list[4]
                         # car_id = file_name_list[5]
                         if car_id in white_list:
                             os.remove(file_path)
-                            print('在白名单内，删除成功')
+
                             continue
                         car_color = file_name_list[-1][0]
-                        print(car_color)
+                        # print(car_color)
                         car_type = '00'
                         if car_color == "蓝":
                             car_type = '02'
@@ -116,10 +116,10 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             continue
 
                         status = res['status']
-                        print(status)
+                        # print(status)
                         zp = res.get('zp')
                         image_file = res.get('sms_image')
-                        print(image_file)
+                        # print(image_file)
                         zpname = ""
                         if zp:
                             # 存在本机后再传图片至服务器
@@ -132,7 +132,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             img = open(zpname, 'wb')
                             img.write(imgdata)
                             img.close()
-                        print(res['is_del'])
+                        # print(res['is_del'])
                         count = 0
                         try:
                             # if res['is_del']:
@@ -149,30 +149,25 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             count = 1
                         except Exception as ex:
                             os.remove(file_path)
-                            print('删除成功')
+                            # print('删除成功')
                         finally:
                             sleep(0.1)
 
                             return {"status": "success", "count": count, "sms_count": 0, "res_status": status, "file_path": file_path, "zpname": zpname, "e": res.get('e')}
                     elif '短信' in last_str:
-                        print('凭证图片')
+                        # print('凭证图片')
                         # 进行对凭证进行操作
                         ip = file_name_list[4]
                         car_id = file_name_list[5]
                         wf_time = file_name_list[1] + file_name_list[2]
                         if car_id in white_list:
                             os.remove(file_path)
-                            print('在白名单内，删除成功')
                             continue
                         car_color = file_name_list[-2][0]
-                        print(car_color)
-                        car_type = '00'
-                        if car_color == "蓝":
-                            car_type = '02'
-                        elif car_color == '黄':
+                        # print(car_color)
+                        car_type = '02'
+                        if car_color == '黄':
                             car_type = '01'
-                        elif car_color == '绿':
-                            car_type = '02'
                         # with open(file_path, 'rb') as f:
                         #     files = {'image_file': (file_name, f, 'image/jpg')}
                         try:
@@ -195,8 +190,8 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             continue
 
                         status = res['status']
-                        print(status)
-                        print(res['is_del'])
+                        # print(status)
+                        # print(res['is_del'])
 
                         sms_count = 0
                         try:
@@ -223,11 +218,11 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
             else:
                 try:
                     folder_path = file.file_path
-                    print(folder_path)
+                    # print(folder_path)
                     folder_val = folder_path.split('\\')[-1]
                     folder_day = datetime.strftime(now_time, '%Y%m%d')
                     if not os.listdir(folder_path) and (folder_day not in folder_path) and folder_val != split_val and ('.' not in folder_val):
-                        print("空文件夹，删除")
+                        # print("空文件夹，删除")
                         os.rmdir(folder_path)
                 except Exception as exc:
                     print(exc)
@@ -239,7 +234,7 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
         return {"status": "error", "e": str(e), "res_status": "error", "count": 0, "sms_count": 0}
 
 
-def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
+def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list, wf_list):
     # for path, dirs, files in os.walk(qz_path):
     #     print("path", path)
     #     print("dirs", dirs)
@@ -251,7 +246,7 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
         for file in files_list:
             # 如果是文件,则打印
             split_val = qz_path.split("\\")[-1]
-            print(split_val)
+            # print(split_val)
             if file.is_file:
                 if file.file_name[-3:] == 'jpg':
                     # file_path = file.file_path
@@ -273,12 +268,12 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                     file_path = file.file_path
                     file_name = file.file_name
                     file_name_list = file_name.split('_')
-                    print("file_path", file_path)
-                    print("file_name", file_name)
-                    print("file_name_list", file_name_list)
+                    # print("file_path", file_path)
+                    # print("file_name", file_name)
+                    # print("file_name_list", file_name_list)
                     i_type = file_name_list[0]
-                    print(i_type)
-                    print(type(i_type))
+                    # print(i_type)
+                    # print(type(i_type))
                     try:
                         car_id = file_name_list[5]
                     except Exception as e:
@@ -293,28 +288,23 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                     #     continue
                     # print('%s 在匹配中' % car_id)
                     if '无' in car_id:
-                        print(car_id)
+                        # print(car_id)
                         os.remove(file_path)
                         continue
-                    if i_type == ('1039' or "10396"):
 
-                        print("取证图片")
+                    if i_type in wf_list:
+
                         # 对取证进行操作
                         ip = file_name_list[4]
                         # car_id = file_name_list[5]
                         if car_id in white_list:
                             os.remove(file_path)
-                            print('在白名单内，删除成功')
                             continue
                         car_color = file_name_list[-1][0]
-                        print(car_color)
-                        car_type = '00'
-                        if car_color == "蓝":
-                            car_type = '02'
-                        elif car_color == '黄':
+                        # print(car_color)
+                        car_type = '02'
+                        if car_color == '黄':
                             car_type = '01'
-                        elif car_color == '绿':
-                            car_type = '02'
                         wf_time = file_name_list[1]+file_name_list[2]
 
                         # move_name = folder + '\\' + file_name  # 移动后的文件路径
@@ -349,8 +339,8 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                             continue
 
                         status = res['status']
-                        print(status)
-                        print(res['is_del'])
+                        # print(status)
+                        # print(res['is_del'])
                         count = 0
                         # 只有删除才去使用移动后的路径，
                         try:
@@ -374,19 +364,18 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
                             print(ex)
                             print('删除或移动出错')
                         finally:
-                            sleep(1)
                             return {"status": "success", "count": count, "res_status": status, "file_path": file_path}
                     else:
                         os.remove(file_path)
             else:
                 try:
                     folder_path = file.file_path
-                    print(folder_path)
+                    # print(folder_path)
                     folder_val = folder_path.split('\\')[-1]
-                    print(folder_val)
+                    # print(folder_val)
                     folder_day = datetime.strftime(now_time, '%Y%m%d')
                     if not os.listdir(folder_path) and (folder_day not in folder_path) and folder_val != split_val and ('.' not in folder_val):
-                        print("空文件夹，删除")
+                        # print("空文件夹，删除")
                         os.rmdir(folder_path)
                 except Exception as exc:
                     print(exc)
@@ -399,8 +388,8 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list):
 
 
 if __name__ == '__main__':
-    # a = event(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹\梭梭树")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹\梭梭树", datetime.now(), [])
-    # print(a)
+    a = event(FileObjectManager(FileObject("I:\\16")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54:8000', "I:\\16", datetime.now(), [])
+    print(a)
 
-    b = QZ(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对", datetime.now(), [])
-    print(b)
+    # b = QZ(FileObjectManager(FileObject("G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对")).scan_with_depth(10).all_file_objects(), "G:\dzt\资料\交警\备份", '192.168.31.54:8000', "G:\dzt\资料\交警\测试文件夹\测试文件夹\对对对", datetime.now(), [])
+    # print(b)
