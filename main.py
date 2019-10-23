@@ -30,8 +30,6 @@ def basic_info():
         cf = configparser.ConfigParser()
         cf.read("ACconfig.ini", encoding="utf-8-sig")  # 读取配置文件，如果写文件的绝对路径，就可以不用os模块
 
-        secs = cf.sections()
-        print(secs)
 
         # options = cf.options("DJConfig")  # 获取某个section名为BasicConfig所对应的键
         # print(options)
@@ -40,37 +38,27 @@ def basic_info():
         # print(items)
 
         qz_path = cf.get("WTConfig", "qz_path")  # 获取[BasicConfig]中qz_path对应的值
-        print(qz_path)
 
         event_path = cf.get("WTConfig", "event_path")  # 获取[BasicConfig]中qz_path对应的值
-        print(event_path)
 
         move_folder = cf.get("WTConfig", "move_folder")  # 获取[BasicConfig]中move_folder对应的值
-        print(move_folder)
 
         ip_val = cf.get("WTConfig", "ip_val")  # 获取[BasicConfig]中ip_val对应的值
-        print(ip_val)
 
         sleep_time = cf.get("WTConfig", "sleep_time")  # 获取[BasicConfig]中sleep_time对应的值
-        print(sleep_time)
 
         qz_time = cf.get("WTConfig", "qz_time")  # 获取[BasicConfig]中qz_time对应的值
-        print(qz_time)
 
         push_time = cf.get("WTConfig", "push_time")  # 获取[BasicConfig]中push_time对应的值
-        print(push_time)
 
         wf_list_str = cf.get("WTConfig", "wf_list")  # 获取[BasicConfig]中wf_list对应的值
         wf_list = wf_list_str.split(',')
-        print(wf_list)
 
         global is_check_online
         is_check_online = cf.get("WTConfig", "is_check_online")  # 获取[BasicConfig]中is_check_online对应的值
-        print(is_check_online)
 
         global is_push
         is_push = cf.get("WTConfig", "is_push")  # 获取[BasicConfig]中is_push对应的值
-        print(is_push)
 
         return event_path, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf_list
     except Exception as e:
@@ -79,7 +67,7 @@ def basic_info():
 
 
 def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
-    log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+    log_file = datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
     f.write("开始扫描事件文件夹：%s\n" % event_path)
@@ -88,7 +76,7 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
     sms_count = 0
     event_bt.config(state="disabled", text='正在扫描事件文件夹')
     while True:
-        log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+        log_file = datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
         try:
             f = open(log_file, 'a+', encoding='utf-8')
             # sleep(1)
@@ -159,8 +147,8 @@ def event_run(event_path, move_folder, ip_val, white_list, sleep_time):
             f.close()
 
 
-def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time, qz_time):
-    log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, wf_list):
+    log_file = datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "\n开始扫描取证文件夹：%s\n" % qz_path)
     f.write("%s \n开始扫描取证文件夹：%s" % (qz_path, datetime.now()))
@@ -168,13 +156,13 @@ def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time, qz_time):
     count = 0
     qz_bt.config(state="disabled", text='正在扫描取证文件夹')
     while True:
-        log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+        log_file = datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
         try:
             f = open(log_file, 'a+', encoding='utf-8')
             # sleep(1)
             now_time = datetime.now()
             res = QZ(FileObjectManager(FileObject(qz_path)).scan_with_depth(10).all_file_objects(), move_folder,
-                     ip_val, qz_path, now_time, white_list)
+                     ip_val, qz_path, now_time, white_list, wf_list)
             print(res)
             status = res.get('status')
             res_status = res.get('res_status')
@@ -209,7 +197,6 @@ def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time, qz_time):
                 text.insert(tk.END, "\n%s【取证】【上传出错，请查看日志】：%s\n" % (now_time, e))
                 f.write("\n%s 【取证】【上传出错，请检查日志】：%s" % (now_time, e))
             elif status == "over":
-                print("1")
                 text.insert(tk.END, "\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
                 f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
                 text.see(tk.END)
@@ -245,7 +232,7 @@ def thread_it(func, *args):
 
 
 def check_device_online(ip_val):
-    log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+    log_file = datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始检测设备状态")
     f.write("开始检测设备状态")
@@ -255,12 +242,10 @@ def check_device_online(ip_val):
         f = open(log_file, 'a+', encoding='utf-8')
         try:
             res = requests.get('http://%s/devices/allDevices/' % ip_val)
-            print(res.json())
             ip_list = res.json().get('devices')
             for ip in ip_list:
                 now_time = datetime.now()
                 is_online = ping(ip)
-                print(ip, is_online)
                 if is_online:
                     text.insert(tk.END, '\n%s 设备 %s 在线' % (now_time, ip))
                     f.write('\n%s 设备 %s 在线' % (now_time, ip))
@@ -280,7 +265,7 @@ def check_device_online(ip_val):
 
 
 def push(ip_val, push_time):
-    log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+    log_file = datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始推送至集成平台")
     f.write("开始推送至集成平台")
@@ -314,7 +299,7 @@ def push(ip_val, push_time):
 
 
 def auto_run(event_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time):
-    log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+    log_file = datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     try:
         text.insert(tk.END, "%s 5秒后自动开始运行 事件扫描、设备在线检测 \n" % datetime.now())
@@ -328,7 +313,10 @@ def auto_run(event_path, move_folder, ip_val, white_list, sleep_time, qz_time, p
         if is_push == "1":
             thread_it(push, ip_val, push_time)
         sleep(25)
-        thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time)
+        thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, wf_list)
+        # 避免在服务器重启时删除失败
+        requests.post('http://%s/dataInfo/delWTImage/' % ip_val).json()
+        requests.post('http://%s/dataInfo/autoDelView/' % ip_val).json()
     except Exception as e:
         print(e)
         f.write("%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
@@ -339,7 +327,7 @@ def auto_run(event_path, move_folder, ip_val, white_list, sleep_time, qz_time, p
 
 if __name__ == '__main__':
 
-    log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+    log_file = datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     f.write('%s 正在读取配置文件...\n' % datetime.now())
     f.close()
@@ -358,7 +346,7 @@ if __name__ == '__main__':
     #         root.geometry('1000x800+600+50')
     #         lf = tk.LabelFrame(root, text='请检查配置文件ACconfig.txt是否在同级目录下')
     #         lf.grid(row=0, column=1)
-    #         log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+    #         log_file = datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     #         f = open(log_file, 'a+', encoding='utf-8')
     #         f.write("%s 未找到配置文件，请检查ACconfig.txt是否在同级目录下！！\n" % datetime.now())
     #         f.write("\n并且仅支持如下格式\n")
@@ -395,7 +383,7 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('巴南区违停扫描器v5.0.2_20191012')
+        root.title('巴南区违停扫描器v5.0.3_20191023')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -412,7 +400,7 @@ if __name__ == '__main__':
         text.insert(tk.END, "推送平台间隔(秒)：%s\n" % push_time)
         # text.insert(tk.END, "白名单：%s\n" % white_list)
 
-        log_file = datetime.now().strftime('%Y-%m-%d') + '日志.txt'
+        log_file = datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
         f = open(log_file, 'a+', encoding='utf-8')
         f.write('%s 配置读取成功\n ' % datetime.now())
         f.write("\n%s 配置信息如下\n" % datetime.now())
@@ -482,7 +470,7 @@ if __name__ == '__main__':
                                                        sleep_time))
         qz_bt = tk.Button(lf, text='开始扫描取证文件夹', fg='red',
                           command=lambda: thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time,
-                                                    qz_time))
+                                                    qz_time, wf_list))
         ping_bt = tk.Button(lf, text='开始检测设备状态', fg='red',
                             command=lambda: thread_it(check_device_online, ip_val))
         event_bt.grid(padx=5, pady=20)
