@@ -17,8 +17,18 @@ import configparser
 client = requests.session()
 
 dj_push_url = "/djDataInfo/push/"
+cs_push_url = "/csDataInfo/push/"
+wjl_push_url = "/wjlDataInfo/push/"
+hcxx_push_url = "/hcxxDataInfo/push/"
+kcxx_push_url = "/kcxxDataInfo/push/"
+wfmd_push_url = "/wfmdDataInfo/push/"
 is_check_online = "0"
 is_push = "0"
+is_push_cs = "0"
+is_push_wjl = "0"
+is_push_hcxx = "0"
+is_push_kcxx = "0"
+is_push_wfmd = "0"
 
 
 # client.get('http://127.0.0.1:8000/users/login/')
@@ -61,7 +71,17 @@ def basic_info():
         is_check_online = cf.get("DJConfig", "is_check_online")  # 获取[BasicConfig]中is_check_online对应的值
 
         global is_push
+        global is_push_cs
+        global is_push_wjl
+        global is_push_hcxx
+        global is_push_kcxx
+        global is_push_wfmd
         is_push = cf.get("DJConfig", "is_push")  # 获取[BasicConfig]中is_push对应的值
+        is_push_cs = cf.get("DJConfig", "is_push_cs")  # 获取[BasicConfig]中is_push对应的值
+        is_push_wjl = cf.get("DJConfig", "is_push_wjl")  # 获取[BasicConfig]中is_push对应的值
+        is_push_hcxx = cf.get("DJConfig", "is_push_hcxx")  # 获取[BasicConfig]中is_push对应的值
+        is_push_kcxx = cf.get("DJConfig", "is_push_kcxx")  # 获取[BasicConfig]中is_push对应的值
+        is_push_wfmd = cf.get("DJConfig", "is_push_wfmd")  # 获取[BasicConfig]中is_push对应的值
 
         return qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf_list
     except Exception as e:
@@ -219,6 +239,176 @@ def push(ip_val, push_time):
             f.close()
 
 
+def push_cs(ip_val, push_time):
+    log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
+    f = open(log_file, 'a+', encoding='utf-8')
+    text.insert(tk.END, "开始推送至集成平台")
+    f.write("开始推送至集成平台")
+    f.close()
+    while True:
+        f = open(log_file, 'a+', encoding='utf-8')
+        try:
+            # 加入再次推送失败的
+            r = requests.get('http://' + ip_val + cs_push_url)
+            status = r.json().get('status')
+            if status == "success":
+                car_id = r.json().get('car_id')
+                text.insert(tk.END, '\n%s 【超速】再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+                f.write('\n%s 【超速】再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+            elif status == "fail":
+                push_result = r.json().get('push_result')
+                text.insert(tk.END, '\n%s 【超速】再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+                f.write('\n%s 【超速】再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+            else:
+                car_id = r.json().get('car_id')
+                push_result = r.json().get('push_result')
+                text.insert(tk.END, '\n%s 【超速】再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+                f.write('\n%s 【超速】再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+            sleep(int(push_time))
+        except Exception as e:
+            print(e)
+            f.write("%s 【超速】推送数据出错 %s\n" % (datetime.now(), str(e)))
+            text.insert(tk.END, "%s 【超速】推送数据出错 %s\n" % (datetime.now(), str(e)))
+        finally:
+            f.close()
+
+
+def push_wjl(ip_val, push_time):
+    log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
+    f = open(log_file, 'a+', encoding='utf-8')
+    text.insert(tk.END, "开始推送至集成平台")
+    f.write("开始推送至集成平台")
+    f.close()
+    while True:
+        f = open(log_file, 'a+', encoding='utf-8')
+        try:
+            # 加入再次推送失败的
+            r = requests.get('http://' + ip_val + wjl_push_url)
+            status = r.json().get('status')
+            if status == "success":
+                car_id = r.json().get('car_id')
+                text.insert(tk.END, '\n%s 【违禁令】再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+                f.write('\n%s 【违禁令】再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+            elif status == "fail":
+                push_result = r.json().get('push_result')
+                text.insert(tk.END, '\n%s 【违禁令】再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+                f.write('\n%s 【违禁令】再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+            else:
+                car_id = r.json().get('car_id')
+                push_result = r.json().get('push_result')
+                text.insert(tk.END, '\n%s 【违禁令】再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+                f.write('\n%s 【违禁令】再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+            sleep(int(push_time))
+        except Exception as e:
+            print(e)
+            f.write("%s 【违禁令】推送数据出错 %s\n" % (datetime.now(), str(e)))
+            text.insert(tk.END, "%s 【违禁令】推送数据出错 %s\n" % (datetime.now(), str(e)))
+        finally:
+            f.close()
+
+
+def push_hcxx(ip_val, push_time):
+    log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
+    f = open(log_file, 'a+', encoding='utf-8')
+    text.insert(tk.END, "开始推送至集成平台")
+    f.write("开始推送至集成平台")
+    f.close()
+    while True:
+        f = open(log_file, 'a+', encoding='utf-8')
+        try:
+            # 加入再次推送失败的
+            r = requests.get('http://' + ip_val + hcxx_push_url)
+            status = r.json().get('status')
+            if status == "success":
+                car_id = r.json().get('car_id')
+                text.insert(tk.END, '\n%s 【货车限行】再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+                f.write('\n%s 【货车限行】再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+            elif status == "fail":
+                push_result = r.json().get('push_result')
+                text.insert(tk.END, '\n%s 【货车限行】再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+                f.write('\n%s 【货车限行】再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+            else:
+                car_id = r.json().get('car_id')
+                push_result = r.json().get('push_result')
+                text.insert(tk.END, '\n%s 【货车限行】再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+                f.write('\n%s 【货车限行】再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+            sleep(int(push_time))
+        except Exception as e:
+            print(e)
+            f.write("%s 【货车限行】推送数据出错 %s\n" % (datetime.now(), str(e)))
+            text.insert(tk.END, "%s 【货车限行】推送数据出错 %s\n" % (datetime.now(), str(e)))
+        finally:
+            f.close()
+
+
+def push_kcxx(ip_val, push_time):
+    log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
+    f = open(log_file, 'a+', encoding='utf-8')
+    text.insert(tk.END, "开始推送至集成平台")
+    f.write("开始推送至集成平台")
+    f.close()
+    while True:
+        f = open(log_file, 'a+', encoding='utf-8')
+        try:
+            # 加入再次推送失败的
+            r = requests.get('http://' + ip_val + kcxx_push_url)
+            status = r.json().get('status')
+            if status == "success":
+                car_id = r.json().get('car_id')
+                text.insert(tk.END, '\n%s 【客车限行】再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+                f.write('\n%s 【客车限行】再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+            elif status == "fail":
+                push_result = r.json().get('push_result')
+                text.insert(tk.END, '\n%s 【客车限行】再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+                f.write('\n%s 【客车限行】再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+            else:
+                car_id = r.json().get('car_id')
+                push_result = r.json().get('push_result')
+                text.insert(tk.END, '\n%s 【客车限行】再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+                f.write('\n%s 【客车限行】再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+            sleep(int(push_time))
+        except Exception as e:
+            print(e)
+            f.write("%s 【客车限行】推送数据出错 %s\n" % (datetime.now(), str(e)))
+            text.insert(tk.END, "%s 【客车限行】推送数据出错 %s\n" % (datetime.now(), str(e)))
+        finally:
+            f.close()
+
+
+def push_wfmd(ip_val, push_time):
+    log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
+    f = open(log_file, 'a+', encoding='utf-8')
+    text.insert(tk.END, "开始推送至集成平台")
+    f.write("开始推送至集成平台")
+    f.close()
+    while True:
+        f = open(log_file, 'a+', encoding='utf-8')
+        try:
+            # 加入再次推送失败的
+            r = requests.get('http://' + ip_val + wfmd_push_url)
+            status = r.json().get('status')
+            if status == "success":
+                car_id = r.json().get('car_id')
+                text.insert(tk.END, '\n%s 【违法鸣笛】再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+                f.write('\n%s 【违法鸣笛】再次推送未成功入库的数据: 【%s】' % (datetime.now(), car_id))
+            elif status == "fail":
+                push_result = r.json().get('push_result')
+                text.insert(tk.END, '\n%s 【违法鸣笛】再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+                f.write('\n%s 【违法鸣笛】再次推送未成功入库的数据: 【%s】' % (datetime.now(), push_result))
+            else:
+                car_id = r.json().get('car_id')
+                push_result = r.json().get('push_result')
+                text.insert(tk.END, '\n%s 【违法鸣笛】再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+                f.write('\n%s 【违法鸣笛】再次推送未成功入库的数据: 【%s-%s】' % (datetime.now(), car_id, push_result))
+            sleep(int(push_time))
+        except Exception as e:
+            print(e)
+            f.write("%s 【违法鸣笛】推送数据出错 %s\n" % (datetime.now(), str(e)))
+            text.insert(tk.END, "%s 【违法鸣笛】推送数据出错 %s\n" % (datetime.now(), str(e)))
+        finally:
+            f.close()
+
+
 def auto_run(move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf_list):
     log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
@@ -229,6 +419,16 @@ def auto_run(move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf
             thread_it(check_device_online, ip_val)
         if is_push == "1":
             thread_it(push, ip_val, push_time)
+        if is_push_cs == "1":
+            thread_it(push_cs, ip_val, push_time)
+        if is_push_wjl == "1":
+            thread_it(push_wjl, ip_val, push_time)
+        if is_push_hcxx == "1":
+            thread_it(push_hcxx, ip_val, push_time)
+        if is_push_kcxx == "1":
+            thread_it(push_kcxx, ip_val, push_time)
+        if is_push_wfmd == "1":
+            thread_it(push_wfmd, ip_val, push_time)
         sleep(5)
         thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, wf_list)
         # 避免在服务器重启时失败
@@ -253,7 +453,7 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('巴南区电警扫描器v1.0.2_20191023')
+        root.title('巴南区电警扫描器v1.0.3_20191024')
 
         # 滚动条
         scroll = tk.Scrollbar()
