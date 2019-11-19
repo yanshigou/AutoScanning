@@ -146,7 +146,8 @@ def QZ_run(qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, wf_lis
             f.write('\n%s 已处理电警图片数：%s\n' % (now_time, str(count)))
             text.see(tk.END)
             # 大量同时推送集成平台时，会出错
-            sleep(int(qz_time))
+            if qz_time != '0':
+                sleep(int(qz_time))
         except Exception as ee:
             text.insert(tk.END, "\n%s 【电警】程序出错：%s\n" % (datetime.now(), str(ee)))
             text.see(tk.END)
@@ -453,7 +454,7 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('电警扫描器v1.0.3_20191024')
+        root.title('电警扫描器v2.0.1_20191119')
 
         # 滚动条
         scroll = tk.Scrollbar()

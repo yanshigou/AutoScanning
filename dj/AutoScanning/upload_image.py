@@ -149,7 +149,7 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list, wf_list):
                             print(ex)
                             print('删除或移动出错')
                         finally:
-                            sleep(1)
+                            # sleep(1)
                             return {"status": "success", "count": count, "res_status": status, "file_path": file_path}
                     else:
                         os.remove(file_path)
