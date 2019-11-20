@@ -75,14 +75,9 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                             continue
                         car_color = file_name_list[-1][0]
                         # print(car_color)
-                        car_type = '00'
-                        if car_color == "蓝":
-                            car_type = '02'
-                        elif car_color == '黄':
+                        car_type = '02'
+                        if car_color == '黄':
                             car_type = '01'
-                        # 修改新能源为小型汽车
-                        elif car_color == '绿':
-                            car_type = '02'
 
                         wf_time = file_name_list[1] + file_name_list[2]
                         # # 提前移动  再打开移动后的文件
