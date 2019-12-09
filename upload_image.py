@@ -78,6 +78,8 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                         car_type = '02'
                         if car_color == '黄':
                             car_type = '01'
+                        elif car_color == "绿":
+                            car_type = "52"
 
                         wf_time = file_name_list[1] + file_name_list[2]
                         # # 提前移动  再打开移动后的文件
@@ -163,6 +165,8 @@ def event(event_files_list, move_folder, ip_val, event_path, now_time, white_lis
                         car_type = '02'
                         if car_color == '黄':
                             car_type = '01'
+                        elif car_color == "绿":
+                            car_type = "52"
                         # with open(file_path, 'rb') as f:
                         #     files = {'image_file': (file_name, f, 'image/jpg')}
                         try:
@@ -300,6 +304,8 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list, wf_list):
                         car_type = '02'
                         if car_color == '黄':
                             car_type = '01'
+                        elif car_color == "绿":
+                            car_type = "52"
                         wf_time = file_name_list[1]+file_name_list[2]
 
                         # move_name = folder + '\\' + file_name  # 移动后的文件路径
