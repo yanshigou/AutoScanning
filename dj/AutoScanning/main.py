@@ -22,6 +22,8 @@ wjl_push_url = "/wjlDataInfo/push/"
 hcxx_push_url = "/hcxxDataInfo/push/"
 kcxx_push_url = "/kcxxDataInfo/push/"
 wfmd_push_url = "/wfmdDataInfo/push/"
+kcxx_query_url = "/kcxxDataInfo/kcxxQuery/"
+kcxx_query_back_result_url = "/kcxxDataInfo/kcxxQueryBackResult/"
 is_check_online = "0"
 is_push = "0"
 is_push_cs = "0"
@@ -29,6 +31,7 @@ is_push_wjl = "0"
 is_push_hcxx = "0"
 is_push_kcxx = "0"
 is_push_wfmd = "0"
+is_kcxx_query = "0"
 
 
 # client.get('http://127.0.0.1:8000/users/login/')
@@ -67,6 +70,8 @@ def basic_info():
         wf_list_str = cf.get("DJConfig", "wf_list")  # 获取[BasicConfig]中wf_list对应的值
         wf_list = wf_list_str.split(',')
 
+        query_time = cf.get("DJConfig", "query_time")  # 获取[BasicConfig]中query_time对应的值
+
         global is_check_online
         is_check_online = cf.get("DJConfig", "is_check_online")  # 获取[BasicConfig]中is_check_online对应的值
 
@@ -76,14 +81,16 @@ def basic_info():
         global is_push_hcxx
         global is_push_kcxx
         global is_push_wfmd
+        global is_kcxx_query
         is_push = cf.get("DJConfig", "is_push")  # 获取[BasicConfig]中is_push对应的值
         is_push_cs = cf.get("DJConfig", "is_push_cs")  # 获取[BasicConfig]中is_push对应的值
         is_push_wjl = cf.get("DJConfig", "is_push_wjl")  # 获取[BasicConfig]中is_push对应的值
         is_push_hcxx = cf.get("DJConfig", "is_push_hcxx")  # 获取[BasicConfig]中is_push对应的值
         is_push_kcxx = cf.get("DJConfig", "is_push_kcxx")  # 获取[BasicConfig]中is_push对应的值
         is_push_wfmd = cf.get("DJConfig", "is_push_wfmd")  # 获取[BasicConfig]中is_push对应的值
+        is_kcxx_query = cf.get("DJConfig", "is_kcxx_query")  # 获取[BasicConfig]中is_kcxx_query对应的值
 
-        return qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf_list
+        return qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf_list, query_time
     except Exception as e:
         print(e)
         return False
@@ -209,8 +216,8 @@ def check_device_online(ip_val):
 def push(ip_val, push_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
-    text.insert(tk.END, "开始推送至集成平台")
-    f.write("开始推送至集成平台")
+    text.insert(tk.END, "开始推送【电警】至集成平台")
+    f.write("开始推送【电警】至集成平台")
     f.close()
     while True:
         f = open(log_file, 'a+', encoding='utf-8')
@@ -243,8 +250,8 @@ def push(ip_val, push_time):
 def push_cs(ip_val, push_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
-    text.insert(tk.END, "开始推送至集成平台")
-    f.write("开始推送至集成平台")
+    text.insert(tk.END, "开始推送【超速】至集成平台")
+    f.write("开始推送【超速】至集成平台")
     f.close()
     while True:
         f = open(log_file, 'a+', encoding='utf-8')
@@ -277,8 +284,8 @@ def push_cs(ip_val, push_time):
 def push_wjl(ip_val, push_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
-    text.insert(tk.END, "开始推送至集成平台")
-    f.write("开始推送至集成平台")
+    text.insert(tk.END, "开始推送【违禁令】至集成平台")
+    f.write("开始推送【违禁令】至集成平台")
     f.close()
     while True:
         f = open(log_file, 'a+', encoding='utf-8')
@@ -311,8 +318,8 @@ def push_wjl(ip_val, push_time):
 def push_hcxx(ip_val, push_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
-    text.insert(tk.END, "开始推送至集成平台")
-    f.write("开始推送至集成平台")
+    text.insert(tk.END, "开始推送【货车限行】至集成平台")
+    f.write("开始推送【货车限行】至集成平台")
     f.close()
     while True:
         f = open(log_file, 'a+', encoding='utf-8')
@@ -345,8 +352,8 @@ def push_hcxx(ip_val, push_time):
 def push_kcxx(ip_val, push_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
-    text.insert(tk.END, "开始推送至集成平台")
-    f.write("开始推送至集成平台")
+    text.insert(tk.END, "开始推送【客车限行】至集成平台")
+    f.write("开始推送【客车限行】至集成平台")
     f.close()
     while True:
         f = open(log_file, 'a+', encoding='utf-8')
@@ -379,8 +386,8 @@ def push_kcxx(ip_val, push_time):
 def push_wfmd(ip_val, push_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
-    text.insert(tk.END, "开始推送至集成平台")
-    f.write("开始推送至集成平台")
+    text.insert(tk.END, "开始推送【违法鸣笛】至集成平台")
+    f.write("开始推送【违法鸣笛】至集成平台")
     f.close()
     while True:
         f = open(log_file, 'a+', encoding='utf-8')
@@ -410,7 +417,57 @@ def push_wfmd(ip_val, push_time):
             f.close()
 
 
-def auto_run(move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf_list):
+def kcxx_query(ip_val, query_time):
+    log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
+    f = open(log_file, 'a+', encoding='utf-8')
+    text.insert(tk.END, "开始查询【客车限行】，5s后再开始查询【客车限行】上一次的反馈结果")
+    f.write("开始查询【客车限行】，5s后再开始查询【客车限行】上一次的反馈结果")
+    print("开始查询【客车限行】，5s后再开始查询【客车限行】上一次的反馈结果")
+    f.close()
+    while True:
+        f = open(log_file, 'a+', encoding='utf-8')
+        try:
+            r = requests.get('http://' + ip_val + kcxx_query_url)
+            status = r.json().get('status')
+            if status == "success":
+                text.insert(tk.END, '\n%s 【客车限行】过车数据写入成功' % datetime.now())
+                f.write('\n%s 【客车限行】过车数据写入成功' % datetime.now())
+            elif status == "fail":
+                text.insert(tk.END, '\n%s 【客车限行】没有未查询的客车限行数据' % datetime.now())
+                f.write('\n%s 【客车限行】没有未查询的客车限行数据' % datetime.now())
+            else:
+                query_e = r.json().get('query_result')
+                text.insert(tk.END, '\n%s 【客车限行】查询出错 %s' % (datetime.now(), query_e))
+                f.write('\n%s 【客车限行】查询出错 %s' % (datetime.now(), query_e))
+        except Exception as e:
+            print(e)
+            f.write("%s 【客车限行】查询出错 %s\n" % (datetime.now(), str(e)))
+            text.insert(tk.END, "%s 【客车限行】查询出错 %s\n" % (datetime.now(), str(e)))
+        finally:
+            f.close()
+        sleep(5)
+
+        f = open(log_file, 'a+', encoding='utf-8')
+        try:
+            r = requests.get('http://' + ip_val + kcxx_query_back_result_url)
+            status = r.json().get('status')
+            if status == "success":
+                text.insert(tk.END, '\n%s 【客车限行】客车限行批量查询结果成功' % datetime.now())
+                f.write('\n%s 【客车限行】客车限行批量查询结果成功' % datetime.now())
+            else:
+                query_e = r.json().get('query_back_result')
+                text.insert(tk.END, '\n%s 【客车限行】查询【结果】出错 %s' % (datetime.now(), query_e))
+                f.write('\n%s 【客车限行】查询【结果】出错 %s' % (datetime.now(), query_e))
+        except Exception as e:
+            print(e)
+            f.write("%s 【客车限行】查询【结果】出错 %s\n" % (datetime.now(), str(e)))
+            text.insert(tk.END, "%s 【客车限行】查询【结果】出错 %s\n" % (datetime.now(), str(e)))
+        finally:
+            f.close()
+        sleep(int(query_time) * 60 * 60)
+
+
+def auto_run(move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf_list, query_time):
     log_file = datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     try:
@@ -430,6 +487,8 @@ def auto_run(move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf
             thread_it(push_kcxx, ip_val, push_time)
         if is_push_wfmd == "1":
             thread_it(push_wfmd, ip_val, push_time)
+        if is_kcxx_query == "1":
+            thread_it(kcxx_query, ip_val, query_time)
         sleep(5)
         thread_it(QZ_run, qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, wf_list)
         # 避免在服务器重启时失败
@@ -450,11 +509,11 @@ if __name__ == '__main__':
     f.close()
 
     if basic_info():
-        qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf_list = basic_info()
+        qz_path, move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf_list, query_time = basic_info()
 
         root = tk.Tk()
 
-        root.title('电警扫描器v2.0.1_20191119')
+        root.title('电警扫描器v2.0.2_20191209')
 
         # 滚动条
         scroll = tk.Scrollbar()
@@ -533,7 +592,7 @@ if __name__ == '__main__':
         qz_bt.grid(padx=5, pady=20)
         ping_bt.grid(padx=5, pady=20)
 
-        thread_it(auto_run, move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf_list)
+        thread_it(auto_run, move_folder, ip_val, white_list, sleep_time, qz_time, push_time, wf_list, query_time)
 
         q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
         q.grid(padx=5, pady=10)
