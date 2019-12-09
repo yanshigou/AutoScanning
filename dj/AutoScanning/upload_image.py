@@ -49,15 +49,18 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list, wf_list):
                             continue
                         wf_time = file_name_list[1] + file_name_list[2]
                         car_color = file_name_list[-1][0]
+                        speed = file_name_list[-2]  # 只有超速才能正确取到
                         # print(car_color)
                         car_type = '02'
                         if car_color == '黄':
                             car_type = '01'
+                        elif car_color == "绿":
+                            car_type = "52"
                         try:
                             f = open(file_path, 'rb')
                             files = {'image_file': (file_name, f, 'image/jpg')}
                             data = dict(
-                                data_type=i_type, ip=ip, car_id=car_id, car_type=car_type, wf_time=wf_time
+                                data_type=i_type, ip=ip, car_id=car_id, car_type=car_type, wf_time=wf_time, speed=speed
                             )
                             try:
                                 res = requests.post('http://' + ip_val + dj_url, files=files, data=data).json()
