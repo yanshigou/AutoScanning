@@ -56,6 +56,8 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list, wf_list):
                             car_type = '01'
                         elif car_color == "绿":
                             car_type = "52"
+                        elif car_color == "渐":  # 渐变绿
+                            car_type = "51"
                         try:
                             f = open(file_path, 'rb')
                             files = {'image_file': (file_name, f, 'image/jpg')}
