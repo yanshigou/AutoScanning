@@ -513,7 +513,7 @@ if __name__ == '__main__':
 
         root = tk.Tk()
 
-        root.title('电警扫描器v3.0.0_20200217')
+        root.title('电警扫描器v3.0.1_20200311')
 
         # 滚动条
         scroll = tk.Scrollbar()

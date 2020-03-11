@@ -26,7 +26,7 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list, wf_list):
                     file_name = file.file_name
                     file_name_list = file_name.split('_')
 
-                    print(file_name)
+                    # print(file_name)
                     car_id = ""
                     time1 = ""
                     time2 = ""
@@ -67,6 +67,9 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list, wf_list):
                         continue
                     if i_type in wf_list:
                         # 对取证进行操作
+                        if i_type == '13453' and file_name_list[0] == '2':
+                            os.remove(file_path)
+                            continue
                         if car_id in white_list:
                             os.remove(file_path)
                             continue
@@ -179,6 +182,10 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list, wf_list):
                             return {"status": "success", "count": count, "res_status": status, "file_path": file_path}
                     else:
                         os.remove(file_path)
+                else:
+                    file_path = file.file_path
+                    os.remove(file_path)
+                    continue
 
             else:
                 try:
