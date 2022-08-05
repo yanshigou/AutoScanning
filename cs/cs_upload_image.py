@@ -14,7 +14,7 @@ import random
 dj_url = "/csDataInfo/csDataInfoUpload/"
 
 
-def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list, wf_list):
+def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
     log_file = datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
     flog = open(log_file, 'a+', encoding='utf-8')
 
@@ -171,6 +171,6 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list, wf_list):
 if __name__ == '__main__':
     wf_list = ["60461", "60462", "60480"]
     file_list = FileObjectManager(FileObject("/Users/yanshigou/Downloads/16")).scan_with_depth(10).all_file_objects()
-    b = QZ(file_list, r"/Users/yanshigou/Downloads/", r'0.0.0.0:8000', "/Users/yanshigou/Downloads/16",
+    b = QZ(file_list, r'0.0.0.0:8000', "/Users/yanshigou/Downloads/16",
            datetime.now(), [], wf_list)
     print(b)
