@@ -156,7 +156,7 @@ def auto_run(ip_val, white_list, sleep_time, qz_time, wf_list):
 if __name__ == '__main__':
 
     log_file = datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
-    f = open(log_file, 'a+', encoding='utf-8')
+    # f = open(log_file, 'a+', encoding='utf-8')
     # f.write('%s 正在读取配置文件...\n' % datetime.now())
     # f.close()
 

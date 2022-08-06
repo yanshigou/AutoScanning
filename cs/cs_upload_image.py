@@ -2,7 +2,7 @@
 __author__ = "dzt"
 __date__ = "2022/8/2"
 
-from file_manager import FileObjectManager, FileObject
+from cs.file_manager import FileObjectManager, FileObject
 import requests
 import os
 import re
@@ -35,7 +35,6 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                 # print(file_name)
                 car_id = ""
                 ip = ""
-                i_type = ""
                 car_color = ""
 
                 for i in file_name_list:
@@ -49,27 +48,21 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         ip = i
                         # print("ip", ip)
 
-                    re_i_type = re.findall('^\d{4,5}$', i, re.S)
-                    if re_i_type:
-                        i_type = i
-                        # print("i_type", i_type)
-
                     re_car_color = re.findall('^.*\.jpg$', i, re.S)
                     if re_car_color:
                         car_color = i
                         # print("carColor", car_color)
 
-                # print("file_path", file_path)
-                # print("file_name", file_name)
-                # print("file_name_list", file_name_list)
+                i_type = file_name_list[0]
                 if '无' in car_id:
-                    print(car_id)
+                    flog.write("\n%s 【超速扫描删除】【无车牌】%s\n" % (now_time, file_path))
                     os.remove(file_path)
                     # continue
                     return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
                 if i_type in wf_list:
                     # 对取证进行操作
                     if i_type == '13453' and file_name_list[0] == '2':
+                        flog.write("\n%s 【超速扫描删除】【不正确违法代码】%s\n" % (now_time, file_path))
                         os.remove(file_path)
                         # continue
                         return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
@@ -136,10 +129,12 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         # sleep(1)
                         return {"status": "success", "count": count, "res_status": status, "file_path": file_path}
                 else:
+                    flog.write("\n%s 【超速扫描删除】【未在违法代码列表中】%s\n" % (now_time, file_path))
                     os.remove(file_path)
 
             else:
                 file_path = file.file_path
+                flog.write("\n%s 【超速扫描删除】【非jpg文件】%s\n" % (now_time, file_path))
                 os.remove(file_path)
                 # continue
                 return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
