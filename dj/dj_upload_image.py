@@ -41,7 +41,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                 time2 = file_name_list[2]
 
                 for i in file_name_list:
-                    re_car_id = re.findall('^[京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z].*', i, re.S)
+                    re_car_id = re.findall('^[无京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z].*', i, re.S)
                     if re_car_id:
                         car_id = i
 
