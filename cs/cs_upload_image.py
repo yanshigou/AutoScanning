@@ -6,7 +6,6 @@ from cs.file_manager import FileObjectManager, FileObject
 import requests
 import os
 import re
-from time import sleep
 from datetime import datetime
 import random
 
@@ -108,7 +107,6 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         finally:
                             f.close()
                     except Exception as e:
-                        print(e)
                         flog.write("\n%s 【超速扫描上传出错】【%s】\n" % (now_time, e))
                         # continue
                         status = "error"
@@ -121,8 +119,6 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         os.remove(file_path)
                         count = 1
                     except Exception as ex:
-                        print(ex)
-                        print('删除或移动出错')
                         flog.write("\n%s 【超速扫描删除或移动出错】【%s】\n" % (now_time, ex))
 
                     finally:
@@ -151,13 +147,11 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     # print("空文件夹，删除")
                     os.rmdir(folder_path)
             except Exception as exc:
-                print(exc)
+                folder_path = file.file_path
                 flog.write("\n%s 【超速扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
-                pass
+                return {"status": "fail", "count": 0, "res_status": "error", "file_path": folder_path}
         return {"status": "over", "count": 0}
     except Exception as e:
-        print(e)
-        sleep(1)
         return {"status": "error", "e": str(e), "res_status": "error", "count": 0}
     finally:
         flog.close()
