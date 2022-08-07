@@ -3,7 +3,7 @@ __author__ = "dzt"
 __date__ = "2022/08/05"
 
 
-from dj.file_manager import FileObjectManager, FileObject
+from dj_file_manager import FileObjectManager, FileObject
 import requests
 import os
 import re

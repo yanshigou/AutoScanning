@@ -2,7 +2,7 @@
 __author__ = "dzt"
 __date__ = "2022/8/2"
 
-from cs.file_manager import FileObjectManager, FileObject
+from cs_file_manager import FileObjectManager, FileObject
 import requests
 import os
 import re

@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/6"
-__title__ = "电警扫描器v0.1.0_20220807"
+__title__ = "违停扫描器v1.0_20220807"
 
-from wt.file_manager import FileObjectManager, FileObject
+from wt_file_manager import FileObjectManager, FileObject
 import requests
 import tkinter as tk
 import threading
 from tkinter import scrolledtext
-from wt.wt_upload_image import event, QZ
+from wt_upload_image import event, QZ
 from datetime import datetime
 from time import sleep
 import configparser

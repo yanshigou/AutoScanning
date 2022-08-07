@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2019/6/18"
-from wt.file_manager import FileObjectManager, FileObject
+from wt_file_manager import FileObjectManager, FileObject
 import requests
 import os
 import re
