@@ -8,18 +8,63 @@ import os
 import re
 from datetime import datetime
 import random
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 dj_url = "/csDataInfo/csDataInfoUpload/"
 
 
 def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
-    log_file = datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
+    log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
     flog = open(log_file, 'a+', encoding='utf-8')
 
+    split_val = qz_path.split("\\")[-1]
+    jpgFileList = []
     try:
-        if files_list:
-            file = random.choice(files_list)
+        for file in files_list:
+            if not file.is_file:
+                try:
+                    folder_path = file.file_path
+                    folder_val = folder_path.split('\\')[-1]
+                    folder_day = datetime.strftime(now_time, '%Y%m%d')
+                    folder_path_hour = split_val + "/" + folder_day + "/" + datetime.strftime(now_time, '%H')
+                    # print(folder_path)
+                    # print(folder_path_hour)
+                    if len(folder_path_hour) == len(folder_path) and folder_path != folder_path_hour:
+                        # print("folder_path_hour", folder_path_hour)
+                        # print("folder_path_xxxx", folder_path)
+                        if not os.listdir(folder_path) and folder_val != split_val and ('.' not in folder_val):
+                            flog.write("\n%s 【超速扫描删除非当前时间段空文件夹】【%s】\n" % (now_time, folder_path))
+                            os.rmdir(folder_path)
+                            continue
+                    if not os.listdir(folder_path) and folder_val != split_val and ('.' not in folder_val):
+                        # print("空文件夹，删除")
+                        if folder_day not in folder_path:
+                            flog.write("\n%s 【超速扫描删除空文件夹】【%s】\n" % (now_time, folder_path))
+                            os.rmdir(folder_path)
+                            print("del", folder_path)
+
+                except Exception as exc:
+                    flog.write("\n%s 【超速扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
+            else:
+                file_path = file.file_path
+                file_name = file.file_name
+                if file_name[-3:] != 'jpg':
+
+                    flog.write("\n%s 【超速扫描删除】【非jpg文件】%s\n" % (now_time, file_path))
+                    os.remove(file_path)
+                else:
+                    jpgFileList.append(file)
+                    # print(file_name, file.is_file)
+    except Exception as e:
+        flog.write("\n%s 【超速扫描清理文件出错】%s\n" % (now_time, e))
+        return {"status": "error", "e": str(e), "res_status": "error", "count": 0}
+
+    try:
+        if jpgFileList:
+            file = random.choice(jpgFileList)
         else:
             return {"status": "over", "count": 0}
         # 如果是文件,则打印
