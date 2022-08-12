@@ -55,7 +55,7 @@ def basic_info():
 
 
 def event_run(event_path, ip_val, white_list, sleep_time):
-    log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
+    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
     f.write("开始扫描事件文件夹：%s\n" % event_path)
@@ -65,7 +65,7 @@ def event_run(event_path, ip_val, white_list, sleep_time):
     # event_bt.config(state="disabled", text='正在扫描事件文件夹')
     count_event_thread_lb.config(text="\n已开启事件扫描器数：%s\n" % str(event_thread_count))
     while True:
-        log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
+        log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
         try:
             f = open(log_file, 'a+', encoding='utf-8')
             now_time = datetime.now()
@@ -130,7 +130,7 @@ def event_run(event_path, ip_val, white_list, sleep_time):
 
 
 def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
-    log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
+    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "\n开始扫描取证文件夹：%s\n" % qz_path)
     f.write("%s \n开始扫描取证文件夹：%s" % (qz_path, datetime.now()))
@@ -140,7 +140,7 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
     # qz_bt.config(state="disabled", text='正在扫描取证文件夹')
     count_qz_thread_lb.config(text="\n已开启取证扫描器数：%s\n" % str(qz_thread_count))
     while True:
-        log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
+        log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
         try:
             f = open(log_file, 'a+', encoding='utf-8')
             now_time = datetime.now()
@@ -212,7 +212,7 @@ def thread_it(func, *args):
 
 
 def auto_run(event_path, ip_val, white_list, sleep_time, qz_time):
-    log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
+    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     try:
         text.insert(tk.END, "%s %s秒后自动开始运行 【超速】取证扫描 \n" % (datetime.now(), qz_time))
@@ -236,7 +236,7 @@ def auto_run(event_path, ip_val, white_list, sleep_time, qz_time):
 
 if __name__ == '__main__':
 
-    log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
+    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     f.write('%s 正在读取配置文件...\n' % datetime.now())
     f.close()

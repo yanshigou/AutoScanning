@@ -14,7 +14,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def event(event_files_list, ip_val, event_path, now_time, white_list):
-    log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
+    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     flog = open(log_file, 'a+', encoding='utf-8')
 
     split_val = event_path.split("\\")[-1]
@@ -241,7 +241,7 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
 
 
 def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
-    log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
+    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     flog = open(log_file, 'a+', encoding='utf-8')
 
     split_val = qz_path.split("\\")[-1]

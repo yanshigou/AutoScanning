@@ -18,7 +18,7 @@ dj_url = "/djDataInfo/djDataInfoUpload/"
 
 
 def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
-    log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
+    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     flog = open(log_file, 'a+', encoding='utf-8')
 
     split_val = qz_path.split("\\")[-1]

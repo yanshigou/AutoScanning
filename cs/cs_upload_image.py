@@ -17,7 +17,7 @@ dj_url = "/csDataInfo/csDataInfoUpload/"
 
 
 def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
-    log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
+    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
     flog = open(log_file, 'a+', encoding='utf-8')
 
     split_val = qz_path.split("\\")[-1]
@@ -29,7 +29,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     folder_path = file.file_path
                     folder_val = folder_path.split('\\')[-1]
                     folder_day = datetime.strftime(now_time, '%Y%m%d')
-                    folder_path_hour = split_val + "/" + folder_day + "/" + datetime.strftime(now_time, '%H')
+                    folder_path_hour = split_val + "\\" + folder_day + "\\" + datetime.strftime(now_time, '%H')
                     # print(folder_path)
                     # print(folder_path_hour)
                     if len(folder_path_hour) == len(folder_path) and folder_path != folder_path_hour:

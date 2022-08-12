@@ -52,7 +52,7 @@ def basic_info():
 
 
 def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
-    log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
+    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "\n开始扫描电警文件夹：%s\n" % qz_path)
     # f.write("%s \n开始扫描电警文件夹：%s" % (qz_path, datetime.now()))
@@ -63,7 +63,7 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
     # qz_bt.config(state="disabled", text='正在扫描电警文件夹')
     count_thread_lb.config(text="\n已开启扫描器数：%s\n" % str(thread_count))
     while True:
-        log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
+        log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
         try:
             f = open(log_file, 'a+', encoding='utf-8')
             # sleep(1)
@@ -139,7 +139,7 @@ def thread_it(func, *args):
 
 
 def auto_run(ip_val, white_list, sleep_time, qz_time, wf_list):
-    log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
+    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     try:
         text.insert(tk.END, "%s %s秒后自动开始运行 【电警】取证扫描 \n" % (datetime.now(), qz_time))
@@ -158,7 +158,7 @@ def auto_run(ip_val, white_list, sleep_time, qz_time, wf_list):
 
 if __name__ == '__main__':
 
-    log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
+    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     # f = open(log_file, 'a+', encoding='utf-8')
     # f.write('%s 正在读取配置文件...\n' % datetime.now())
     # f.close()
@@ -182,7 +182,7 @@ if __name__ == '__main__':
         text.insert(tk.END, "取证图片上传间隔(秒)：%s\n" % qz_time)
         # text.insert(tk.END, "白名单：%s\n" % white_list)
 
-        log_file = BASE_DIR + "/logs/" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
+        log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
 
         text.grid(row=0, column=0)
         root.geometry('1000x800+600+50')
