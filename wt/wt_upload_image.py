@@ -26,42 +26,46 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                     folder_path = file.file_path
                     folder_val = folder_path.split('\\')[-1]
                     folder_day = datetime.strftime(now_time, '%Y%m%d')
-                    folder_path_hour = split_val + "/" + folder_day + "/" + datetime.strftime(now_time, '%H')
+                    folder_path_hour = split_val + "\\" + folder_day + "\\" + datetime.strftime(now_time, '%H')
                     # print(folder_path)
                     # print(folder_path_hour)
                     if len(folder_path_hour) == len(folder_path) and folder_path != folder_path_hour:
                         # print("folder_path_hour", folder_path_hour)
                         # print("folder_path_xxxx", folder_path)
                         if not os.listdir(folder_path) and folder_val != split_val and ('.' not in folder_val):
-                            flog.write("\n%s 【电警扫描删除非当前时间段空文件夹】【%s】\n" % (now_time, folder_path))
+                            flog.write("\n%s 【违停事件扫描删除非当前时间段空文件夹】【%s】\n" % (now_time, folder_path))
                             os.rmdir(folder_path)
                             continue
                     if not os.listdir(folder_path) and folder_val != split_val and ('.' not in folder_val):
                         # print("空文件夹，删除")
                         if folder_day not in folder_path:
-                            flog.write("\n%s 【电警扫描删除空文件夹】【%s】\n" % (now_time, folder_path))
+                            flog.write("\n%s 【违停事件扫描删除空文件夹】【%s】\n" % (now_time, folder_path))
                             os.rmdir(folder_path)
                             print("del", folder_path)
 
                 except Exception as exc:
-                    flog.write("\n%s 【电警扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
+                    flog.write("\n%s 【违停事件扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
             else:
                 file_path = file.file_path
                 file_name = file.file_name
                 if file_name[-3:] != 'jpg':
 
-                    flog.write("\n%s 【电警扫描删除】【非jpg文件】%s\n" % (now_time, file_path))
+                    flog.write("\n%s 【违停事件扫描删除】【非jpg文件】%s\n" % (now_time, file_path))
                     os.remove(file_path)
                 else:
                     jpgFileList.append(file)
                     # print(file_name, file.is_file)
     except Exception as e:
-        flog.write("\n%s 【电警扫描清理文件出错】%s\n" % (now_time, e))
-        return {"status": "error", "e": str(e), "res_status": "error", "count": 0}
+        flog.write("\n%s 【违停事件扫描清理文件出错】%s\n" % (now_time, e))
+        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0}
 
     try:
         if jpgFileList:
             file = random.choice(jpgFileList)
+            fileSize = file.size / 1024    # size  (self.size / 1024.0)
+            if fileSize < 10:
+                return {"status": "over", "count": 0}
+
         else:
             return {"status": "over", "count": 0}
         # 如果是文件,则打印
@@ -102,7 +106,7 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                         car_color = i
                 wf_time = time1 + time2
                 if '无' in car_id:
-                    flog.write("\n%s 【事件扫描删除】【无车牌】%s\n" % (now_time, file_path))
+                    flog.write("\n%s 【违停事件扫描删除】【无车牌】%s\n" % (now_time, file_path))
                     os.remove(file_path)
                     return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
                 if i_type == '2' and ('短信' not in last_str):
@@ -130,16 +134,16 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                                                 data=data).json()
                             status = res['status']
                         except Exception as e:
-                            flog.write("\n%s 【事件扫描上传出错】【%s】\n" % (now_time, e))
+                            flog.write("\n%s 【违停事件扫描上传出错】【%s】\n" % (now_time, e))
                             # continue
-                            status = "error"
+                            status = "scanError"
                             res = {"zp": "", "sms_image": ""}
                         finally:
                             f.close()
                     except Exception as e:
-                        flog.write("\n%s 【事件扫描上传出错】【%s】\n" % (now_time, e))
+                        flog.write("\n%s 【违停事件扫描上传出错】【%s】\n" % (now_time, e))
                         # continue
-                        status = "error"
+                        status = "scanError"
                         res = {"zp": "", "sms_image": ""}
 
                     zp = res.get('zp')
@@ -161,11 +165,11 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                         os.remove(file_path)
                         count = 1
                     except Exception as ex:
-                        flog.write("\n%s 【事件扫描删除或移动出错】【%s】\n" % (now_time, ex))
+                        flog.write("\n%s 【违停事件扫描删除或移动出错】【%s】\n" % (now_time, ex))
                     finally:
 
                         return {
-                            "status": "success", "count": count, "sms_count": 0, "res_status": status, "file_path": file_path,
+                            "status": status, "count": count, "sms_count": 0, "res_status": status, "file_path": file_path,
                             "zpname": zpname, "e": res.get('e')}
                         # return {
                         #     "status": "success", "count": count, "sms_count": 0, "res_status": status, "file_path": file_path,
@@ -194,13 +198,13 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                                                 data=data).json()
                             status = res['status']
                         except Exception as e:
-                            flog.write("\n%s 【事件扫描上传出错】【%s】\n" % (now_time, e))
-                            status = "error"
+                            flog.write("\n%s 【短信扫描上传出错】【%s】\n" % (now_time, e))
+                            status = "scanError"
                         finally:
                             f.close()
                     except Exception as e:
-                        flog.write("\n%s 【事件扫描上传出错】【%s】\n" % (now_time, e))
-                        status = "error"
+                        flog.write("\n%s 【短信扫描上传出错】【%s】\n" % (now_time, e))
+                        status = "scanError"
 
                     sms_count = 0
                     try:
@@ -208,17 +212,17 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                         os.remove(file_path)
                         sms_count = 1
                     except Exception as ex:
-                        flog.write("\n%s 【事件扫描删除或移动出错】【%s】\n" % (now_time, ex))
+                        flog.write("\n%s 【短信扫描删除或移动出错】【%s】\n" % (now_time, ex))
                     finally:
-                        return {"status": "success", "count": 0, "sms_count": sms_count, "res_status": status, "file_path": file_path,
+                        return {"status": status, "count": 0, "sms_count": sms_count, "res_status": status, "file_path": file_path,
                                 "zp": "success"}
                 else:
                     os.remove(file_path)
-                    flog.write("\n%s 【事件扫描删除】【未在违法代码列表中】%s\n" % (now_time, file_path))
+                    flog.write("\n%s 【短信扫描删除】【未在违法代码列表中】%s\n" % (now_time, file_path))
                     return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
             else:
                 file_path = file.file_path
-                flog.write("\n%s 【事件扫描删除】【非jpg文件】%s\n" % (now_time, file_path))
+                flog.write("\n%s 【短信扫描删除】【非jpg文件】%s\n" % (now_time, file_path))
                 os.remove(file_path)
                 # continue
                 return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
@@ -231,11 +235,11 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                     os.rmdir(folder_path)
             except Exception as exc:
                 folder_path = file.file_path
-                flog.write("\n%s 【事件扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
+                flog.write("\n%s 【违停事件扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
                 return {"status": "fail", "count": 0, "res_status": "error", "file_path": folder_path}
         return {"status": "over", "count": 0, "sms_count": 0}
     except Exception as e:
-        return {"status": "error", "e": str(e), "res_status": "error", "count": 0, "sms_count": 0}
+        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0, "sms_count": 0}
     finally:
         flog.close()
 
@@ -253,42 +257,46 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     folder_path = file.file_path
                     folder_val = folder_path.split('\\')[-1]
                     folder_day = datetime.strftime(now_time, '%Y%m%d')
-                    folder_path_hour = split_val + "/" + folder_day + "/" + datetime.strftime(now_time, '%H')
+                    folder_path_hour = split_val + "\\" + folder_day + "\\" + datetime.strftime(now_time, '%H')
                     # print(folder_path)
                     # print(folder_path_hour)
                     if len(folder_path_hour) == len(folder_path) and folder_path != folder_path_hour:
                         # print("folder_path_hour", folder_path_hour)
                         # print("folder_path_xxxx", folder_path)
                         if not os.listdir(folder_path) and folder_val != split_val and ('.' not in folder_val):
-                            flog.write("\n%s 【电警扫描删除非当前时间段空文件夹】【%s】\n" % (now_time, folder_path))
+                            flog.write("\n%s 【违停取证扫描删除非当前时间段空文件夹】【%s】\n" % (now_time, folder_path))
                             os.rmdir(folder_path)
                             continue
                     if not os.listdir(folder_path) and folder_val != split_val and ('.' not in folder_val):
                         # print("空文件夹，删除")
                         if folder_day not in folder_path:
-                            flog.write("\n%s 【电警扫描删除空文件夹】【%s】\n" % (now_time, folder_path))
+                            flog.write("\n%s 【违停取证扫描删除空文件夹】【%s】\n" % (now_time, folder_path))
                             os.rmdir(folder_path)
                             print("del", folder_path)
 
                 except Exception as exc:
-                    flog.write("\n%s 【电警扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
+                    flog.write("\n%s 【违停取证扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
             else:
                 file_path = file.file_path
                 file_name = file.file_name
                 if file_name[-3:] != 'jpg':
 
-                    flog.write("\n%s 【电警扫描删除】【非jpg文件】%s\n" % (now_time, file_path))
+                    flog.write("\n%s 【违停取证扫描删除】【非jpg文件】%s\n" % (now_time, file_path))
                     os.remove(file_path)
                 else:
                     jpgFileList.append(file)
                     # print(file_name, file.is_file)
     except Exception as e:
-        flog.write("\n%s 【电警扫描清理文件出错】%s\n" % (now_time, e))
-        return {"status": "error", "e": str(e), "res_status": "error", "count": 0}
+        flog.write("\n%s 【违停取证扫描清理文件出错】%s\n" % (now_time, e))
+        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0}
 
     try:
         if jpgFileList:
             file = random.choice(jpgFileList)
+            fileSize = file.size / 1024    # size  (self.size / 1024.0)
+            if fileSize < 10:
+                return {"status": "over", "count": 0}
+
         else:
             return {"status": "over", "count": 0}
         # 如果是文件,则打印
@@ -327,7 +335,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         car_color = i
                 wf_time = time1 + time2
                 if '无' in car_id:
-                    flog.write("\n%s 【取证扫描删除】【无车牌】%s\n" % (now_time, file_path))
+                    flog.write("\n%s 【违停取证扫描删除】【无车牌】%s\n" % (now_time, file_path))
                     os.remove(file_path)
                     return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
 
@@ -357,15 +365,15 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                                                 data=data).json()
                             status = res['status']
                         except Exception as e:
-                            flog.write("\n%s 【取证扫描上传出错】【%s】\n" % (now_time, e))
+                            flog.write("\n%s 【违停取证扫描上传出错】【%s】\n" % (now_time, e))
                             # continue
-                            status = "error"
+                            status = "scanError"
                         finally:
                             f.close()
                     except Exception as e:
-                        flog.write("\n%s 【取证扫描上传出错】【%s】\n" % (now_time, e))
+                        flog.write("\n%s 【违停取证扫描上传出错】【%s】\n" % (now_time, e))
                         # continue
-                        status = "error"
+                        status = "scanError"
 
                     count = 0
                     try:
@@ -374,15 +382,15 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         os.remove(file_path)
                         count = 1
                     except Exception as ex:
-                        flog.write("\n%s 【取证扫描删除或移动出错】【%s】\n" % (now_time, ex))
+                        flog.write("\n%s 【违停取证扫描删除或移动出错】【%s】\n" % (now_time, ex))
                     finally:
-                        return {"status": "success", "count": count, "res_status": status, "file_path": file_path}
+                        return {"status": status, "count": count, "res_status": status, "file_path": file_path}
                 else:
-                    flog.write("\n%s 【取证扫描删除】【未在违法代码列表中】%s\n" % (now_time, file_path))
+                    flog.write("\n%s 【违停取证扫描删除】【未在违法代码列表中】%s\n" % (now_time, file_path))
                     os.remove(file_path)
             else:
                 file_path = file.file_path
-                flog.write("\n%s 【取证扫描删除】【非jpg文件】%s\n" % (now_time, file_path))
+                flog.write("\n%s 【违停取证扫描删除】【非jpg文件】%s\n" % (now_time, file_path))
                 os.remove(file_path)
                 # continue
                 return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
@@ -395,11 +403,11 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     os.rmdir(folder_path)
             except Exception as exc:
                 folder_path = file.file_path
-                flog.write("\n%s 【取证扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
+                flog.write("\n%s 【违停取证扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
                 return {"status": "fail", "count": 0, "res_status": "error", "file_path": folder_path}
         return {"status": "over", "count": 0}
     except Exception as e:
-        return {"status": "error", "e": str(e), "res_status": "error", "count": 0}
+        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0}
     finally:
         flog.close()
 

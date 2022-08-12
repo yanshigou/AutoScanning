@@ -104,9 +104,12 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
                 f.write("\n%s 【电警】【上传出错，请检查日志】：%s" % (now_time, e))
             elif status == "over":
                 text.insert(tk.END, "\n%s 【电警】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
-                f.write("\n%s 【电警】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
+                # f.write("\n%s 【电警】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
                 text.see(tk.END)
                 sleep(int(sleep_time))
+            elif status == "scanError":
+                text.insert(tk.END, "\n%s【电警】【扫描出错】：%s\n" % (now_time, e))
+                f.write("\n%s【电警】【扫描出错】：%s\n" % (now_time, e))
             # count_qz_lb.config(text='\n已处理电警图片数：%s\n' % str(count))
             # f.write('\n%s 已处理电警图片数：%s\n' % (now_time, str(count)))
             text.see(tk.END)

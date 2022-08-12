@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/3"
-__title__ = "区间测速扫描器v1.0_20220810"
+__title__ = "区间测速扫描器v1.0_20220813"
 
 from cs_file_manager import FileObjectManager, FileObject
 import requests
@@ -12,9 +12,7 @@ from cs_upload_image import QZ
 from datetime import datetime
 from time import sleep
 import configparser
-import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 建立连接 获取csrftoken
 client = requests.session()
@@ -104,9 +102,12 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
                 f.write("\n%s 【超速】【上传出错，请检查日志】：%s" % (now_time, e))
             elif status == "over":
                 text.insert(tk.END, "\n%s 【超速】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
-                f.write("\n%s 【超速】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
+                # f.write("\n%s 【超速】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
                 text.see(tk.END)
                 sleep(int(sleep_time))
+            elif status == "scanError":
+                text.insert(tk.END, "\n%s【超速】【扫描出错】：%s\n" % (now_time, e))
+                f.write("\n%s【超速】【扫描出错】：%s\n" % (now_time, e))
             # count_qz_lb.config(text='\n已处理超速图片数：%s\n' % str(count))
             # f.write('\n%s 已处理超速图片数：%s\n' % (now_time, str(count)))
             text.see(tk.END)

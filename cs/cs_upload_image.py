@@ -60,11 +60,15 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     # print(file_name, file.is_file)
     except Exception as e:
         flog.write("\n%s 【超速扫描清理文件出错】%s\n" % (now_time, e))
-        return {"status": "error", "e": str(e), "res_status": "error", "count": 0}
+        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0}
 
     try:
         if jpgFileList:
             file = random.choice(jpgFileList)
+            fileSize = file.size / 1024    # size  (self.size / 1024.0)
+            if fileSize < 10:
+                return {"status": "over", "count": 0}
+
         else:
             return {"status": "over", "count": 0}
         # 如果是文件,则打印
@@ -148,13 +152,13 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             # print("Exception=" + str(e))
                             flog.write("\n%s 【超速扫描上传出错】【%s】\n" % (now_time, e))
                             # continue
-                            status = "error"
+                            status = "scanError"
                         finally:
                             f.close()
                     except Exception as e:
                         flog.write("\n%s 【超速扫描上传出错】【%s】\n" % (now_time, e))
                         # continue
-                        status = "error"
+                        status = "scanError"
 
                     # print("status=" + status)
                     count = 0
@@ -168,7 +172,8 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
 
                     finally:
                         # sleep(1)
-                        return {"status": "success", "count": count, "res_status": status, "file_path": file_path}
+
+                        return {"status": status, "count": count, "res_status": status, "file_path": file_path}
                 else:
                     flog.write("\n%s 【超速扫描删除】【未在违法代码列表中】%s\n" % (now_time, file_path))
                     os.remove(file_path)
@@ -197,14 +202,14 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                 return {"status": "fail", "count": 0, "res_status": "error", "file_path": folder_path}
         return {"status": "over", "count": 0}
     except Exception as e:
-        return {"status": "error", "e": str(e), "res_status": "error", "count": 0}
+        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0}
     finally:
         flog.close()
 
 
 if __name__ == '__main__':
     wf_list = ["60461", "60462", "60480"]
-    file_list = FileObjectManager(FileObject("/Users/yanshigou/Downloads/16")).scan_with_depth(10).all_file_objects()
-    b = QZ(file_list, r'0.0.0.0:8000', "/Users/yanshigou/Downloads/16",
+    file_list = FileObjectManager(FileObject("C:\\Users\\yanshigou\\Desktop\\新建文件夹 (2)")).scan_with_depth(10).all_file_objects()
+    b = QZ(file_list, r'0.0.0.0:8000', "C:\\Users\\yanshigou\\Desktop\\新建文件夹 (2)",
            datetime.now(), [], wf_list)
     print(b)

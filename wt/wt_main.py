@@ -116,9 +116,12 @@ def event_run(event_path, ip_val, white_list, sleep_time):
                 f.write("\n%s 【事件】【上传图片出错，请检查日志】：%s" % (now_time, e))
             elif status == "over":
                 text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, event_path, sleep_time.strip()))
-                f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, event_path, sleep_time.strip()))
+                # f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, event_path, sleep_time.strip()))
                 text.see(tk.END)
                 sleep(int(sleep_time))
+            elif status == "scanError":
+                text.insert(tk.END, "\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
+                f.write("\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
             text.see(tk.END)
             # sleep(0.1)
         except Exception as ee:
@@ -179,9 +182,12 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
                 f.write("\n%s 【取证】【上传出错，请检查日志】：%s" % (now_time, e))
             elif status == "over":
                 text.insert(tk.END, "\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
-                f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
+                # f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
                 text.see(tk.END)
                 sleep(int(sleep_time))
+            elif status == "scanError":
+                text.insert(tk.END, "\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
+                f.write("\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
             text.see(tk.END)
             # 大量同时推送集成平台时，会出错
             if qz_time != '0':
