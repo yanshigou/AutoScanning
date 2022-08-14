@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/5"
-__title__ = "电警扫描器v1.0_20220813"
+__title__ = "电警扫描器v1.0_20220815"
 
 from dj_file_manager import FileObjectManager, FileObject
 import requests
@@ -45,7 +45,7 @@ def basic_info():
 
         return qz_path, ip_val, white_list, sleep_time, qz_time, wf_list
     except Exception as e:
-        print(e)
+        # print(e)
         return False
 
 
@@ -53,7 +53,7 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
     log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "\n开始扫描电警文件夹：%s\n" % qz_path)
-    f.write("%s \n开始扫描电警文件夹：%s" % (qz_path, datetime.now()))
+    f.write("%s \n开始扫描电警文件夹：%s" % (datetime.now(), qz_path))
     f.close()
     # count = 0
     global thread_count
@@ -150,7 +150,7 @@ def auto_run(ip_val, white_list, sleep_time, qz_time, wf_list):
         thread_it(QZ_run, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list)
         # 避免在服务器重启时失败
     except Exception as e:
-        print(e)
+        # print(e)
         f.write("%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
         text.insert(tk.END, "%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
     finally:

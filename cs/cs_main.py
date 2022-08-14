@@ -45,7 +45,7 @@ def basic_info():
 
         return qz_path, ip_val, white_list, sleep_time, qz_time, wf_list
     except Exception as e:
-        print(e)
+        # print(e)
         return False
 
 
@@ -150,7 +150,7 @@ def auto_run(ip_val, white_list, sleep_time, qz_time, wf_list):
         thread_it(QZ_run, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list)
         # 避免在服务器重启时失败
     except Exception as e:
-        print(e)
+        # print(e)
         f.write("%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
         text.insert(tk.END, "%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
     finally:

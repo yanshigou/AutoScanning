@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/6"
-__title__ = "违停扫描器v1.0_20220813"
+__title__ = "违停扫描器v1.0_20220815"
 
 from wt_file_manager import FileObjectManager, FileObject
 import requests
@@ -48,7 +48,7 @@ def basic_info():
 
         return event_path, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list
     except Exception as e:
-        print(e)
+        # print(e)
         return False
 
 
@@ -56,7 +56,7 @@ def event_run(event_path, ip_val, white_list, sleep_time):
     log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
-    f.write("开始扫描事件文件夹：%s\n" % event_path)
+    f.write("%s \n开始扫描事件文件夹：%s" % (datetime.now(), qz_path))
     f.close()
     global event_thread_count
     event_thread_count += 1
@@ -134,7 +134,7 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
     log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "\n开始扫描取证文件夹：%s\n" % qz_path)
-    f.write("%s \n开始扫描取证文件夹：%s" % (qz_path, datetime.now()))
+    f.write("%s \n开始扫描取证文件夹：%s" % (datetime.now(), qz_path))
     f.close()
     global qz_thread_count
     qz_thread_count += 1
@@ -231,7 +231,7 @@ def auto_run(event_path, ip_val, white_list, sleep_time, qz_time):
         sleep(0.1)
         thread_it(QZ_run, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list)
     except Exception as e:
-        print(e)
+        # print(e)
         f.write("%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
         text.insert(tk.END, "%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
     finally:

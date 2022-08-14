@@ -42,7 +42,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         if folder_day not in folder_path:
                             flog.write("\n%s 【电警扫描删除空文件夹】【%s】\n" % (now_time, folder_path))
                             os.rmdir(folder_path)
-                            print("del", folder_path)
+                            # print("del", folder_path)
 
                 except Exception as exc:
                     flog.write("\n%s 【电警扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
