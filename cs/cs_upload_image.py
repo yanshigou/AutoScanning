@@ -8,9 +8,6 @@ import os
 import re
 from datetime import datetime
 import random
-import os
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 dj_url = "/csDataInfo/csDataInfoUpload/"
@@ -80,7 +77,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                 file_name = file.file_name
                 file_name_list = file_name.split('_')
 
-                # print(file_name)
+                # print(file_name) 60462_20220802163557215_20220802164040215_50.45.153.151_47_40_渝DF7725_蓝.jpg
                 car_id = ""
                 ip = ""
                 car_color = ""

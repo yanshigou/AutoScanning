@@ -12,9 +12,7 @@ from cs_upload_image import QZ
 from datetime import datetime
 from time import sleep
 import configparser
-import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 建立连接 获取csrftoken
 client = requests.session()

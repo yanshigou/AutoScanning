@@ -9,9 +9,6 @@ import os
 import re
 from datetime import datetime
 import random
-import os
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 dj_url = "/djDataInfo/djDataInfoUpload/"
@@ -81,13 +78,20 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                 file_name = file.file_name
                 file_name_list = file_name.split('_')
 
-                # print(file_name)
+                # print(file_name)  60950_20220608_115324_728_50.22.36.211_渝AQ39C9_47_40_蓝.jpg
                 car_id = ""
                 ip = ""
                 car_color = ""
                 time1 = file_name_list[1]
                 time2 = file_name_list[2]
+                speed = file_name_list[-3]  # 只有超速才能正确取到
+                lim_speed = file_name_list[-2]  # 只有超速才能正确取到
 
+                # 兼容未改格式
+                if not re.findall('^\d{1,3}$', speed, re.S):
+                    speed = ""
+                if not re.findall('^\d{1,3}$', lim_speed, re.S):
+                    lim_speed = ""
                 for i in file_name_list:
                     re_car_id = re.findall('^[无京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z].*', i, re.S)
                     if re_car_id:
@@ -140,15 +144,19 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             car_id=car_id,
                             car_type=car_type,
                             wf_time=wf_time,
+                            speed=speed,
+                            lim_speed=lim_speed
                         )
                         try:
                             res = requests.post('http://' + ip_val + dj_url, files=files, data=data).json()
-                            status = res['status']
+                            status = res.get('status')
+                            stre = res.get('e')
                         except Exception as e:
                             # print("Exception=" + str(e))
                             flog.write("\n%s 【电警扫描上传出错】【%s】\n" % (now_time, e))
                             # continue
                             status = "scanError"
+                            stre = "stre"
                         finally:
                             f.close()
                     except Exception as e:
@@ -156,6 +164,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         flog.write("\n%s 【电警扫描上传出错】【%s】\n" % (now_time, e))
                         # continue
                         status = "scanError"
+                        stre = "e"
 
                     # print("status=" + status)
                     count = 0
@@ -169,7 +178,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
 
                     finally:
                         # sleep(1)
-                        return {"status": status, "count": count, "res_status": status, "file_path": file_path}
+                        return {"status": status, "count": count, "res_status": status, "file_path": file_path, "e": stre}
                 else:
                     flog.write("\n%s 【电警扫描删除】【未在违法代码列表中】%s\n" % (now_time, file_path))
                     os.remove(file_path)
@@ -204,7 +213,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
 
 
 if __name__ == '__main__':
-    wf_list = ["60461", "60462", "60480", "16250"]
+    wf_list = ["60461", "60462", "60480", "16250", "60950"]
     file_list = FileObjectManager(FileObject("/Users/yanshigou/Downloads/16")).scan_with_depth(10).all_file_objects()
     b = QZ(file_list, r'0.0.0.0:8000', "/Users/yanshigou/Downloads/16",
            datetime.now(), [], wf_list)

@@ -12,9 +12,7 @@ from dj_upload_image import QZ
 from datetime import datetime
 from time import sleep
 import configparser
-import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 建立连接 获取csrftoken
 client = requests.session()
@@ -55,8 +53,8 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
     log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '电警日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "\n开始扫描电警文件夹：%s\n" % qz_path)
-    # f.write("%s \n开始扫描电警文件夹：%s" % (qz_path, datetime.now()))
-    # f.close()
+    f.write("%s \n开始扫描电警文件夹：%s" % (qz_path, datetime.now()))
+    f.close()
     # count = 0
     global thread_count
     thread_count += 1

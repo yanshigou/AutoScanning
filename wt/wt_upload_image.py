@@ -8,9 +8,6 @@ import re
 from datetime import datetime
 import base64
 import random
-import os
-
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 def event(event_files_list, ip_val, event_path, now_time, white_list):
