@@ -156,7 +156,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             flog.write("\n%s 【电警扫描上传出错】【%s】\n" % (now_time, e))
                             # continue
                             status = "scanError"
-                            stre = "stre"
+                            stre = e
                         finally:
                             f.close()
                     except Exception as e:
@@ -164,7 +164,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         flog.write("\n%s 【电警扫描上传出错】【%s】\n" % (now_time, e))
                         # continue
                         status = "scanError"
-                        stre = "e"
+                        stre = e
 
                     # print("status=" + status)
                     count = 0
