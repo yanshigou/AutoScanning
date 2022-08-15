@@ -9,6 +9,7 @@ import os
 import re
 from datetime import datetime
 import random
+import traceback
 
 
 dj_url = "/djDataInfo/djDataInfoUpload/"
@@ -45,7 +46,8 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             # print("del", folder_path)
 
                 except Exception as exc:
-                    flog.write("\n%s 【电警扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
+                    strexc = traceback.format_exc()
+                    flog.write("\n%s 【电警扫描删除空文件夹出错】【%s】\n" % (now_time, strexc))
             else:
                 file_path = file.file_path
                 file_name = file.file_name
@@ -57,8 +59,9 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     jpgFileList.append(file)
                     # print(file_name, file.is_file)
     except Exception as e:
-        flog.write("\n%s 【电警扫描清理文件出错】%s\n" % (now_time, e))
-        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0}
+        strexc = traceback.format_exc()
+        flog.write("\n%s 【电警扫描清理文件出错】%s\n" % (now_time, strexc))
+        return {"status": "scanError", "e": strexc, "res_status": "error", "count": 0}
 
     try:
         if jpgFileList:
@@ -150,21 +153,21 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         try:
                             res = requests.post('http://' + ip_val + dj_url, files=files, data=data).json()
                             status = res.get('status')
-                            stre = res.get('e')
+                            strexc = res.get('e')
                         except Exception as e:
                             # print("Exception=" + str(e))
-                            flog.write("\n%s 【电警扫描上传出错】【%s】\n" % (now_time, e))
+                            strexc = traceback.format_exc()
+                            flog.write("\n%s 【电警扫描上传出错】【%s】\n" % (now_time, strexc))
                             # continue
                             status = "scanError"
-                            stre = e
                         finally:
                             f.close()
                     except Exception as e:
                         # print(e)
-                        flog.write("\n%s 【电警扫描上传出错】【%s】\n" % (now_time, e))
+                        strexc = traceback.format_exc()
+                        flog.write("\n%s 【电警扫描上传出错】【%s】\n" % (now_time, strexc))
                         # continue
                         status = "scanError"
-                        stre = e
 
                     # print("status=" + status)
                     count = 0
@@ -174,11 +177,12 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         os.remove(file_path)
                         count = 1
                     except Exception as ex:
-                        flog.write("\n%s 【电警扫描删除或移动出错】【%s】\n" % (now_time, ex))
+                        strexc = traceback.format_exc()
+                        flog.write("\n%s 【电警扫描删除或移动出错】【%s】\n" % (now_time, strexc))
 
                     finally:
                         # sleep(1)
-                        return {"status": status, "count": count, "res_status": status, "file_path": file_path, "e": stre}
+                        return {"status": status, "count": count, "res_status": status, "file_path": file_path, "e": strexc}
                 else:
                     flog.write("\n%s 【电警扫描删除】【未在违法代码列表中】%s\n" % (now_time, file_path))
                     os.remove(file_path)
@@ -202,12 +206,14 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     # print("空文件夹，删除")
                     os.rmdir(folder_path)
             except Exception as exc:
+                strexc = traceback.format_exc()
                 folder_path = file.file_path
-                flog.write("\n%s 【电警扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
-                return {"status": "fail", "count": 0, "res_status": "error", "file_path": folder_path}
+                flog.write("\n%s 【电警扫描删除空文件夹出错】【%s】\n" % (now_time, strexc))
+                return {"status": "scanError", "count": 0, "res_status": "error", "file_path": folder_path, "e": strexc}
         return {"status": "over", "count": 0}
     except Exception as e:
-        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0}
+        strexc = traceback.format_exc()
+        return {"status": "scanError", "e": strexc, "res_status": "error", "count": 0}
     finally:
         flog.close()
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/3"
-__title__ = "区间测速扫描器v1.0_20220815"
+__title__ = "区间测速扫描器v1.1_20220816"
 
 from cs_file_manager import FileObjectManager, FileObject
 import requests
@@ -12,6 +12,7 @@ from cs_upload_image import QZ
 from datetime import datetime
 from time import sleep
 import configparser
+import traceback
 
 
 # 建立连接 获取csrftoken
@@ -53,7 +54,7 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
     log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "\n开始扫描超速文件夹：%s\n" % qz_path)
-    f.write("%s \n开始扫描超速文件夹：%s" % (datetime.now(), qz_path))
+    f.write("\n%s 开始扫描超速文件夹：%s\n" % (datetime.now(), qz_path))
     f.close()
     # count = 0
     global thread_count
@@ -101,10 +102,10 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
                 text.insert(tk.END, "\n%s【超速】【上传出错，请查看日志】：%s\n" % (now_time, e))
                 f.write("\n%s 【超速】【上传出错，请检查日志】：%s" % (now_time, e))
             elif status == "over":
-                text.insert(tk.END, "\n%s 【超速】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
+                # text.insert(tk.END, "\n%s 【超速】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
                 # f.write("\n%s 【超速】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
-                text.see(tk.END)
-                sleep(int(sleep_time))
+                # text.see(tk.END)
+                sleep(float(sleep_time))
             elif status == "scanError":
                 text.insert(tk.END, "\n%s【超速】【扫描出错】：%s\n" % (now_time, e))
                 f.write("\n%s【超速】【扫描出错】：%s\n" % (now_time, e))
@@ -113,11 +114,12 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
             text.see(tk.END)
             # 大量同时推送集成平台时，会出错
             if qz_time != '0':
-                sleep(int(qz_time))
+                sleep(float(qz_time))
         except Exception as ee:
+            strexc = traceback.format_exc()
             text.insert(tk.END, "\n%s 【超速】程序出错：%s\n" % (datetime.now(), str(ee)))
             text.see(tk.END)
-            f.write("\n%s 【超速】程序出错：%s" % (datetime.now(), str(ee)))
+            f.write("\n%s 【超速】程序出错：%s" % (datetime.now(), strexc))
         finally:
             f.close()
 
@@ -151,7 +153,8 @@ def auto_run(ip_val, white_list, sleep_time, qz_time, wf_list):
         # 避免在服务器重启时失败
     except Exception as e:
         # print(e)
-        f.write("%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
+        strexc = traceback.format_exc()
+        f.write("%s 自动运行出错 %s\n" % (datetime.now(), strexc))
         text.insert(tk.END, "%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
     finally:
         f.close()

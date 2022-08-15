@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/6"
-__title__ = "违停扫描器v1.0_20220815"
+__title__ = "违停扫描器v1.1_20220816"
 
 from wt_file_manager import FileObjectManager, FileObject
 import requests
@@ -12,6 +12,7 @@ from wt_upload_image import event, QZ
 from datetime import datetime
 from time import sleep
 import configparser
+import traceback
 
 
 # 建立连接 获取csrftoken
@@ -56,7 +57,7 @@ def event_run(event_path, ip_val, white_list, sleep_time):
     log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
-    f.write("%s \n开始扫描事件文件夹：%s" % (datetime.now(), qz_path))
+    f.write("\n%s 开始扫描事件文件夹：%s\n" % (datetime.now(), qz_path))
     f.close()
     global event_thread_count
     event_thread_count += 1
@@ -113,19 +114,20 @@ def event_run(event_path, ip_val, white_list, sleep_time):
                 text.insert(tk.END, "\n%s 【事件】【上传图片出错，请查看日志】：%s\n" % (now_time, e))
                 f.write("\n%s 【事件】【上传图片出错，请检查日志】：%s" % (now_time, e))
             elif status == "over":
-                text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, event_path, sleep_time.strip()))
+                # text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, event_path, sleep_time.strip()))
                 # f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, event_path, sleep_time.strip()))
-                text.see(tk.END)
-                sleep(int(sleep_time))
+                # text.see(tk.END)
+                sleep(float(sleep_time))
             elif status == "scanError":
                 text.insert(tk.END, "\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
                 f.write("\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
             text.see(tk.END)
             # sleep(0.1)
         except Exception as ee:
+            strexc = traceback.format_exc()
             text.insert(tk.END, "\n%s 【事件】程序出错：%s\n" % (datetime.now(), str(ee)))
             text.see(tk.END)
-            f.write("\n%s 【事件】程序出错：%s" % (datetime.now(), str(ee)))
+            f.write("\n%s 【事件】程序出错：%s" % (datetime.now(), strexc))
         finally:
             f.close()
 
@@ -134,7 +136,7 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
     log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "\n开始扫描取证文件夹：%s\n" % qz_path)
-    f.write("%s \n开始扫描取证文件夹：%s" % (datetime.now(), qz_path))
+    f.write("\n%s 开始扫描取证文件夹：%s\n" % (datetime.now(), qz_path))
     f.close()
     global qz_thread_count
     qz_thread_count += 1
@@ -179,21 +181,22 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
                 text.insert(tk.END, "\n%s【取证】【上传出错，请查看日志】：%s\n" % (now_time, e))
                 f.write("\n%s 【取证】【上传出错，请检查日志】：%s" % (now_time, e))
             elif status == "over":
-                text.insert(tk.END, "\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
+                # text.insert(tk.END, "\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
                 # f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
-                text.see(tk.END)
-                sleep(int(sleep_time))
+                # text.see(tk.END)
+                sleep(float(sleep_time))
             elif status == "scanError":
                 text.insert(tk.END, "\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
                 f.write("\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
             text.see(tk.END)
             # 大量同时推送集成平台时，会出错
             if qz_time != '0':
-                sleep(int(qz_time))
+                sleep(float(qz_time))
         except Exception as ee:
+            strexc = traceback.format_exc()
             text.insert(tk.END, "\n%s 【取证】程序出错：%s\n" % (datetime.now(), str(ee)))
             text.see(tk.END)
-            f.write("\n%s 【取证】程序出错：%s" % (datetime.now(), str(ee)))
+            f.write("\n%s 【取证】程序出错：%s" % (datetime.now(), strexc))
         finally:
             f.close()
 
@@ -222,17 +225,18 @@ def auto_run(event_path, ip_val, white_list, sleep_time, qz_time):
         text.insert(tk.END, "%s %s秒后自动开始运行 【超速】取证扫描 \n" % (datetime.now(), qz_time))
         # f.write("%s 5秒后自动开始运行 【超速】取证扫描  \n" % datetime.now())
 
-        sleep(int(qz_time))
+        sleep(float(qz_time))
 
         text.insert(tk.END, "%s %s秒后自动开始运行 事件扫描 \n" % (datetime.now(), qz_time))
         text.insert(tk.END, "%s %s秒后自动开始运行 取证扫描 \n" % (datetime.now(), qz_time))
-        sleep(int(qz_time))
+        sleep(float(qz_time))
         thread_it(event_run, event_path, ip_val, white_list, sleep_time)
         sleep(0.1)
         thread_it(QZ_run, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list)
     except Exception as e:
         # print(e)
-        f.write("%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
+        strexc = traceback.format_exc()
+        f.write("%s 自动运行出错 %s\n" % (datetime.now(), strexc))
         text.insert(tk.END, "%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
     finally:
         f.close()

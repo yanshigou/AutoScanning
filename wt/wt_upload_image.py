@@ -8,6 +8,7 @@ import re
 from datetime import datetime
 import base64
 import random
+import traceback
 
 
 def event(event_files_list, ip_val, event_path, now_time, white_list):
@@ -41,7 +42,8 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                             # print("del", folder_path)
 
                 except Exception as exc:
-                    flog.write("\n%s 【违停事件扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
+                    strexc = traceback.format_exc()
+                    flog.write("\n%s 【违停事件扫描删除空文件夹出错】【%s】\n" % (now_time, strexc))
             else:
                 file_path = file.file_path
                 file_name = file.file_name
@@ -53,8 +55,9 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                     jpgFileList.append(file)
                     # print(file_name, file.is_file)
     except Exception as e:
-        flog.write("\n%s 【违停事件扫描清理文件出错】%s\n" % (now_time, e))
-        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0}
+        strexc = traceback.format_exc()
+        flog.write("\n%s 【违停事件扫描清理文件出错】%s\n" % (now_time, strexc))
+        return {"status": "scanError", "e":strexc, "res_status": "error", "count": 0}
 
     try:
         if jpgFileList:
@@ -129,16 +132,19 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                         try:
                             res = requests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files,
                                                 data=data).json()
-                            status = res['status']
+                            status = res.get('status')
+                            strexc = res.get('e')
                         except Exception as e:
-                            flog.write("\n%s 【违停事件扫描上传出错】【%s】\n" % (now_time, e))
+                            strexc = traceback.format_exc()
+                            flog.write("\n%s 【违停事件扫描上传出错】【%s】\n" % (now_time, strexc))
                             # continue
                             status = "scanError"
                             res = {"zp": "", "sms_image": ""}
                         finally:
                             f.close()
                     except Exception as e:
-                        flog.write("\n%s 【违停事件扫描上传出错】【%s】\n" % (now_time, e))
+                        strexc = traceback.format_exc()
+                        flog.write("\n%s 【违停事件扫描上传出错】【%s】\n" % (now_time, strexc))
                         # continue
                         status = "scanError"
                         res = {"zp": "", "sms_image": ""}
@@ -162,12 +168,13 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                         os.remove(file_path)
                         count = 1
                     except Exception as ex:
-                        flog.write("\n%s 【违停事件扫描删除或移动出错】【%s】\n" % (now_time, ex))
+                        strexc = traceback.format_exc()
+                        flog.write("\n%s 【违停事件扫描删除或移动出错】【%s】\n" % (now_time, strexc))
                     finally:
 
                         return {
                             "status": status, "count": count, "sms_count": 0, "res_status": status, "file_path": file_path,
-                            "zpname": zpname, "e": res.get('e')}
+                            "zpname": zpname, "e": strexc}
                         # return {
                         #     "status": "success", "count": count, "sms_count": 0, "res_status": status, "file_path": file_path,
                         #     "zpname": "", "e": ""}
@@ -193,14 +200,17 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                         try:
                             res = requests.post('http://%s/dataInfo/wtDataEventSMSUpload/' % ip_val, files=files,
                                                 data=data).json()
-                            status = res['status']
+                            status = res.get("status")
+                            strexc = res.get('e')
                         except Exception as e:
-                            flog.write("\n%s 【短信扫描上传出错】【%s】\n" % (now_time, e))
+                            strexc = traceback.format_exc()
+                            flog.write("\n%s 【短信扫描上传出错】【%s】\n" % (now_time, strexc))
                             status = "scanError"
                         finally:
                             f.close()
                     except Exception as e:
-                        flog.write("\n%s 【短信扫描上传出错】【%s】\n" % (now_time, e))
+                        strexc = traceback.format_exc()
+                        flog.write("\n%s 【短信扫描上传出错】【%s】\n" % (now_time, strexc))
                         status = "scanError"
 
                     sms_count = 0
@@ -209,10 +219,11 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                         os.remove(file_path)
                         sms_count = 1
                     except Exception as ex:
-                        flog.write("\n%s 【短信扫描删除或移动出错】【%s】\n" % (now_time, ex))
+                        strexc = traceback.format_exc()
+                        flog.write("\n%s 【短信扫描删除或移动出错】【%s】\n" % (now_time, strexc))
                     finally:
                         return {"status": status, "count": 0, "sms_count": sms_count, "res_status": status, "file_path": file_path,
-                                "zp": "success"}
+                                "zp": "success", "e": strexc}
                 else:
                     os.remove(file_path)
                     flog.write("\n%s 【短信扫描删除】【未在违法代码列表中】%s\n" % (now_time, file_path))
@@ -231,12 +242,14 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                 if not os.listdir(folder_path) and (folder_day not in folder_path) and folder_val != split_val and ('.' not in folder_val):
                     os.rmdir(folder_path)
             except Exception as exc:
+                strexc = traceback.format_exc()
                 folder_path = file.file_path
-                flog.write("\n%s 【违停事件扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
-                return {"status": "fail", "count": 0, "res_status": "error", "file_path": folder_path}
+                flog.write("\n%s 【违停事件扫描删除空文件夹出错】【%s】\n" % (now_time, strexc))
+                return {"status": "scanError", "count": 0, "res_status": "error", "file_path": folder_path, "e": strexc}
         return {"status": "over", "count": 0, "sms_count": 0}
     except Exception as e:
-        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0, "sms_count": 0}
+        strexc = traceback.format_exc()
+        return {"status": "scanError", "e": strexc, "res_status": "error", "count": 0, "sms_count": 0}
     finally:
         flog.close()
 
@@ -272,7 +285,8 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             # print("del", folder_path)
 
                 except Exception as exc:
-                    flog.write("\n%s 【违停取证扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
+                    strexc = traceback.format_exc()
+                    flog.write("\n%s 【违停取证扫描删除空文件夹出错】【%s】\n" % (now_time, strexc))
             else:
                 file_path = file.file_path
                 file_name = file.file_name
@@ -284,8 +298,9 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     jpgFileList.append(file)
                     # print(file_name, file.is_file)
     except Exception as e:
-        flog.write("\n%s 【违停取证扫描清理文件出错】%s\n" % (now_time, e))
-        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0}
+        strexc = traceback.format_exc()
+        flog.write("\n%s 【违停取证扫描清理文件出错】%s\n" % (now_time, strexc))
+        return {"status": "scanError", "e": strexc, "res_status": "error", "count": 0}
 
     try:
         if jpgFileList:
@@ -360,15 +375,18 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         try:
                             res = requests.post('http://%s/dataInfo/wtDataInfoUpload/' % ip_val, files=files,
                                                 data=data).json()
-                            status = res['status']
+                            status = res.get("status")
+                            strexc = res.get('e')
                         except Exception as e:
-                            flog.write("\n%s 【违停取证扫描上传出错】【%s】\n" % (now_time, e))
+                            strexc = traceback.format_exc()
+                            flog.write("\n%s 【违停取证扫描上传出错】【%s】\n" % (now_time, strexc))
                             # continue
                             status = "scanError"
                         finally:
                             f.close()
                     except Exception as e:
-                        flog.write("\n%s 【违停取证扫描上传出错】【%s】\n" % (now_time, e))
+                        strexc = traceback.format_exc()
+                        flog.write("\n%s 【违停取证扫描上传出错】【%s】\n" % (now_time, strexc))
                         # continue
                         status = "scanError"
 
@@ -379,9 +397,10 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         os.remove(file_path)
                         count = 1
                     except Exception as ex:
-                        flog.write("\n%s 【违停取证扫描删除或移动出错】【%s】\n" % (now_time, ex))
+                        strexc = traceback.format_exc()
+                        flog.write("\n%s 【违停取证扫描删除或移动出错】【%s】\n" % (now_time, strexc))
                     finally:
-                        return {"status": status, "count": count, "res_status": status, "file_path": file_path}
+                        return {"status": status, "count": count, "res_status": status, "file_path": file_path, "e": strexc}
                 else:
                     flog.write("\n%s 【违停取证扫描删除】【未在违法代码列表中】%s\n" % (now_time, file_path))
                     os.remove(file_path)
@@ -399,12 +418,14 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                 if not os.listdir(folder_path) and (folder_day not in folder_path) and folder_val != split_val and ('.' not in folder_val):
                     os.rmdir(folder_path)
             except Exception as exc:
+                strexc = traceback.format_exc()
                 folder_path = file.file_path
-                flog.write("\n%s 【违停取证扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
-                return {"status": "fail", "count": 0, "res_status": "error", "file_path": folder_path}
+                flog.write("\n%s 【违停取证扫描删除空文件夹出错】【%s】\n" % (now_time, strexc))
+                return {"status": "scanError", "count": 0, "res_status": "error", "file_path": folder_path, "e": strexc}
         return {"status": "over", "count": 0}
     except Exception as e:
-        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0}
+        strexc = traceback.format_exc()
+        return {"status": "scanError", "e": strexc, "res_status": "error", "count": 0}
     finally:
         flog.close()
 

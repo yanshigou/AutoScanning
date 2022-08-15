@@ -8,6 +8,7 @@ import os
 import re
 from datetime import datetime
 import random
+import traceback
 
 
 dj_url = "/csDataInfo/csDataInfoUpload/"
@@ -44,7 +45,8 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             # print("del", folder_path)
 
                 except Exception as exc:
-                    flog.write("\n%s 【超速扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
+                    strexc = traceback.format_exc()
+                    flog.write("\n%s 【超速扫描删除空文件夹出错】【%s】\n" % (now_time, strexc))
             else:
                 file_path = file.file_path
                 file_name = file.file_name
@@ -56,8 +58,9 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     jpgFileList.append(file)
                     # print(file_name, file.is_file)
     except Exception as e:
-        flog.write("\n%s 【超速扫描清理文件出错】%s\n" % (now_time, e))
-        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0}
+        strexc = traceback.format_exc()
+        flog.write("\n%s 【超速扫描清理文件出错】%s\n" % (now_time, strexc))
+        return {"status": "scanError", "e": strexc, "res_status": "error", "count": 0}
 
     try:
         if jpgFileList:
@@ -78,6 +81,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                 file_name_list = file_name.split('_')
 
                 # print(file_name) 60462_20220802163557215_20220802164040215_50.45.153.151_47_40_渝DF7725_蓝.jpg
+                # print(file_name) 60462_20220802163557215_50.45.153.151_47_40_渝DF7725_蓝.jpg
                 car_id = ""
                 ip = ""
                 car_color = ""
@@ -115,8 +119,17 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         os.remove(file_path)
                         # continue
                         return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
-                    start_time = file_name_list[1]
-                    end_time = file_name_list[2]
+                    # 兼容区间测速 单点测速
+                    str1 = file_name_list[1]
+                    str2 = file_name_list[2]
+                    if not re.findall('^20\d{15}$', str2, re.S):
+                        """单点测速"""
+                        start_time = ""
+                        end_time = file_name_list[1]
+                    else:
+                        """区间测速"""
+                        start_time = file_name_list[1]
+                        end_time = file_name_list[2]
                     speed = file_name_list[-4]  # 只有超速才能正确取到
                     lim_speed = file_name_list[-3]  # 只有超速才能正确取到
                     car_type = '02'
@@ -144,16 +157,19 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             # print(data)
                             # break
                             res = requests.post('http://' + ip_val + dj_url, files=files, data=data).json()
-                            status = res['status']
+                            status = res.get('status')
+                            strexc = res.get('e')
                         except Exception as e:
                             # print("Exception=" + str(e))
-                            flog.write("\n%s 【超速扫描上传出错】【%s】\n" % (now_time, e))
+                            strexc = traceback.format_exc()
+                            flog.write("\n%s 【超速扫描上传出错】【%s】\n" % (now_time, strexc))
                             # continue
                             status = "scanError"
                         finally:
                             f.close()
                     except Exception as e:
-                        flog.write("\n%s 【超速扫描上传出错】【%s】\n" % (now_time, e))
+                        strexc = traceback.format_exc()
+                        flog.write("\n%s 【超速扫描上传出错】【%s】\n" % (now_time, strexc))
                         # continue
                         status = "scanError"
 
@@ -165,12 +181,13 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         os.remove(file_path)
                         count = 1
                     except Exception as ex:
-                        flog.write("\n%s 【超速扫描删除或移动出错】【%s】\n" % (now_time, ex))
+                        strexc = traceback.format_exc()
+                        flog.write("\n%s 【超速扫描删除或移动出错】【%s】\n" % (now_time, strexc))
 
                     finally:
                         # sleep(1)
 
-                        return {"status": status, "count": count, "res_status": status, "file_path": file_path}
+                        return {"status": status, "count": count, "res_status": status, "file_path": file_path, "e": strexc}
                 else:
                     flog.write("\n%s 【超速扫描删除】【未在违法代码列表中】%s\n" % (now_time, file_path))
                     os.remove(file_path)
@@ -194,12 +211,14 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     # print("空文件夹，删除")
                     os.rmdir(folder_path)
             except Exception as exc:
+                strexc = traceback.format_exc()
                 folder_path = file.file_path
-                flog.write("\n%s 【超速扫描删除空文件夹出错】【%s】\n" % (now_time, exc))
-                return {"status": "fail", "count": 0, "res_status": "error", "file_path": folder_path}
+                flog.write("\n%s 【超速扫描删除空文件夹出错】【%s】\n" % (now_time, strexc))
+                return {"status": "scanError", "count": 0, "res_status": "error", "file_path": folder_path, "e": strexc}
         return {"status": "over", "count": 0}
     except Exception as e:
-        return {"status": "scanError", "e": str(e), "res_status": "error", "count": 0}
+        strexc = traceback.format_exc()
+        return {"status": "scanError", "e": strexc, "res_status": "error", "count": 0}
     finally:
         flog.close()
 
