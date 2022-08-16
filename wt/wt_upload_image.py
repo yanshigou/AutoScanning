@@ -249,6 +249,7 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
         return {"status": "over", "count": 0, "sms_count": 0}
     except Exception as e:
         strexc = traceback.format_exc()
+        flog.write("\n%s 【违停事件扫描出错】【%s】\n" % (now_time, strexc))
         return {"status": "scanError", "e": strexc, "res_status": "error", "count": 0, "sms_count": 0}
     finally:
         flog.close()
@@ -425,6 +426,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
         return {"status": "over", "count": 0}
     except Exception as e:
         strexc = traceback.format_exc()
+        flog.write("\n%s 【违停取证扫描出错】【%s】\n" % (now_time, strexc))
         return {"status": "scanError", "e": strexc, "res_status": "error", "count": 0}
     finally:
         flog.close()

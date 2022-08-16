@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/6"
-__title__ = "违停扫描器v1.1_20220816"
+__title__ = "违停扫描器v1.2_20220816"
 
 from wt_file_manager import FileObjectManager, FileObject
 import requests
@@ -108,11 +108,11 @@ def event_run(event_path, ip_val, white_list, sleep_time):
                             "\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
                 f.write("\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
             elif status == "fail":
-                text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】\n" % (now_time, event_path))
-                f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】" % (now_time, event_path))
+                text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】\n" % (now_time, file_path))
+                f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】" % (now_time, file_path))
             elif status == "error":
                 text.insert(tk.END, "\n%s 【事件】【上传图片出错，请查看日志】：%s\n" % (now_time, e))
-                f.write("\n%s 【事件】【上传图片出错，请检查日志】：%s" % (now_time, e))
+                f.write("\n%s 【事件】【上传图片出错，请检查日志】：%s %s\n" % (now_time, e, file_path))
             elif status == "over":
                 # text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, event_path, sleep_time.strip()))
                 # f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, event_path, sleep_time.strip()))
@@ -175,11 +175,11 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
                                 "\n%s【取证】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
                     f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
             elif status == "fail":
-                text.insert(tk.END, "\n%s【取证】【扫描到文件夹】 %s，【未发现图片】\n" % (now_time, qz_path))
-                f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现图片】" % (now_time, qz_path))
+                text.insert(tk.END, "\n%s【取证】【扫描到文件夹】 %s，【未发现图片】\n" % (now_time, file_path))
+                f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现图片】" % (now_time, file_path))
             elif status == "error":
                 text.insert(tk.END, "\n%s【取证】【上传出错，请查看日志】：%s\n" % (now_time, e))
-                f.write("\n%s 【取证】【上传出错，请检查日志】：%s" % (now_time, e))
+                f.write("\n%s 【取证】【上传出错，请检查日志】：%s %s\n" % (now_time, e, file_path))
             elif status == "over":
                 # text.insert(tk.END, "\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
                 # f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))

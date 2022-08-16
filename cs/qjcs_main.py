@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/3"
-__title__ = "区间测速扫描器v1.1_20220816"
+__title__ = "区间测速扫描器v1.2_20220816"
 
 from cs_file_manager import FileObjectManager, FileObject
 import requests
@@ -96,11 +96,11 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
                     text.insert(tk.END, "\n%s【超速】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
                     f.write("\n%s 【超速】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
             elif status == "fail":
-                text.insert(tk.END, "\n%s【超速】【扫描到文件夹】 %s，【未发现有效图片】\n" % (now_time, qz_path))
-                f.write("\n%s 【超速】【扫描到文件夹】 %s，【未发现图片】" % (now_time, qz_path))
+                text.insert(tk.END, "\n%s【超速】【扫描到文件夹】 %s，【未发现有效图片】\n" % (now_time, file_path))
+                f.write("\n%s 【超速】【扫描到文件夹】 %s，【未发现有效图片】" % (now_time, file_path))
             elif status == "error":
                 text.insert(tk.END, "\n%s【超速】【上传出错，请查看日志】：%s\n" % (now_time, e))
-                f.write("\n%s 【超速】【上传出错，请检查日志】：%s" % (now_time, e))
+                f.write("\n%s 【超速】【上传出错，请检查日志】：%s %s\n" % (now_time, e, file_path))
             elif status == "over":
                 # text.insert(tk.END, "\n%s 【超速】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
                 # f.write("\n%s 【超速】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))

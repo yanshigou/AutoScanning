@@ -124,12 +124,12 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     str2 = file_name_list[2]
                     if not re.findall('^20\d{15}$', str2, re.S):
                         """单点测速"""
-                        start_time = ""
-                        end_time = file_name_list[1]
+                        start_time = None
+                        end_time = str1
                     else:
                         """区间测速"""
-                        start_time = file_name_list[1]
-                        end_time = file_name_list[2]
+                        start_time = str1
+                        end_time = str2
                     speed = file_name_list[-4]  # 只有超速才能正确取到
                     lim_speed = file_name_list[-3]  # 只有超速才能正确取到
                     car_type = '02'
@@ -218,6 +218,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
         return {"status": "over", "count": 0}
     except Exception as e:
         strexc = traceback.format_exc()
+        flog.write("\n%s 【超速扫描出错】【%s】\n" % (now_time, strexc))
         return {"status": "scanError", "e": strexc, "res_status": "error", "count": 0}
     finally:
         flog.close()
