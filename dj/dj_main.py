@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/5"
-__title__ = "电警扫描器v1.2_20220816"
+__title__ = "电警扫描器v1.3_20220817"
 
 from dj_file_manager import FileObjectManager, FileObject
 import requests
@@ -86,11 +86,10 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
                     res_status = '出错'
                     text.insert(tk.END, "\n%s 【电警】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
                     f.write("\n%s 【电警】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
-                elif res_status == "wait":
-                    res_status = '再次推送'
-                    text.insert(tk.END,
-                                "\n%s 【电警】【扫描到文件】%s，已上传取证图片，未推送成功，【%s】，%s" % (now_time, file_path, res_status, e))
-                    f.write("\n%s 【电警】【扫描到文件】%s，已上传取证图片，未推送成功，【%s】，%s" % (now_time, file_path, res_status, e))
+                elif res_status == "wfCodeError":
+                    res_status = '失败'
+                    text.insert(tk.END, "\n%s【电警】【扫描到文件】%s，上传文件【%s】, 该违法代码后台未添加\n" % (now_time, file_path, res_status))
+                    f.write("\n%s 【电警】【扫描到文件】%s，上传文件【%s】, 该违法代码后台未添加\n" % (now_time, file_path, res_status))
                 else:
                     res_status = '失败'
                     text.insert(tk.END, "\n%s【电警】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))

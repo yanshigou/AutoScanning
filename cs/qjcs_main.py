@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/3"
-__title__ = "区间测速扫描器v1.2_20220816"
+__title__ = "区间测速扫描器v1.3_20220817"
 
 from cs_file_manager import FileObjectManager, FileObject
 import requests
@@ -70,8 +70,8 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
             res = QZ(FileObjectManager(FileObject(qz_path)).scan_with_depth(10).all_file_objects(),
                      ip_val, qz_path, now_time, white_list, wf_list)
             # print(res)
-            status = res.get('status')
-            res_status = res.get('res_status')
+            status = res.get('status')  # upload_image返回的状态
+            res_status = res.get('res_status')  # url返回的状态
             # count += res.get('count')
             e = res.get('e')
             file_path = res.get('file_path')
@@ -86,12 +86,12 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
                     res_status = '出错'
                     text.insert(tk.END, "\n%s 【超速】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
                     f.write("\n%s 【超速】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
-                elif res_status == "wait":
-                    res_status = '再次推送'
-                    text.insert(tk.END,
-                                "\n%s 【超速】【扫描到文件】%s，已上传取证图片，未推送成功，【%s】，%s" % (now_time, file_path, res_status, e))
-                    f.write("\n%s 【超速】【扫描到文件】%s，已上传取证图片，未推送成功，【%s】，%s" % (now_time, file_path, res_status, e))
+                elif res_status == "wfCodeError":
+                    res_status = '失败'
+                    text.insert(tk.END, "\n%s【超速】【扫描到文件】%s，上传文件【%s】, 该违法代码后台未添加\n" % (now_time, file_path, res_status))
+                    f.write("\n%s 【超速】【扫描到文件】%s，上传文件【%s】, 该违法代码后台未添加\n" % (now_time, file_path, res_status))
                 else:
+                    """fail"""
                     res_status = '失败'
                     text.insert(tk.END, "\n%s【超速】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
                     f.write("\n%s 【超速】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))

@@ -173,7 +173,7 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                     finally:
 
                         return {
-                            "status": status, "count": count, "sms_count": 0, "res_status": status, "file_path": file_path,
+                            "status": "success", "count": count, "sms_count": 0, "res_status": status, "file_path": file_path,
                             "zpname": zpname, "e": strexc}
                         # return {
                         #     "status": "success", "count": count, "sms_count": 0, "res_status": status, "file_path": file_path,
@@ -222,7 +222,7 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                         strexc = traceback.format_exc()
                         flog.write("\n%s 【短信扫描删除或移动出错】【%s】\n" % (now_time, strexc))
                     finally:
-                        return {"status": status, "count": 0, "sms_count": sms_count, "res_status": status, "file_path": file_path,
+                        return {"status": "success", "count": 0, "sms_count": sms_count, "res_status": status, "file_path": file_path,
                                 "zp": "success", "e": strexc}
                 else:
                     os.remove(file_path)
@@ -401,7 +401,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         strexc = traceback.format_exc()
                         flog.write("\n%s 【违停取证扫描删除或移动出错】【%s】\n" % (now_time, strexc))
                     finally:
-                        return {"status": status, "count": count, "res_status": status, "file_path": file_path, "e": strexc}
+                        return {"status": "success", "count": count, "res_status": status, "file_path": file_path, "e": strexc}
                 else:
                     flog.write("\n%s 【违停取证扫描删除】【未在违法代码列表中】%s\n" % (now_time, file_path))
                     os.remove(file_path)

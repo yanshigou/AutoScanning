@@ -182,7 +182,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
 
                     finally:
                         # sleep(1)
-                        return {"status": status, "count": count, "res_status": status, "file_path": file_path, "e": strexc}
+                        return {"status": "success", "count": count, "res_status": status, "file_path": file_path, "e": strexc}
                 else:
                     flog.write("\n%s 【电警扫描删除】【未在违法代码列表中】%s\n" % (now_time, file_path))
                     os.remove(file_path)
