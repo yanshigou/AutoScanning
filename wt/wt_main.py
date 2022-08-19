@@ -244,9 +244,6 @@ def auto_run(event_path, ip_val, white_list, sleep_time, qz_time):
 if __name__ == '__main__':
 
     log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
-    f = open(log_file, 'a+', encoding='utf-8')
-    f.write('%s 正在读取配置文件...\n' % datetime.now())
-    f.close()
 
     if basic_info():
         event_path, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list = basic_info()
