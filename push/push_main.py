@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/10"
-__title__ = "推送器v1.0_20220812"
+__title__ = "推送器v1.0_20220820s"
 
 
 import requests
