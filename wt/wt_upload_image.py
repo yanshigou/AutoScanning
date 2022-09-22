@@ -22,24 +22,41 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
             if not file.is_file:
                 try:
                     folder_path = file.file_path
+                    if not folder_path:
+                        flog.write("\n%s 【文件夹地址错误】【%s】\n" % (now_time, folder_path))
+                        continue
                     folder_val = folder_path.split('\\')[-1]
                     folder_day = datetime.strftime(now_time, '%Y%m%d')
+                    folder_hour = datetime.strftime(now_time, '%H')
                     folder_path_hour = split_val + "\\" + folder_day + "\\" + datetime.strftime(now_time, '%H')
-                    # print(folder_path)
-                    # print(folder_path_hour)
+                    # print("folder_path", folder_path)
+                    # print("folder_path_hour", folder_path_hour)
                     if len(folder_path_hour) == len(folder_path) and folder_path != folder_path_hour:
+                        # print("空文件夹，删除")
+                        # print("folder_val", folder_val)
+                        # print("split_val", split_val)
                         # print("folder_path_hour", folder_path_hour)
                         # print("folder_path_xxxx", folder_path)
+                        # print("folder_day", folder_day)
                         if not os.listdir(folder_path) and folder_val != split_val and ('.' not in folder_val):
                             flog.write("\n%s 【违停事件扫描删除非当前时间段空文件夹】【%s】\n" % (now_time, folder_path))
                             os.rmdir(folder_path)
                             continue
                     if not os.listdir(folder_path) and folder_val != split_val and ('.' not in folder_val):
-                        # print("空文件夹，删除")
+                        # print("空文件夹，删除2")
+                        # print("folder_path_hour2", folder_path_hour)
+                        # print("folder_val2", folder_val)
+                        # print("split_val2", split_val)
+                        # print("folder_path_xxxx2", folder_path)
+                        # print("folder_path[:-2]", folder_path[-2:])
+                        # print("folder_day2", folder_day)
                         if folder_day not in folder_path:
                             flog.write("\n%s 【违停事件扫描删除空文件夹】【%s】\n" % (now_time, folder_path))
                             os.rmdir(folder_path)
                             # print("del", folder_path)
+                        if folder_hour != folder_path[-2:]:
+                            flog.write("\n%s 【违停事件扫描删除空文件夹】【%s】\n" % (now_time, folder_path))
+                            os.rmdir(folder_path)
 
                 except Exception as exc:
                     strexc = traceback.format_exc()
@@ -57,13 +74,13 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
     except Exception as e:
         strexc = traceback.format_exc()
         flog.write("\n%s 【违停事件扫描清理文件出错】%s\n" % (now_time, strexc))
-        return {"status": "scanError", "e":strexc, "res_status": "error", "count": 0}
+        return {"status": "scanError", "e": strexc, "res_status": "error", "count": 0}
 
     try:
         if jpgFileList:
             file = random.choice(jpgFileList)
             fileSize = file.size / 1024    # size  (self.size / 1024.0)
-            if fileSize < 10:
+            if fileSize <= 1:
                 return {"status": "over", "count": 0}
 
         else:
@@ -433,8 +450,8 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
 
 
 if __name__ == '__main__':
-    a = event(FileObjectManager(FileObject("/Users/yanshigou/Downloads/15")).scan_with_depth(10).all_file_objects(), '0.0.0.0:8000', "/Users/yanshigou/Downloads/15", datetime.now(), [])
+    a = event(FileObjectManager(FileObject("D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新版扫描器合集\\test")).scan_with_depth(10).all_file_objects(), '0.0.0.0:8000', "D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新版扫描器合集\\test", datetime.now(), [])
     print(a)
 
-    b = QZ(FileObjectManager(FileObject("/Users/yanshigou/Downloads/16")).scan_with_depth(10).all_file_objects(), '0.0.0.0:8000', "/Users/yanshigou/Downloads/16", datetime.now(), [], "1039,10395,10396")
-    print(b)
+    # b = QZ(FileObjectManager(FileObject("/Users/yanshigou/Downloads/16")).scan_with_depth(10).all_file_objects(), '0.0.0.0:8000', "/Users/yanshigou/Downloads/16", datetime.now(), [], "1039,10395,10396")
+    # print(b)

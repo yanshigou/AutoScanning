@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/6"
-__title__ = "违停扫描器v1.3_20220817"
+__title__ = "违停扫描器v1.4_20220922"
 
 from wt_file_manager import FileObjectManager, FileObject
 import requests
@@ -57,7 +57,7 @@ def event_run(event_path, ip_val, white_list, sleep_time):
     log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
     f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
-    f.write("\n%s 开始扫描事件文件夹：%s\n" % (datetime.now(), qz_path))
+    f.write("\n%s 开始扫描事件文件夹：%s\n" % (datetime.now(), event_path))
     f.close()
     global event_thread_count
     event_thread_count += 1
@@ -86,6 +86,8 @@ def event_run(event_path, ip_val, white_list, sleep_time):
             if status == "success" and zp != 'success':
                 if res_status == "success":
                     res_status = '成功'
+                    text.insert(tk.END, "\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    f.write("\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
                 elif res_status == "error":
                     res_status = '出错'
                     text.insert(tk.END, "\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
@@ -102,6 +104,8 @@ def event_run(event_path, ip_val, white_list, sleep_time):
             elif status == "success" and zp == 'success':
                 if res_status == "success":
                     res_status = '成功'
+                    text.insert(tk.END, "\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    f.write("\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
                 elif res_status == "error":
                     res_status = '出错'
                     text.insert(tk.END, "\n%s 【事件-短信】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
