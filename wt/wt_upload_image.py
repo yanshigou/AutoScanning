@@ -54,7 +54,7 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                             flog.write("\n%s 【违停事件扫描删除空文件夹】【%s】\n" % (now_time, folder_path))
                             os.rmdir(folder_path)
                             # print("del", folder_path)
-                        if folder_hour != folder_path[-2:]:
+                        if ("\\" + folder_hour) != folder_path[-3:]:
                             flog.write("\n%s 【违停事件扫描删除空文件夹】【%s】\n" % (now_time, folder_path))
                             os.rmdir(folder_path)
 
