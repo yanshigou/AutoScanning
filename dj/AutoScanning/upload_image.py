@@ -147,8 +147,12 @@ def QZ(files_list, move_folder, ip_val, qz_path, now_time, white_list, wf_list):
                         car_color = file_name_list[-1][0]
                         # print(car_color)
                         car_type = '02'
-                        if car_color == '黄':
+                        if '黄' in car_color:
                             car_type = '01'
+                        elif "绿" in car_color:
+                            car_type = "52"
+                        elif "渐" in car_color:  # 渐变绿
+                            car_type = "51"
                         try:
                             f = open(file_path, 'rb')
                             files = {'mp4_file': (file_name, f)}

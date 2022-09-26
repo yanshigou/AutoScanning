@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/6"
-__title__ = "违停扫描器v1.5_20220923"
+__title__ = "违停扫描器v1.6_20220926"
 
 from wt_file_manager import FileObjectManager, FileObject
 import requests

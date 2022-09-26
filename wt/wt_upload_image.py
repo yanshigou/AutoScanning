@@ -132,9 +132,9 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                         os.remove(file_path)
                         return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
                     car_type = '02'
-                    if car_color == '黄':
+                    if '黄' in car_color:
                         car_type = '01'
-                    elif car_color == "绿":
+                    elif "绿" in car_color:
                         car_type = "52"
                     elif "渐" in car_color:  # 渐变绿
                         car_type = "51"
@@ -201,9 +201,9 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                         return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
                     # car_color = file_name_list[-2][0]
                     car_type = '02'
-                    if car_color == '黄':
+                    if '黄' in car_color:
                         car_type = '01'
-                    elif car_color == "绿":
+                    elif "绿" in car_color:
                         car_type = "52"
                     elif "渐" in car_color:  # 渐变绿
                         car_type = "51"
@@ -376,7 +376,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         os.remove(file_path)
                         return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
                     car_type = '02'
-                    if car_color == '黄':
+                    if '黄' in car_color:
                         car_type = '01'
                     elif car_color == "绿":
                         car_type = "52"
