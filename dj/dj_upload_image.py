@@ -28,6 +28,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     folder_path = file.file_path
                     folder_val = folder_path.split('\\')[-1]
                     folder_day = datetime.strftime(now_time, '%Y%m%d')
+                    folder_hour = datetime.strftime(now_time, '%H')
                     folder_path_hour = split_val + "\\" + folder_day + "\\" + datetime.strftime(now_time, '%H')
                     # print(folder_path)
                     # print(folder_path_hour)
@@ -44,6 +45,9 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             flog.write("\n%s 【电警扫描删除空文件夹】【%s】\n" % (now_time, folder_path))
                             os.rmdir(folder_path)
                             # print("del", folder_path)
+                        if ("\\" + folder_hour) != folder_path[-3:]:
+                            flog.write("\n%s 【电警扫描删除空文件夹】【%s】\n" % (now_time, folder_path))
+                            os.rmdir(folder_path)
 
                 except Exception as exc:
                     strexc = traceback.format_exc()
@@ -66,8 +70,11 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
     try:
         if jpgFileList:
             file = random.choice(jpgFileList)
-            fileSize = file.size / 1024    # size  (self.size / 1024.0)
-            if fileSize < 10:
+            file_path = file.file_path
+            fileSize = file.size / 1024  # size  (self.size / 1024.0)
+            if fileSize <= 1:
+                flog.write("\n%s 【超速扫描删除】【0KB图片】%s\n" % (now_time, file_path))
+                os.remove(file_path)
                 return {"status": "over", "count": 0}
 
         else:
@@ -159,7 +166,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             strexc = traceback.format_exc()
                             flog.write("\n%s 【电警扫描上传出错】【%s】\n" % (now_time, strexc))
                             # continue
-                            status = "scanError"
+                            status = "失败，" + str(e)
                         finally:
                             f.close()
                     except Exception as e:
@@ -167,7 +174,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         strexc = traceback.format_exc()
                         flog.write("\n%s 【电警扫描上传出错】【%s】\n" % (now_time, strexc))
                         # continue
-                        status = "scanError"
+                        status = "失败，" + str(e)
 
                     # print("status=" + status)
                     count = 0

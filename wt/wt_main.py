@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/6"
-__title__ = "违停扫描器v1.6_20220926"
+__title__ = "违停扫描器v1.7_20220927"
 
 from wt_file_manager import FileObjectManager, FileObject
 import requests
@@ -96,11 +96,14 @@ def event_run(event_path, ip_val, white_list, sleep_time):
                     res_status = '失败'
                     text.insert(tk.END, "\n%s【事件】【扫描到文件】%s，上传文件【%s】, 晚上不发短信\n" % (now_time, file_path, res_status))
                     f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】, 晚上不发短信\n" % (now_time, file_path, res_status))
-                else:
+                elif res_status == "fail":
                     """fail"""
                     res_status = '失败'
                     text.insert(tk.END, "\n%s【事件】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
                     f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
+                else:
+                    text.insert(tk.END, "\n%s【事件】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
             elif status == "success" and zp == 'success':
                 if res_status == "success":
                     res_status = '成功'
@@ -110,11 +113,14 @@ def event_run(event_path, ip_val, white_list, sleep_time):
                     res_status = '出错'
                     text.insert(tk.END, "\n%s 【事件-短信】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
                     f.write("\n%s 【事件-短信】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
-                else:
+                elif res_status == "fail":
                     """fail"""
                     res_status = '失败'
                     text.insert(tk.END, "\n%s【事件-短信】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
                     f.write("\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
+                else:
+                    text.insert(tk.END, "\n%s【事件-短信】【扫描到文件】%s，上传文件【%s】 \n" % (now_time, file_path, res_status))
+                    f.write("\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
             elif status == "fail":
                 text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】\n" % (now_time, file_path))
                 f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】" % (now_time, file_path))
@@ -130,7 +136,7 @@ def event_run(event_path, ip_val, white_list, sleep_time):
                 text.insert(tk.END, "\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
                 f.write("\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
             text.see(tk.END)
-            # sleep(0.1)
+            sleep(0.05)
         except Exception as ee:
             strexc = traceback.format_exc()
             text.insert(tk.END, "\n%s 【事件】程序出错：%s\n" % (datetime.now(), str(ee)))
@@ -172,11 +178,15 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
                     res_status = '出错'
                     text.insert(tk.END, "\n%s 【取证】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
                     f.write("\n%s 【取证】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
-                else:
+                elif res_status == "fail":
                     res_status = '失败'
                     text.insert(tk.END,
                                 "\n%s【取证】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
                     f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
+                else:
+                    text.insert(tk.END,
+                                "\n%s【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
             elif status == "fail":
                 text.insert(tk.END, "\n%s【取证】【扫描到文件夹】 %s，【未发现图片】\n" % (now_time, file_path))
                 f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现图片】" % (now_time, file_path))
