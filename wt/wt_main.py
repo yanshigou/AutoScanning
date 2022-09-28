@@ -136,7 +136,8 @@ def event_run(event_path, ip_val, white_list, sleep_time):
                 text.insert(tk.END, "\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
                 f.write("\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
             text.see(tk.END)
-            sleep(0.05)
+            if qz_time != '0':
+                sleep(float(qz_time))
         except Exception as ee:
             strexc = traceback.format_exc()
             text.insert(tk.END, "\n%s 【事件】程序出错：%s\n" % (datetime.now(), str(ee)))
