@@ -9,6 +9,7 @@ from datetime import datetime
 import base64
 import random
 import traceback
+from requests.adapters import HTTPAdapter
 
 
 def event(event_files_list, ip_val, event_path, now_time, white_list):
@@ -137,7 +138,7 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                     car_type = '02'
                     if '黄' in car_color:
                         car_type = '01'
-                    elif "绿" in car_color:
+                    elif car_color == "绿.jpg":
                         car_type = "52"
                     elif "渐" in car_color:  # 渐变绿
                         car_type = "51"
@@ -150,8 +151,10 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                             wf_time=wf_time
                         )
                         try:
-                            res = requests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files,
-                                                data=data).json()
+                            maxrequests = requests.Session()
+                            maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
+                            res = maxrequests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files,
+                                                data=data, timeout=5).json()
                             status = res.get('status')
                             strexc = res.get('e')
                         except Exception as e:
@@ -218,8 +221,10 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                             wf_time=wf_time
                         )
                         try:
+                            maxrequests = requests.Session()
+                            maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
                             res = requests.post('http://%s/dataInfo/wtDataEventSMSUpload/' % ip_val, files=files,
-                                                data=data).json()
+                                                data=data, timeout=5).json()
                             status = res.get("status")
                             strexc = res.get('e')
                         except Exception as e:
@@ -388,7 +393,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     car_type = '02'
                     if '黄' in car_color:
                         car_type = '01'
-                    elif car_color == "绿":
+                    elif car_color == "绿.jpg":
                         car_type = "52"
                     elif "渐" in car_color:  # 渐变绿
                         car_type = "51"
@@ -401,8 +406,10 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             wf_time=wf_time
                         )
                         try:
+                            maxrequests = requests.Session()
+                            maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
                             res = requests.post('http://%s/dataInfo/wtDataInfoUpload/' % ip_val, files=files,
-                                                data=data).json()
+                                                data=data, timeout=5).json()
                             status = res.get("status")
                             strexc = res.get('e')
                         except Exception as e:

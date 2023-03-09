@@ -10,7 +10,7 @@ import re
 from datetime import datetime
 import random
 import traceback
-
+from requests.adapters import HTTPAdapter
 
 dj_url = "/djDataInfo/djDataInfoUpload/"
 
@@ -158,7 +158,9 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             lim_speed=lim_speed
                         )
                         try:
-                            res = requests.post('http://' + ip_val + dj_url, files=files, data=data).json()
+                            maxrequests = requests.Session()
+                            maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
+                            res = requests.post('http://' + ip_val + dj_url, files=files, data=data, timeout=5).json()
                             status = res.get('status')
                             strexc = res.get('e')
                         except Exception as e:

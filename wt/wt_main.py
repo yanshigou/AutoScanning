@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/6"
-__title__ = "违停扫描器v1.7_20220927"
+__title__ = "违停扫描器v1.9_20230309"
 
 from wt_file_manager import FileObjectManager, FileObject
 import requests
@@ -13,6 +13,7 @@ from datetime import datetime
 from time import sleep
 import configparser
 import traceback
+import codecs
 
 
 # 建立连接 获取csrftoken
@@ -55,8 +56,9 @@ def basic_info():
 
 def event_run(event_path, ip_val, white_list, sleep_time):
     log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
-    f = open(log_file, 'a+', encoding='utf-8')
+    f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
+    f.write(codecs.BOM_UTF8.decode("utf-8"))
     f.write("\n%s 开始扫描事件文件夹：%s\n" % (datetime.now(), event_path))
     f.close()
     global event_thread_count
@@ -66,7 +68,8 @@ def event_run(event_path, ip_val, white_list, sleep_time):
     while True:
         log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
         try:
-            f = open(log_file, 'a+', encoding='utf-8')
+            f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
+            f.write(codecs.BOM_UTF8.decode("utf-8"))
             now_time = datetime.now()
             res = event(FileObjectManager(FileObject(event_path)).scan_with_depth(10).all_file_objects(),
                         ip_val, event_path, now_time, white_list)
@@ -149,7 +152,8 @@ def event_run(event_path, ip_val, white_list, sleep_time):
 
 def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
     log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
-    f = open(log_file, 'a+', encoding='utf-8')
+    f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
+    f.write(codecs.BOM_UTF8.decode("utf-8"))
     text.insert(tk.END, "\n开始扫描取证文件夹：%s\n" % qz_path)
     f.write("\n%s 开始扫描取证文件夹：%s\n" % (datetime.now(), qz_path))
     f.close()
@@ -160,7 +164,8 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
     while True:
         log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
         try:
-            f = open(log_file, 'a+', encoding='utf-8')
+            f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
+            f.write(codecs.BOM_UTF8.decode("utf-8"))
             now_time = datetime.now()
             res = QZ(FileObjectManager(FileObject(qz_path)).scan_with_depth(10).all_file_objects(),
                      ip_val, qz_path, now_time, white_list, wf_list)
@@ -234,7 +239,8 @@ def thread_it(func, *args):
 
 def auto_run(event_path, ip_val, white_list, sleep_time, qz_time):
     log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
-    f = open(log_file, 'a+', encoding='utf-8')
+    f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
+    f.write(codecs.BOM_UTF8.decode("utf-8"))
     try:
         text.insert(tk.END, "%s %s秒后自动开始运行 【超速】取证扫描 \n" % (datetime.now(), qz_time))
         # f.write("%s 5秒后自动开始运行 【超速】取证扫描  \n" % datetime.now())

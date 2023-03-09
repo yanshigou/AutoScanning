@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/10"
-__title__ = "推送器v1.0_20220820s"
+__title__ = "推送器v1.1_20230203"
 
 
 import requests
@@ -13,6 +13,7 @@ from time import sleep
 import configparser
 import os
 import traceback
+from requests.adapters import HTTPAdapter
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -71,7 +72,9 @@ def push(url, push_time, modelName):
     while True:
         f = open(log_file, 'a+', encoding='utf-8')
         try:
-            r = requests.get('%s' % url).json()
+            maxrequests = requests.Session()
+            maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
+            r = maxrequests.get('%s' % url, timeout=5).json()
             status = r.get('status')
             car_id = r.get('car_id')
             push_result = r.get('push_result')
@@ -89,6 +92,7 @@ def push(url, push_time, modelName):
                 text.insert(tk.END, '\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
                 f.write('\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
             sleep(float(push_time))
+            text.see(tk.END)
         except Exception as e:
             strexc = traceback.format_exc()
             f.write("%s 【%s】程序出错 %s\n" % (datetime.now(), modelName, strexc))
