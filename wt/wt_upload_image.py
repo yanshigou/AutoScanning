@@ -141,7 +141,7 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                     elif car_color == "绿.jpg":
                         car_type = "52"
                     elif "渐" in car_color:  # 渐变绿
-                        car_type = "51"
+                        car_type = "52"
 
                     try:
                         f = open(file_path, 'rb')
@@ -209,10 +209,10 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                     car_type = '02'
                     if '黄' in car_color:
                         car_type = '01'
-                    elif "绿" in car_color:
+                    elif car_color == "绿_短信.jpg":
                         car_type = "52"
                     elif "渐" in car_color:  # 渐变绿
-                        car_type = "51"
+                        car_type = "52"
                     try:
                         f = open(file_path, 'rb')
                         files = {'image_file': (file_name, f, 'image/jpg')}
@@ -396,7 +396,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     elif car_color == "绿.jpg":
                         car_type = "52"
                     elif "渐" in car_color:  # 渐变绿
-                        car_type = "51"
+                        car_type = "52"
 
                     try:
                         f = open(file_path, 'rb')
