@@ -8,7 +8,7 @@ import requests
 import tkinter as tk
 import threading
 from tkinter import scrolledtext
-from wt_upload_image import event, QZ
+from wt_upload_image import event, QZ, Logger
 from datetime import datetime
 from time import sleep
 import configparser
@@ -55,21 +55,23 @@ def basic_info():
 
 
 def event_run(event_path, ip_val, white_list, sleep_time):
-    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
-    f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
+    log_file = "logs\\"  + '违停日志.txt'
+    # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
-    f.write(codecs.BOM_UTF8.decode("utf-8"))
-    f.write("\n%s 开始扫描事件文件夹：%s\n" % (datetime.now(), event_path))
-    f.close()
+    # f.write(codecs.BOM_UTF8.decode("utf-8"))
+    # f.write("\n%s 开始扫描事件文件夹：%s\n" % (datetime.now(), event_path))
+    # f.close()
+    logg = Logger(log_file, level="info")
+    logg.logger.info("开始扫描事件文件夹：%s" % event_path)
     global event_thread_count
     event_thread_count += 1
     # event_bt.config(state="disabled", text='正在扫描事件文件夹')
     count_event_thread_lb.config(text="\n已开启事件扫描器数：%s\n" % str(event_thread_count))
     while True:
-        log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
+        # log_file = "logs\\"  + '违停日志.txt'
         try:
-            f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
-            f.write(codecs.BOM_UTF8.decode("utf-8"))
+            # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
+            # f.write(codecs.BOM_UTF8.decode("utf-8"))
             now_time = datetime.now()
             res = event(FileObjectManager(FileObject(event_path)).scan_with_depth(10).all_file_objects(),
                         ip_val, event_path, now_time, white_list)
@@ -85,51 +87,63 @@ def event_run(event_path, ip_val, white_list, sleep_time):
             now_time = datetime.now()
             if zpname:
                 text.insert(tk.END, '\n%s 短信发送成功，已收到短信图片%s，等待扫描上传' % (now_time, zpname))
-                f.write('\n%s 短信发送成功，已收到短信图片%s，等待扫描上传' % (now_time, zpname))
+                # f.write('\n%s 短信发送成功，已收到短信图片%s，等待扫描上传' % (now_time, zpname))
+                logg.logger.info('短信发送成功，已收到短信图片%s，等待扫描上传' % zpname)
             if status == "success" and zp != 'success':
                 if res_status == "success":
                     res_status = '成功'
                     text.insert(tk.END, "\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
-                    f.write("\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    # f.write("\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    logg.logger.info("【事件】【扫描到文件】%s，服务器【%s】，%s" % (file_path, res_status, e))
                 elif res_status == "error":
                     res_status = '出错'
                     text.insert(tk.END, "\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
-                    f.write("\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    # f.write("\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    logg.logger.error("【事件】【扫描到文件】%s，服务器【%s】，%s" % (file_path, res_status, e))
                 elif res_status == "dateError":
                     res_status = '失败'
                     text.insert(tk.END, "\n%s【事件】【扫描到文件】%s，上传文件【%s】, 晚上不发短信\n" % (now_time, file_path, res_status))
-                    f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】, 晚上不发短信\n" % (now_time, file_path, res_status))
+                    # f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】, 晚上不发短信\n" % (now_time, file_path, res_status))
+                    logg.logger.warning("【事件】【扫描到文件】%s，上传文件【%s】, 晚上不发短信" % (file_path, res_status))
                 elif res_status == "fail":
                     """fail"""
                     res_status = '失败'
                     text.insert(tk.END, "\n%s【事件】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
-                    f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
+                    # f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
+                    logg.logger.warning("【事件】【扫描到文件】%s，上传文件【%s】, 该设备未启用" % (file_path, res_status))
                 else:
-                    text.insert(tk.END, "\n%s【事件】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
-                    f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    text.insert(tk.END, "%s【事件】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    # f.write("\n%s 【事件】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    logg.logger.warning("【事件】【扫描到文件】%s，上传文件【%s】" % (file_path, res_status))
             elif status == "success" and zp == 'success':
                 if res_status == "success":
                     res_status = '成功'
                     text.insert(tk.END, "\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
-                    f.write("\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    # f.write("\n%s 【事件】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    logg.logger.info("【事件】【扫描到文件】%s，服务器【%s】，%s" % (file_path, res_status, e))
                 elif res_status == "error":
                     res_status = '出错'
                     text.insert(tk.END, "\n%s 【事件-短信】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
-                    f.write("\n%s 【事件-短信】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    # f.write("\n%s 【事件-短信】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    logg.logger.error("【事件-短信】【扫描到文件】%s，服务器【%s】，%s" % (file_path, res_status, e))
                 elif res_status == "fail":
                     """fail"""
                     res_status = '失败'
                     text.insert(tk.END, "\n%s【事件-短信】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
-                    f.write("\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
+                    # f.write("\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
+                    logg.logger.warning("【事件-短信】【扫描到文件】%s，上传文件【%s】, 该设备未启用" % (file_path, res_status))
                 else:
                     text.insert(tk.END, "\n%s【事件-短信】【扫描到文件】%s，上传文件【%s】 \n" % (now_time, file_path, res_status))
-                    f.write("\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    # f.write("\n%s 【事件-短信】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    logg.logger.warning("【事件-短信】【扫描到文件】%s，上传文件【%s】" % (file_path, res_status))
             elif status == "fail":
                 text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】\n" % (now_time, file_path))
-                f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】" % (now_time, file_path))
+                # f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现图片】" % (now_time, file_path))
+                logg.logger.info("【事件】【扫描到文件夹】 %s，【未发现图片】" % file_path)
             elif status == "error":
                 text.insert(tk.END, "\n%s 【事件】【上传图片出错，请查看日志】：%s\n" % (now_time, e))
-                f.write("\n%s 【事件】【上传图片出错，请检查日志】：%s %s\n" % (now_time, e, file_path))
+                # f.write("\n%s 【事件】【上传图片出错，请检查日志】：%s %s\n" % (now_time, e, file_path))
+                logg.logger.error("【事件】【上传图片出错，请检查日志】：%s %s" % (e, file_path))
             elif status == "over":
                 # text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, event_path, sleep_time.strip()))
                 # f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, event_path, sleep_time.strip()))
@@ -137,7 +151,8 @@ def event_run(event_path, ip_val, white_list, sleep_time):
                 sleep(float(sleep_time))
             elif status == "scanError":
                 text.insert(tk.END, "\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
-                f.write("\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
+                # f.write("\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
+                logg.logger.error("【事件】【扫描出错】：%s" % e)
             text.see(tk.END)
             if qz_time != '0':
                 sleep(float(qz_time))
@@ -145,27 +160,30 @@ def event_run(event_path, ip_val, white_list, sleep_time):
             strexc = traceback.format_exc()
             text.insert(tk.END, "\n%s 【事件】程序出错：%s\n" % (datetime.now(), str(ee)))
             text.see(tk.END)
-            f.write("\n%s 【事件】程序出错：%s" % (datetime.now(), strexc))
-        finally:
-            f.close()
+            # f.write("\n%s 【事件】程序出错：%s" % (datetime.now(), strexc))
+            logg.logger.error("【事件】程序出错：%s" % strexc)
+        # finally:
+        #     logg.logger.info("")
 
 
 def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
-    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
-    f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
-    f.write(codecs.BOM_UTF8.decode("utf-8"))
+    log_file = "logs\\"  + '违停日志.txt'
+    # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
+    # f.write(codecs.BOM_UTF8.decode("utf-8"))
+    logg = Logger(log_file, level="info")
     text.insert(tk.END, "\n开始扫描取证文件夹：%s\n" % qz_path)
-    f.write("\n%s 开始扫描取证文件夹：%s\n" % (datetime.now(), qz_path))
-    f.close()
+    # f.write("\n%s 开始扫描取证文件夹：%s\n" % (datetime.now(), qz_path))
+    # f.close()
+    logg.logger.info("开始扫描取证文件夹：%s" % qz_path)
     global qz_thread_count
     qz_thread_count += 1
     # qz_bt.config(state="disabled", text='正在扫描取证文件夹')
     count_qz_thread_lb.config(text="\n已开启取证扫描器数：%s\n" % str(qz_thread_count))
     while True:
-        log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
+        # log_file = "logs\\"  + '违停日志.txt'
         try:
-            f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
-            f.write(codecs.BOM_UTF8.decode("utf-8"))
+            # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
+            # f.write(codecs.BOM_UTF8.decode("utf-8"))
             now_time = datetime.now()
             res = QZ(FileObjectManager(FileObject(qz_path)).scan_with_depth(10).all_file_objects(),
                      ip_val, qz_path, now_time, white_list, wf_list)
@@ -179,26 +197,32 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
                     res_status = '成功'
                     text.insert(tk.END,
                                 "\n%s【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
-                    f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    # f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    logg.logger.info("【取证】【扫描到文件】%s，上传文件【%s】" % (file_path, res_status))
                 elif res_status == "error":
                     res_status = '出错'
                     text.insert(tk.END, "\n%s 【取证】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
-                    f.write("\n%s 【取证】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    # f.write("\n%s 【取证】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    logg.logger.error("【取证】【扫描到文件】%s，服务器【%s】，%s" % (file_path, res_status, e))
                 elif res_status == "fail":
                     res_status = '失败'
                     text.insert(tk.END,
                                 "\n%s【取证】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
-                    f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
+                    # f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
+                    logg.logger.warning("【取证】【扫描到文件】%s，上传文件【%s】, 该设备未启用" % (file_path, res_status))
                 else:
                     text.insert(tk.END,
                                 "\n%s【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
-                    f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    # f.write("\n%s 【取证】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    logg.logger.warning("【取证】【扫描到文件】%s，上传文件【%s】" % (file_path, res_status))
             elif status == "fail":
                 text.insert(tk.END, "\n%s【取证】【扫描到文件夹】 %s，【未发现图片】\n" % (now_time, file_path))
-                f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现图片】" % (now_time, file_path))
+                # f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现图片】" % (now_time, file_path))
+                logg.logger.info("【取证】【扫描到文件夹】 %s，【未发现图片】" % (file_path))
             elif status == "error":
                 text.insert(tk.END, "\n%s【取证】【上传出错，请查看日志】：%s\n" % (now_time, e))
-                f.write("\n%s 【取证】【上传出错，请检查日志】：%s %s\n" % (now_time, e, file_path))
+                # f.write("\n%s 【取证】【上传出错，请检查日志】：%s %s\n" % (now_time, e, file_path))
+                logg.logger.error("【取证】【上传出错，请检查日志】：%s %s" % (e, file_path))
             elif status == "over":
                 # text.insert(tk.END, "\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
                 # f.write("\n%s 【取证】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
@@ -206,7 +230,8 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
                 sleep(float(sleep_time))
             elif status == "scanError":
                 text.insert(tk.END, "\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
-                f.write("\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
+                # f.write("\n%s【事件】【扫描出错】：%s\n" % (now_time, e))
+                logg.logger.error("【事件】【扫描出错】：%s" % e)
             text.see(tk.END)
             # 大量同时推送集成平台时，会出错
             if qz_time != '0':
@@ -215,9 +240,10 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
             strexc = traceback.format_exc()
             text.insert(tk.END, "\n%s 【取证】程序出错：%s\n" % (datetime.now(), str(ee)))
             text.see(tk.END)
-            f.write("\n%s 【取证】程序出错：%s" % (datetime.now(), strexc))
-        finally:
-            f.close()
+            # f.write("\n%s 【取证】程序出错：%s" % (datetime.now(), strexc))
+            logg.logger.error("【取证】程序出错：%s" % strexc)
+        # finally:
+        #     # f.close()
 
 
 def thread_it(func, *args):
@@ -238,12 +264,14 @@ def thread_it(func, *args):
 
 
 def auto_run(event_path, ip_val, white_list, sleep_time, qz_time):
-    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
-    f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
-    f.write(codecs.BOM_UTF8.decode("utf-8"))
+    log_file = "logs\\"  + '违停日志.txt'
+    logg = Logger(log_file, level="info")
+    # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
+    # f.write(codecs.BOM_UTF8.decode("utf-8"))
     try:
-        text.insert(tk.END, "%s %s秒后自动开始运行 【超速】取证扫描 \n" % (datetime.now(), qz_time))
-        # f.write("%s 5秒后自动开始运行 【超速】取证扫描  \n" % datetime.now())
+        text.insert(tk.END, "%s %s秒后自动开始运行 【违停】取证扫描 \n" % (datetime.now(), qz_time))
+        # f.write("%s 5秒后自动开始运行 【违停】取证扫描  \n" % datetime.now())
+        logg.logger.info("%s秒后自动开始运行 【违停】取证扫描 " % qz_time)
 
         sleep(float(qz_time))
 
@@ -256,15 +284,16 @@ def auto_run(event_path, ip_val, white_list, sleep_time, qz_time):
     except Exception as e:
         # print(e)
         strexc = traceback.format_exc()
-        f.write("%s 自动运行出错 %s\n" % (datetime.now(), strexc))
+        # f.write("%s 自动运行出错 %s\n" % (datetime.now(), strexc))
         text.insert(tk.END, "%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
-    finally:
-        f.close()
+        logg.logger.error("自动运行出错 %s" % strexc)
+    # finally:
+    #     # f.close()
 
 
 if __name__ == '__main__':
 
-    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '违停日志.txt'
+    # log_file = "logs\\"  + '违停日志.txt'
 
     if basic_info():
         event_path, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list = basic_info()
