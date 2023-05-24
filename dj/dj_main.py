@@ -22,7 +22,7 @@ thread_count = 0
 
 
 def basic_info():
-    white_list = ['渝DJD020']
+    white_list = ['渝D71P00']
     try:
         cf = configparser.ConfigParser()
         cf.read("ACconfig.ini", encoding="utf-8-sig")  # 读取配置文件，如果写文件的绝对路径，就可以不用os模块

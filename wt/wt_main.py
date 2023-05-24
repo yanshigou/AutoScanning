@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/6"
-__title__ = "违停扫描器v1.11_20230313"
+__title__ = "违停扫描器v1.14_20230327"
 
 from wt_file_manager import FileObjectManager, FileObject
 import requests
@@ -23,7 +23,7 @@ qz_thread_count = 0
 
 
 def basic_info():
-    white_list = ['渝DJD020']
+    white_list = ['渝D71P00']
     try:
         cf = configparser.ConfigParser()
         cf.read("ACconfig.ini", encoding="utf-8-sig")  # 读取配置文件，如果写文件的绝对路径，就可以不用os模块
@@ -55,7 +55,7 @@ def basic_info():
 
 
 def event_run(event_path, ip_val, white_list, sleep_time):
-    log_file = "logs\\"  + '违停日志.txt'
+    log_file = "logs\\" + '违停日志事件.log'
     # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
     # f.write(codecs.BOM_UTF8.decode("utf-8"))
@@ -68,7 +68,7 @@ def event_run(event_path, ip_val, white_list, sleep_time):
     # event_bt.config(state="disabled", text='正在扫描事件文件夹')
     count_event_thread_lb.config(text="\n已开启事件扫描器数：%s\n" % str(event_thread_count))
     while True:
-        # log_file = "logs\\"  + '违停日志.txt'
+        # log_file = "logs\\" + '违停日志.log'
         try:
             # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
             # f.write(codecs.BOM_UTF8.decode("utf-8"))
@@ -147,6 +147,7 @@ def event_run(event_path, ip_val, white_list, sleep_time):
             elif status == "over":
                 # text.insert(tk.END, "\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, event_path, sleep_time.strip()))
                 # f.write("\n%s 【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, event_path, sleep_time.strip()))
+                logg.logger.info("【事件】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】" % (event_path, sleep_time.strip()))
                 # text.see(tk.END)
                 sleep(float(sleep_time))
             elif status == "scanError":
@@ -167,7 +168,7 @@ def event_run(event_path, ip_val, white_list, sleep_time):
 
 
 def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
-    log_file = "logs\\"  + '违停日志.txt'
+    log_file = "logs\\" + '违停日志取证.log'
     # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
     # f.write(codecs.BOM_UTF8.decode("utf-8"))
     logg = Logger(log_file, level="info")
@@ -180,7 +181,7 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
     # qz_bt.config(state="disabled", text='正在扫描取证文件夹')
     count_qz_thread_lb.config(text="\n已开启取证扫描器数：%s\n" % str(qz_thread_count))
     while True:
-        # log_file = "logs\\"  + '违停日志.txt'
+        # log_file = "logs\\" + '违停日志.log'
         try:
             # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
             # f.write(codecs.BOM_UTF8.decode("utf-8"))
@@ -264,14 +265,14 @@ def thread_it(func, *args):
 
 
 def auto_run(event_path, ip_val, white_list, sleep_time, qz_time):
-    log_file = "logs\\"  + '违停日志.txt'
-    logg = Logger(log_file, level="info")
+    # log_file = "logs\\" + '违停日志.log'
+    # logg = Logger(log_file, level="info")
     # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
     # f.write(codecs.BOM_UTF8.decode("utf-8"))
     try:
         text.insert(tk.END, "%s %s秒后自动开始运行 【违停】取证扫描 \n" % (datetime.now(), qz_time))
         # f.write("%s 5秒后自动开始运行 【违停】取证扫描  \n" % datetime.now())
-        logg.logger.info("%s秒后自动开始运行 【违停】取证扫描 " % qz_time)
+        # logg.logger.info("%s秒后自动开始运行 【违停】取证扫描 " % qz_time)
 
         sleep(float(qz_time))
 
@@ -286,6 +287,8 @@ def auto_run(event_path, ip_val, white_list, sleep_time, qz_time):
         strexc = traceback.format_exc()
         # f.write("%s 自动运行出错 %s\n" % (datetime.now(), strexc))
         text.insert(tk.END, "%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
+        log_file = "logs\\" + '违停日志启动.log'
+        logg = Logger(log_file, level="info")
         logg.logger.error("自动运行出错 %s" % strexc)
     # finally:
     #     # f.close()
@@ -293,7 +296,7 @@ def auto_run(event_path, ip_val, white_list, sleep_time, qz_time):
 
 if __name__ == '__main__':
 
-    # log_file = "logs\\"  + '违停日志.txt'
+    # log_file = "logs\\" + '违停日志.log'
 
     if basic_info():
         event_path, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list = basic_info()
