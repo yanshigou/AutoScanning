@@ -9,11 +9,9 @@ import requests
 import tkinter as tk
 import threading
 from tkinter import scrolledtext
-from wt_upload_image import Logger
 from datetime import datetime
 from time import sleep
 import configparser
-import traceback
 
 
 def basic_info():
@@ -64,13 +62,9 @@ def auto_run(ip_val):
         thread_it(check_device_online, ip_val)
 
     except Exception as e:
-        strexc = traceback.format_exc()
+        # strexc = traceback.format_exc()
         # f.write("%s 自动运行出错 %s\n" % (datetime.now(), strexc))
         text.insert(tk.END, "%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
-        log_file = "logs\\" + '违停日志启动.log'
-        logg = Logger(log_file, level="info")
-        logg.logger.error("自动运行出错 %s" % strexc)
-
 
 
 def check_device_online(ip_val):
