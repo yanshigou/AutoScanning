@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/6"
-__title__ = "违停扫描器v2.0_20240716"
+__title__ = "违停扫描器v2.1_20240717"
 
 from wt_file_manager import FileObjectManager, FileObject
 import requests
@@ -45,10 +45,12 @@ def basic_info():
 
         qz_time = cf.get("WTConfig", "qz_time")  # 获取[BasicConfig]中qz_time对应的值
 
+        thread_nums = cf.get("WTConfig", "thread_nums")  # 获取[BasicConfig]中qz_time对应的值
+
         wf_list_str = cf.get("WTConfig", "wf_list")  # 获取[BasicConfig]中wf_list对应的值
         wf_list = wf_list_str.split(',')
 
-        return event_path, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list
+        return event_path, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list, thread_nums
     except Exception as e:
         # print(e)
         return False
@@ -266,7 +268,7 @@ def thread_it(func, *args):
     # t.join()
 
 
-def auto_run(event_path, ip_val, white_list, sleep_time, qz_time):
+def auto_run(event_path, ip_val, white_list, sleep_time, qz_time, thread_nums):
     # log_file = "logs\\" + '违停日志.log'
     # logg = Logger(log_file, level="info")
     # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
@@ -280,8 +282,13 @@ def auto_run(event_path, ip_val, white_list, sleep_time, qz_time):
 
         text.insert(tk.END, "%s %s秒后自动开始运行 事件扫描 \n" % (datetime.now(), qz_time))
         text.insert(tk.END, "%s %s秒后自动开始运行 取证扫描 \n" % (datetime.now(), qz_time))
-        sleep(float(qz_time))
-        thread_it(event_run, event_path, ip_val, white_list, sleep_time)
+        try:
+            thread_nums = int(thread_nums)
+        except Exception as e:
+            thread_nums = 1
+        for _ in range(thread_nums):
+            sleep(float(qz_time))
+            thread_it(event_run, event_path, ip_val, white_list, sleep_time)
         sleep(0.1)
         thread_it(QZ_run, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list)
     except Exception as e:
@@ -301,7 +308,7 @@ if __name__ == '__main__':
     # log_file = "logs\\" + '违停日志.log'
 
     if basic_info():
-        event_path, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list = basic_info()
+        event_path, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list, thread_nums = basic_info()
 
         root = tk.Tk()
 
@@ -359,7 +366,7 @@ if __name__ == '__main__':
         event_bt.grid(padx=5, pady=20)
         qz_bt.grid(padx=5, pady=20)
 
-        thread_it(auto_run, event_path, ip_val, white_list, sleep_time, qz_time)
+        thread_it(auto_run, event_path, ip_val, white_list, sleep_time, qz_time, thread_nums)
 
         q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
         q.grid(padx=5, pady=10)
