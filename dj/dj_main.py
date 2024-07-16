@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/5"
-__title__ = "电警扫描器v1.5_20230203"
+__title__ = "电警扫描器v2.3_20240716"
 
 from dj_file_manager import FileObjectManager, FileObject
 import requests

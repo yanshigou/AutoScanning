@@ -73,7 +73,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
             file_path = file.file_path
             fileSize = file.size / 1024  # size  (self.size / 1024.0)
             if fileSize <= 1:
-                flog.write("\n%s 【超速扫描删除】【0KB图片】%s\n" % (now_time, file_path))
+                flog.write("\n%s 【电警扫描删除】【0KB图片】%s\n" % (now_time, file_path))
                 os.remove(file_path)
                 return {"status": "over", "count": 0}
 
@@ -89,7 +89,10 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                 file_name_list = file_name.split('_')
 
                 # print(file_name)  60950_20220608_115324_728_50.22.36.211_渝AQ39C9_47_40_蓝.jpg
+                # print(file_name)  11160_20240714_115324_728_进口_教练车限行_50.22.36.211_渝AQ39C9_47_40_蓝.jpg
                 car_id = ""
+                img_type = ""
+                model_name = ""
                 ip = ""
                 car_color = ""
                 time1 = file_name_list[1]
@@ -106,6 +109,14 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     re_car_id = re.findall('^[无京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼使领A-Z].*', i, re.S)
                     if re_car_id:
                         car_id = i
+
+                    re_type = re.findall('^进口$|^出口$', i, re.S)
+                    if re_type:
+                        img_type = i
+
+                    re_type = re.findall('^限时通行$|^教练车限行$', i, re.S)
+                    if re_type:
+                        model_name = i
 
                     re_time1 = re.findall('^20\d{6}$', i, re.S)
                     if re_time1:
@@ -124,6 +135,10 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
 
                 i_type = file_name_list[0]
                 wf_time = time1 + time2
+                if "出口" in img_type:
+                    flog.write("\n%s 【电警扫描删除】【出口图】%s\n" % (now_time, file_path))
+                    os.remove(file_path)
+                    return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
                 if '无' in car_id:
                     flog.write("\n%s 【电警扫描删除】【无车牌】%s\n" % (now_time, file_path))
                     os.remove(file_path)
@@ -141,10 +156,15 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     car_type = '02'
                     if '黄' in car_color:
                         car_type = '01'
+                    elif "渐" in car_color:  # 渐变绿
+                        car_type = "52"
                     elif "绿" in car_color:
                         car_type = "52"
-                    elif "渐" in car_color:  # 渐变绿
+
+                    if "黄绿" in car_color:  # 黄绿双拼
                         car_type = "51"
+                    if "学" in car_id:
+                        car_type = "02"
                     try:
                         f = open(file_path, 'rb')
                         files = {'image_file': (file_name, f, 'image/jpg')}
@@ -155,7 +175,9 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             car_type=car_type,
                             wf_time=wf_time,
                             speed=speed,
-                            lim_speed=lim_speed
+                            lim_speed=lim_speed,
+                            img_type=img_type,
+                            model_name=model_name
                         )
                         try:
                             maxrequests = requests.Session()

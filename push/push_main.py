@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/10"
-__title__ = "推送器v1.1_20230203"
+__title__ = "推送器v2.1_20240716"
 
 
 import requests
@@ -18,7 +18,9 @@ from requests.adapters import HTTPAdapter
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # 建立连接 获取csrftoken
-client = requests.session()
+# client = requests.session()
+maxrequests = requests.Session()
+maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
 
 
 is_push = "0"
@@ -62,18 +64,18 @@ def thread_it(func, *args):
 
 
 def push(url, push_time, modelName):
-    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '推送日志.txt'
-    f = open(log_file, 'a+', encoding='utf-8')
+    # log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '推送日志.txt'
+    # f = open(log_file, 'a+', encoding='utf-8')
 
     text.insert(tk.END, "\n" + modelName + "开始推送\n")
-    f.write("\n%s " % datetime.now() + modelName + "开始推送\n")
-    f.close()
+    # f.write("\n%s " % datetime.now() + modelName + "开始推送\n")
+    # f.close()
 
     while True:
-        f = open(log_file, 'a+', encoding='utf-8')
+        # log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '推送日志.txt'
         try:
-            maxrequests = requests.Session()
-            maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
+            # f = open(log_file, 'a+', encoding='utf-8')
+
             r = maxrequests.get('%s' % url, timeout=5).json()
             status = r.get('status')
             car_id = r.get('car_id')
@@ -81,29 +83,30 @@ def push(url, push_time, modelName):
             if status == "success":
                 push_result = "成功"
                 text.insert(tk.END, '\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
-                f.write('\n%s 【%s】推送成功，【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
+                # f.write('\n%s 【%s】推送成功，【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
             elif status == "fail":
                 text.insert(tk.END, '\n%s 【%s】数据推送已完成' % (datetime.now(), modelName))
-                f.write('\n%s 【%s】数据推送已完成' % (datetime.now(), modelName))
+                # f.write('\n%s 【%s】数据推送已完成' % (datetime.now(), modelName))
             elif status == "deviceIdError":
                 text.insert(tk.END, '\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
-                f.write('\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
+                # f.write('\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
             elif status == "error":
                 text.insert(tk.END, '\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
-                f.write('\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
+                # f.write('\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
             sleep(float(push_time))
             text.see(tk.END)
         except Exception as e:
             strexc = traceback.format_exc()
-            f.write("%s 【%s】程序出错 %s\n" % (datetime.now(), modelName, strexc))
+            # f.write("%s 【%s】程序出错 %s\n" % (datetime.now(), modelName, strexc))
             text.insert(tk.END, "%s 【%s】程序出错 %s\n" % (datetime.now(), modelName, strexc))
         finally:
-            f.close()
+            # f.close()
+            pass
 
 
 def auto_run(urlList, push_time, modelNameList):
-    log_file = "logs/" + datetime.now().strftime('%Y-%m-%d') + '推送日志.txt'
-    f = open(log_file, 'a+', encoding='utf-8')
+    # log_file = "logs/" + datetime.now().strftime('%Y-%m-%d') + '推送日志.txt'
+    # f = open(log_file, 'a+', encoding='utf-8')
     try:
         for index, url in enumerate(urlList):
             modelName = modelNameList[index]
@@ -111,15 +114,16 @@ def auto_run(urlList, push_time, modelNameList):
             sleep(1)
     except Exception as e:
         strexc = traceback.format_exc()
-        f.write("%s 自动运行出错 %s\n" % (datetime.now(), strexc))
+        # f.write("%s 自动运行出错 %s\n" % (datetime.now(), strexc))
         text.insert(tk.END, "%s 自动运行出错 %s\n" % (datetime.now(), strexc))
-    finally:
-        f.close()
+    # finally:
+        # f.close()
+        # pass
 
 
 if __name__ == '__main__':
 
-    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '推送日志.txt'
+    # log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '推送日志.txt'
 
     if basic_info():
         ip_val, push_time, is_push, push_model = basic_info()
@@ -178,6 +182,12 @@ if __name__ == '__main__':
                 elif i == "wfmdDataInfo":
                     model_name += "【违法鸣笛推送】\n"
                     modelNameList.append("违法鸣笛")
+                elif i == "xstxDataInfo":
+                    model_name += "【限时通行推送】\n"
+                    modelNameList.append("限时通行")
+                elif i == "xxDataInfo":
+                    model_name += "【教练车限行推送】\n"
+                    modelNameList.append("教练车限行")
 
             model_lb = tk.Label(lf, text=model_name + "\n")
             model_lb.grid()

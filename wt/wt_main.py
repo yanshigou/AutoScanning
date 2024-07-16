@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/6"
-__title__ = "违停扫描器v1.15_20230530"
+__title__ = "违停扫描器v2.0_20240716"
 
 from wt_file_manager import FileObjectManager, FileObject
 import requests
@@ -69,6 +69,7 @@ def event_run(event_path, ip_val, white_list, sleep_time):
     count_event_thread_lb.config(text="\n已开启事件扫描器数：%s\n" % str(event_thread_count))
     while True:
         # log_file = "logs\\" + '违停日志.log'
+        logg = Logger(log_file, level="info")
         try:
             # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
             # f.write(codecs.BOM_UTF8.decode("utf-8"))
@@ -182,6 +183,7 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
     count_qz_thread_lb.config(text="\n已开启取证扫描器数：%s\n" % str(qz_thread_count))
     while True:
         # log_file = "logs\\" + '违停日志.log'
+        logg = Logger(log_file, level="info")
         try:
             # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
             # f.write(codecs.BOM_UTF8.decode("utf-8"))

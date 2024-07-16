@@ -272,6 +272,11 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                         car_type = "52"
                     elif "渐" in car_color:  # 渐变绿
                         car_type = "52"
+
+                    if "黄绿" in car_color:  # 黄绿双拼
+                        car_type = "51"
+                    if "学" in car_id:
+                        car_type = "02"
                     try:
                         f = open(file_path, 'rb')
                         files = {'image_file': (file_name, f, 'image/jpg')}
