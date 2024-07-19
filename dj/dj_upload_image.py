@@ -164,7 +164,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     if "黄绿" in car_color:  # 黄绿双拼
                         car_type = "51"
                     if "学" in car_id:
-                        car_type = "02"
+                        car_type = "16"
                     try:
                         f = open(file_path, 'rb')
                         files = {'image_file': (file_name, f, 'image/jpg')}
