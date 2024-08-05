@@ -291,7 +291,7 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                         try:
                             maxrequests = requests.Session()
                             maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
-                            res = requests.post('http://%s/dataInfo/wtDataEventSMSUpload/' % ip_val, files=files,
+                            res = maxrequests.post('http://%s/dataInfo/wtDataEventSMSUpload/' % ip_val, files=files,
                                                 data=data, timeout=10).json()
                             status = res.get("status")
                             strexc = res.get('e')
@@ -496,7 +496,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         try:
                             maxrequests = requests.Session()
                             maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
-                            res = requests.post('http://%s/dataInfo/wtDataInfoUpload/' % ip_val, files=files,
+                            res = maxrequests.post('http://%s/dataInfo/wtDataInfoUpload/' % ip_val, files=files,
                                                 data=data, timeout=10).json()
                             status = res.get("status")
                             strexc = res.get('e')

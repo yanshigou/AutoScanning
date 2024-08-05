@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2023/6/26"
-__title__ = "设备在线监测器v1.2_20230627"
+__title__ = "设备在线监测器v2.0_20240724"
 
 from platform import system as system_name
 import subprocess
@@ -12,6 +12,10 @@ from tkinter import scrolledtext
 from datetime import datetime
 from time import sleep
 import configparser
+from requests.adapters import HTTPAdapter
+
+maxrequests = requests.Session()
+maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
 
 
 def basic_info():
@@ -33,10 +37,31 @@ def basic_info():
         return False
 
 
-def ping_device(ip_address):
+def insert_log(message):
+    text.insert(tk.END, message)
 
+
+def ping_device(ip_address):
     parameters = "-n 1" if system_name().lower() == "windows" else "-c 1"
-    return subprocess.call(["ping", parameters, ip_address], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL) == 0
+
+    if system_name().lower() == "windows":
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        process = subprocess.Popen(
+            ("ping " + parameters + " " + ip_address),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            startupinfo=startupinfo
+        )
+    else:
+        process = subprocess.Popen(
+            ("ping " + parameters + " " + ip_address),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE
+        )
+
+    stdout, stderr = process.communicate()  # 必须使用这个等待子进程结束才能正确检测
+    return process.returncode == 0
 
 
 def thread_it(func, *args):
@@ -64,33 +89,41 @@ def auto_run(ip_val):
     except Exception as e:
         # strexc = traceback.format_exc()
         # f.write("%s 自动运行出错 %s\n" % (datetime.now(), strexc))
-        text.insert(tk.END, "%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
+
+        insert_log("%s 自动运行出错 %s\n" % (datetime.now(), str(e)))
 
 
 def check_device_online(ip_val):
 
-    text.insert(tk.END, "开始检测设备状态")
+
+    insert_log("开始检测设备状态\n")
 
     ping_bt.config(state="disabled", text='开始监测设备状态')
     while True:
         try:
-            res = requests.get('http://%s/devices/allDevices/' % ip_val)
+
+            res = maxrequests.get('http://%s/devices/allDevices/' % ip_val)
+
             ip_list = res.json().get('devices')
             for ip in ip_list:
                 now_time = datetime.now()
                 is_online = ping_device(ip)
                 if is_online:
-                    text.insert(tk.END, '\n%s 设备 %s 在线' % (now_time, ip))
 
-                    requests.get('http://%s/devices/statusModify/?is_online=1&ip=%s' % (ip_val, ip))
+                    insert_log('\n%s 设备 %s 在线' % (now_time, ip))
+
+                    maxrequests.get('http://%s/devices/statusModify/?is_online=1&ip=%s' % (ip_val, ip))
                 else:
-                    text.insert(tk.END, '\n%s 设备 %s 离线' % (now_time, ip))
 
-                    requests.get('http://%s/devices/statusModify/?is_online=0&ip=%s' % (ip_val, ip))
+                    insert_log('\n%s 设备 %s 离线' % (now_time, ip))
+
+                    maxrequests.get('http://%s/devices/statusModify/?is_online=0&ip=%s' % (ip_val, ip))
 
             sleep(60 * 5)
         except Exception as e:
-            text.insert(tk.END, "%s 监测设备在线状态出错 %s\n" % (datetime.now(), str(e)))
+            insert_log("%s 监测设备在线状态出错 %s\n" % (datetime.now(), str(e)))
+            text.see(tk.END)
+            sleep(60 * 5)
 
 
 if __name__ == '__main__':

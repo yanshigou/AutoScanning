@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/3"
-__title__ = "区间测速扫描器v2.1_20240719"
+__title__ = "区间测速扫描器v2.2_20240725"
 
 from cs_file_manager import FileObjectManager, FileObject
 import requests
@@ -51,11 +51,11 @@ def basic_info():
 
 
 def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
-    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
-    f = open(log_file, 'a+', encoding='utf-8')
+    # log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
+    # f = open(log_file, 'a+', encoding='utf-8')
     text.insert(tk.END, "\n开始扫描超速文件夹：%s\n" % qz_path)
-    f.write("\n%s 开始扫描超速文件夹：%s\n" % (datetime.now(), qz_path))
-    f.close()
+    # f.write("\n%s 开始扫描超速文件夹：%s\n" % (datetime.now(), qz_path))
+    # f.close()
     # count = 0
     global thread_count
     thread_count += 1
@@ -63,8 +63,8 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
     count_thread_lb.config(text="\n已开启扫描器数：%s\n" % str(thread_count))
     while True:
         log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
+        f = open(log_file, 'a+', encoding='utf-8')
         try:
-            f = open(log_file, 'a+', encoding='utf-8')
             # sleep(1)
             now_time = datetime.now()
             res = QZ(FileObjectManager(FileObject(qz_path)).scan_with_depth(10).all_file_objects(),
@@ -79,30 +79,35 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
             if status == "success":
                 if res_status == "success":
                     res_status = '成功'
-                    text.insert(tk.END,
-                                "\n%s【超速】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    # text.insert(tk.END,
+                    #             "\n%s【超速】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
                     f.write("\n%s 【超速】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
                 elif res_status == "error":
                     res_status = '出错'
                     text.insert(tk.END, "\n%s 【超速】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
+                    text.see(tk.END)
                     f.write("\n%s 【超速】【扫描到文件】%s，服务器【%s】，%s" % (now_time, file_path, res_status, e))
                 elif res_status == "wfCodeError":
                     res_status = '失败'
                     text.insert(tk.END, "\n%s【超速】【扫描到文件】%s，上传文件【%s】, 该违法代码后台未添加\n" % (now_time, file_path, res_status))
+                    text.see(tk.END)
                     f.write("\n%s 【超速】【扫描到文件】%s，上传文件【%s】, 该违法代码后台未添加\n" % (now_time, file_path, res_status))
                 elif res_status == "fail":
                     """fail"""
                     res_status = '失败'
                     text.insert(tk.END, "\n%s【超速】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
+                    text.see(tk.END)
                     f.write("\n%s 【超速】【扫描到文件】%s，上传文件【%s】, 该设备未启用\n" % (now_time, file_path, res_status))
                 else:
                     text.insert(tk.END, "\n%s【超速】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
+                    text.see(tk.END)
                     f.write("\n%s 【超速】【扫描到文件】%s，上传文件【%s】\n" % (now_time, file_path, res_status))
-            elif status == "fail":
-                text.insert(tk.END, "\n%s【超速】【扫描到文件夹】 %s，【未发现有效图片】\n" % (now_time, file_path))
-                f.write("\n%s 【超速】【扫描到文件夹】 %s，【未发现有效图片】" % (now_time, file_path))
+            # elif status == "fail":
+            #     text.insert(tk.END, "\n%s【超速】【扫描到文件夹】 %s，【未发现有效图片】\n" % (now_time, file_path))
+            #     f.write("\n%s 【超速】【扫描到文件夹】 %s，【未发现有效图片】" % (now_time, file_path))
             elif status == "error":
                 text.insert(tk.END, "\n%s【超速】【上传出错，请查看日志】：%s\n" % (now_time, e))
+                text.see(tk.END)
                 f.write("\n%s 【超速】【上传出错，请检查日志】：%s %s\n" % (now_time, e, file_path))
             elif status == "over":
                 # text.insert(tk.END, "\n%s 【超速】【扫描到文件夹】 %s，【未发现任何图片，休息%s秒】\n" % (now_time, qz_path, sleep_time.strip()))
@@ -111,10 +116,11 @@ def QZ_run(qz_path, ip_val, white_list, sleep_time, qz_time, wf_list):
                 sleep(float(sleep_time))
             elif status == "scanError":
                 text.insert(tk.END, "\n%s【超速】【扫描出错】：%s\n" % (now_time, e))
+                text.see(tk.END)
                 f.write("\n%s【超速】【扫描出错】：%s\n" % (now_time, e))
             # count_qz_lb.config(text='\n已处理超速图片数：%s\n' % str(count))
             # f.write('\n%s 已处理超速图片数：%s\n' % (now_time, str(count)))
-            text.see(tk.END)
+
             # 大量同时推送集成平台时，会出错
             if qz_time != '0':
                 sleep(float(qz_time))
@@ -165,7 +171,7 @@ def auto_run(ip_val, white_list, sleep_time, qz_time, wf_list):
 
 if __name__ == '__main__':
 
-    log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
+    # log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
     # f = open(log_file, 'a+', encoding='utf-8')
     # f.write('%s 正在读取配置文件...\n' % datetime.now())
     # f.close()
@@ -189,7 +195,7 @@ if __name__ == '__main__':
         text.insert(tk.END, "取证图片上传间隔(秒)：%s\n" % qz_time)
         # text.insert(tk.END, "白名单：%s\n" % white_list)
 
-        log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
+        # log_file = "logs\\" + datetime.now().strftime('%Y-%m-%d') + '超速日志.txt'
 
         text.grid(row=0, column=0)
         root.geometry('1000x800+600+50')

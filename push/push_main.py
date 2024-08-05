@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/10"
-__title__ = "推送器v2.1_20240716"
+__title__ = "推送器v2.3_20240724"
 
 
 import requests
@@ -84,24 +84,25 @@ def push(url, push_time, modelName):
                 push_result = "成功"
                 text.insert(tk.END, '\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
                 # f.write('\n%s 【%s】推送成功，【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
-            elif status == "fail":
-                text.insert(tk.END, '\n%s 【%s】数据推送已完成' % (datetime.now(), modelName))
-                # f.write('\n%s 【%s】数据推送已完成' % (datetime.now(), modelName))
-            elif status == "deviceIdError":
-                text.insert(tk.END, '\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
-                # f.write('\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
+            # elif status == "fail":
+            #     text.insert(tk.END, '\n%s 【%s】数据推送已完成' % (datetime.now(), modelName))
+            #     # f.write('\n%s 【%s】数据推送已完成' % (datetime.now(), modelName))
+            # elif status == "deviceIdError":
+            #     text.insert(tk.END, '\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
+            #     # f.write('\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
             elif status == "error":
                 text.insert(tk.END, '\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
                 # f.write('\n%s 【%s】推送【%s】,【%s】' % (datetime.now(), modelName, push_result, car_id))
+                text.see(tk.END)
             sleep(float(push_time))
-            text.see(tk.END)
+            # text.see(tk.END)
         except Exception as e:
             strexc = traceback.format_exc()
             # f.write("%s 【%s】程序出错 %s\n" % (datetime.now(), modelName, strexc))
             text.insert(tk.END, "%s 【%s】程序出错 %s\n" % (datetime.now(), modelName, strexc))
+            text.see(tk.END)
         finally:
-            # f.close()
-            pass
+            r.close()
 
 
 def auto_run(urlList, push_time, modelNameList):

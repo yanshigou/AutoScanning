@@ -182,7 +182,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         try:
                             maxrequests = requests.Session()
                             maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
-                            res = requests.post('http://' + ip_val + dj_url, files=files, data=data, timeout=5).json()
+                            res = maxrequests.post('http://' + ip_val + dj_url, files=files, data=data, timeout=5).json()
                             status = res.get('status')
                             strexc = res.get('e')
                         except Exception as e:
