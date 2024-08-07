@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2023/6/26"
-__title__ = "设备在线监测器v2.0_20240724"
+__title__ = "设备在线监测器v2.5_20240807"
 
-from platform import system as system_name
-import subprocess
+# from platform import system as system_name
+# import subprocess
 import requests
 import tkinter as tk
 import threading
@@ -13,9 +13,14 @@ from datetime import datetime
 from time import sleep
 import configparser
 from requests.adapters import HTTPAdapter
+from concurrent.futures import ThreadPoolExecutor
+from ping3 import ping
 
-maxrequests = requests.Session()
-maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
+
+log_limit = 0
+wait_time = 10
+del_nums = 50
+max_workers = 8
 
 
 def basic_info():
@@ -31,6 +36,15 @@ def basic_info():
         # print(items)
 
         ip_val = cf.get("WTConfig", "ip_val")  # 获取[BasicConfig]中ip_val对应的值
+
+        global log_limit
+        global wait_time
+        global max_workers
+        global del_nums
+        wait_time = float(cf.get("WTConfig", "wait_time"))  # 获取[BasicConfig]中ip_val对应的值
+        log_limit = int(cf.get("WTConfig", "log_limit"))  # 获取[BasicConfig]中ip_val对应的值
+        max_workers = int(cf.get("WTConfig", "max_workers"))  # 获取[BasicConfig]中ip_val对应的值
+        del_nums = float(cf.get("WTConfig", "del_nums"))  # 获取[BasicConfig]中ip_val对应的值
         return ip_val
 
     except Exception as e:
@@ -38,30 +52,45 @@ def basic_info():
 
 
 def insert_log(message):
-    text.insert(tk.END, message)
+    if log_limit == 0:
+        return
+    else:
+        text.insert(tk.END, message)
+        # 限制显示的日志条数，例如只保留最后1000行
+        if log_limit == 1:
+            return
+        a = int(text.index('end-1c').split('.')[0])
+        if a > log_limit:
+            text.delete(1.0, del_nums)
 
+
+# def ping_device(ip_address):
+#     parameters = "-n 1" if system_name().lower() == "windows" else "-c 1"
+#
+#     if system_name().lower() == "windows":
+#         startupinfo = subprocess.STARTUPINFO()
+#         startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+#         process = subprocess.Popen(
+#             ("ping " + parameters + " " + ip_address),
+#             stdout=subprocess.PIPE,
+#             stderr=subprocess.PIPE,
+#             startupinfo=startupinfo
+#         )
+#     else:
+#         process = subprocess.Popen(
+#             ("ping " + parameters + " " + ip_address),
+#             stdout=subprocess.PIPE,
+#             stderr=subprocess.PIPE
+#         )
+#
+#     stdout, stderr = process.communicate()  # 必须使用这个等待子进程结束才能正确检测
+#     process.stdout.close()
+#     process.stderr.close()
+#     return process.returncode == 0
 
 def ping_device(ip_address):
-    parameters = "-n 1" if system_name().lower() == "windows" else "-c 1"
-
-    if system_name().lower() == "windows":
-        startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        process = subprocess.Popen(
-            ("ping " + parameters + " " + ip_address),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            startupinfo=startupinfo
-        )
-    else:
-        process = subprocess.Popen(
-            ("ping " + parameters + " " + ip_address),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE
-        )
-
-    stdout, stderr = process.communicate()  # 必须使用这个等待子进程结束才能正确检测
-    return process.returncode == 0
+    delay = ping(ip_address, timeout=1)
+    return delay is not None
 
 
 def thread_it(func, *args):
@@ -94,36 +123,35 @@ def auto_run(ip_val):
 
 
 def check_device_online(ip_val):
-
-
     insert_log("开始检测设备状态\n")
 
     ping_bt.config(state="disabled", text='开始监测设备状态')
-    while True:
-        try:
 
-            res = maxrequests.get('http://%s/devices/allDevices/' % ip_val)
+    with ThreadPoolExecutor(max_workers=int(max_workers)) as executor:
+        with requests.Session() as session:
+            session.mount('http://', HTTPAdapter(max_retries=2))
+            while True:
+                try:
+                    res = session.get(f'http://{ip_val}/devices/allDevices/')
+                    ip_list = res.json().get('devices')
+                    res.close()
 
-            ip_list = res.json().get('devices')
-            for ip in ip_list:
-                now_time = datetime.now()
-                is_online = ping_device(ip)
-                if is_online:
+                    future_to_ip = {executor.submit(ping_device, ip): ip for ip in ip_list}
 
-                    insert_log('\n%s 设备 %s 在线' % (now_time, ip))
+                    for future in future_to_ip:
+                        ip = future_to_ip[future]
+                        is_online = future.result()
+                        insert_log('\n设备%s %s ' % (ip, is_online))
+                        session.get(f'http://{ip_val}/devices/statusModify/?is_online={int(is_online)}&ip={ip}', headers={'Cache-Control': 'no-cache'}).close()
+                    session.cookies.clear()
+                    sleep(60 * float(wait_time))
+                except Exception as e:
+                    insert_log("%s 监测设备在线状态出错 %s\n" % (datetime.now(), str(e)))
+                    sleep(60 * float(wait_time))
 
-                    maxrequests.get('http://%s/devices/statusModify/?is_online=1&ip=%s' % (ip_val, ip))
-                else:
 
-                    insert_log('\n%s 设备 %s 离线' % (now_time, ip))
-
-                    maxrequests.get('http://%s/devices/statusModify/?is_online=0&ip=%s' % (ip_val, ip))
-
-            sleep(60 * 5)
-        except Exception as e:
-            insert_log("%s 监测设备在线状态出错 %s\n" % (datetime.now(), str(e)))
-            text.see(tk.END)
-            sleep(60 * 5)
+def close_b(root):
+    root.quit()
 
 
 if __name__ == '__main__':
@@ -147,14 +175,12 @@ if __name__ == '__main__':
         root.geometry('1000x800+600+50')
         lf = tk.LabelFrame(root, text='')
         lf.grid(row=0, column=1)
-
         ping_bt = tk.Button(lf, text='开始检测设备状态', fg='red',
                             command=lambda: thread_it(check_device_online, ip_val))
         ping_bt.grid(padx=5, pady=20)
 
         thread_it(auto_run, ip_val)
-
-        q = tk.Button(lf, text='退  出', command=root.quit, padx=10, pady=5)
+        q = tk.Button(lf, text='退  出', command=lambda: close_b(root), padx=10, pady=5)
         q.grid(padx=5, pady=10)
 
         root.mainloop()

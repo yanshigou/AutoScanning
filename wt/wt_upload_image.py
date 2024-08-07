@@ -211,19 +211,23 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                             wf_time=wf_time
                         )
                         try:
-                            maxrequests = requests.Session()
-                            maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
-                            res = maxrequests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files,
-                                                data=data, timeout=10).json()
-                            status = res.get('status')
-                            strexc = res.get('e')
+                            with requests.Session() as maxrequests:
+                                maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
+                                res = maxrequests.post('http://%s/dataInfo/wtDataEventUpload/' % ip_val, files=files,
+                                                    data=data, timeout=10)
+                                res_josn = res.json()
+                                status = res_josn.get("status")
+                                strexc = res_josn.get('e')
+                                res.close()
+                                maxrequests.cookies.clear()
+
                         except Exception as e:
                             strexc = traceback.format_exc()
                             # flog.write("\n%s 【违停事件扫描上传出错】【%s】\n" % (now_time, strexc))
                             logg.logger.error("【违停事件扫描上传出错】【%s】" % strexc)
                             # continue
                             status = "失败，" + str(e)
-                            res = {"zp": "", "sms_image": ""}
+                            res_josn = {"zp": "", "sms_image": ""}
                         finally:
                             f.close()
                     except Exception as e:
@@ -232,10 +236,10 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                         logg.logger.error("【违停事件扫描上传出错】【%s】" % strexc)
                         # continue
                         status = "失败，" + str(e)
-                        res = {"zp": "", "sms_image": ""}
+                        res_josn = {"zp": "", "sms_image": ""}
 
-                    zp = res.get('zp')
-                    image_file = res.get('sms_image')
+                    zp = res_josn.get('zp')
+                    image_file = res_josn.get('sms_image')
                     zpname = ""
                     if zp:
                         # 存在本机后再传图片至服务器
@@ -289,12 +293,16 @@ def event(event_files_list, ip_val, event_path, now_time, white_list):
                             wf_time=wf_time
                         )
                         try:
-                            maxrequests = requests.Session()
-                            maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
-                            res = maxrequests.post('http://%s/dataInfo/wtDataEventSMSUpload/' % ip_val, files=files,
-                                                data=data, timeout=10).json()
-                            status = res.get("status")
-                            strexc = res.get('e')
+                            with requests.Session() as maxrequests:
+                                maxrequests = requests.Session()
+                                maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
+                                res = maxrequests.post('http://%s/dataInfo/wtDataEventSMSUpload/' % ip_val, files=files,
+                                                    data=data, timeout=10)
+                                res_josn = res.json()
+                                status = res_josn.get("status")
+                                strexc = res_josn.get('e')
+                                res.close()
+                                maxrequests.cookies.clear()
                         except Exception as e:
                             strexc = traceback.format_exc()
                             # flog.write("\n%s 【短信扫描上传出错】【%s】\n" % (now_time, strexc))
@@ -494,12 +502,15 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             wf_time=wf_time
                         )
                         try:
-                            maxrequests = requests.Session()
-                            maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
-                            res = maxrequests.post('http://%s/dataInfo/wtDataInfoUpload/' % ip_val, files=files,
-                                                data=data, timeout=10).json()
-                            status = res.get("status")
-                            strexc = res.get('e')
+                            with requests.Session() as maxrequests:
+                                maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
+                                res = maxrequests.post('http://%s/dataInfo/wtDataInfoUpload/' % ip_val, files=files,
+                                                    data=data, timeout=10)
+                                res_josn = res.json()
+                                status = res_josn.get("status")
+                                strexc = res_josn.get('e')
+                                res.close()
+                                maxrequests.cookies.clear()
                         except Exception as e:
                             strexc = traceback.format_exc()
                             # flog.write("\n%s 【违停取证扫描上传出错】【%s】\n" % (now_time, strexc))

@@ -180,11 +180,15 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                             model_name=model_name
                         )
                         try:
-                            maxrequests = requests.Session()
-                            maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
-                            res = maxrequests.post('http://' + ip_val + dj_url, files=files, data=data, timeout=5).json()
-                            status = res.get('status')
-                            strexc = res.get('e')
+                            with requests.Session() as maxrequests:
+                                maxrequests = requests.Session()
+                                maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
+                                res = maxrequests.post('http://' + ip_val + dj_url, files=files, data=data, timeout=5)
+                                res_json = res.json()
+                                status = res_json.get('status')
+                                strexc = res_json.get('e')
+                                res.close()
+                                maxrequests.cookies.clear()
                         except Exception as e:
                             # print("Exception=" + str(e))
                             strexc = traceback.format_exc()
