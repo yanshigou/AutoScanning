@@ -6,3 +6,4 @@ __pycache__/
 build/
 *.txt
 .DS_Store
+*.log
