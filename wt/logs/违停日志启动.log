@@ -1,5 +1,0 @@
-2024-07-16 23:26:48,506 - D:/历史项目管理/AutoScanning交通扫描软件/AutoScanning/wt/wt_main.py[line:297] - ERROR: 自动运行出错 Traceback (most recent call last):
-  File "D:/历史项目管理/AutoScanning交通扫描软件/AutoScanning/wt/wt_main.py", line 285, in auto_run
-    for _ in range(thread_nums):
-TypeError: 'str' object cannot be interpreted as an integer
-
