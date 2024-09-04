@@ -1,0 +1,1256 @@
+2024-08-09 22:21:03,149 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:03,482 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:04,159 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:04,486 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:05,164 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:05,489 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:06,167 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:06,493 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:07,172 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:07,497 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:08,177 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:08,502 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:09,183 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:09,508 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:10,187 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:10,513 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:21:11,193 - wt_upload_image.py[line:360] - ERROR: 【违停事件扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 162, in event
+IndexError: list index out of range
+】
+2024-08-09 22:34:04,343 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:34:41,556 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:34:48,767 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:35:22,793 - wt_upload_image.py[line:227] - ERROR: 【违停事件扫描上传出错】【Traceback (most recent call last):
+  File "urllib3\connection.py", line 160, in _new_conn
+  File "urllib3\util\connection.py", line 84, in create_connection
+  File "urllib3\util\connection.py", line 74, in create_connection
+ConnectionRefusedError: [WinError 10061] 由于目标计算机积极拒绝，无法连接。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "urllib3\connectionpool.py", line 677, in urlopen
+  File "urllib3\connectionpool.py", line 392, in _make_request
+  File "http\client.py", line 1239, in request
+  File "http\client.py", line 1285, in _send_request
+  File "http\client.py", line 1234, in endheaders
+  File "http\client.py", line 1026, in _send_output
+  File "http\client.py", line 964, in send
+  File "urllib3\connection.py", line 187, in connect
+  File "urllib3\connection.py", line 172, in _new_conn
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x0000019A6FE05470>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "requests\adapters.py", line 449, in send
+  File "urllib3\connectionpool.py", line 765, in urlopen
+  File "urllib3\connectionpool.py", line 765, in urlopen
+  File "urllib3\connectionpool.py", line 725, in urlopen
+  File "urllib3\util\retry.py", line 439, in increment
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /dataInfo/wtDataEventUpload/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000019A6FE05470>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "wt_upload_image.py", line 217, in event
+  File "requests\sessions.py", line 578, in post
+  File "requests\sessions.py", line 530, in request
+  File "requests\sessions.py", line 643, in send
+  File "requests\adapters.py", line 516, in send
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /dataInfo/wtDataEventUpload/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000019A6FE05470>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。',))
+】
+2024-08-09 22:35:22,793 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:35:22,868 - wt_upload_image.py[line:227] - ERROR: 【违停事件扫描上传出错】【Traceback (most recent call last):
+  File "urllib3\connection.py", line 160, in _new_conn
+  File "urllib3\util\connection.py", line 84, in create_connection
+  File "urllib3\util\connection.py", line 74, in create_connection
+ConnectionRefusedError: [WinError 10061] 由于目标计算机积极拒绝，无法连接。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "urllib3\connectionpool.py", line 677, in urlopen
+  File "urllib3\connectionpool.py", line 392, in _make_request
+  File "http\client.py", line 1239, in request
+  File "http\client.py", line 1285, in _send_request
+  File "http\client.py", line 1234, in endheaders
+  File "http\client.py", line 1026, in _send_output
+  File "http\client.py", line 964, in send
+  File "urllib3\connection.py", line 187, in connect
+  File "urllib3\connection.py", line 172, in _new_conn
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPConnection object at 0x0000019A6FE05390>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "requests\adapters.py", line 449, in send
+  File "urllib3\connectionpool.py", line 765, in urlopen
+  File "urllib3\connectionpool.py", line 765, in urlopen
+  File "urllib3\connectionpool.py", line 725, in urlopen
+  File "urllib3\util\retry.py", line 439, in increment
+urllib3.exceptions.MaxRetryError: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /dataInfo/wtDataEventUpload/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000019A6FE05390>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "wt_upload_image.py", line 217, in event
+  File "requests\sessions.py", line 578, in post
+  File "requests\sessions.py", line 530, in request
+  File "requests\sessions.py", line 643, in send
+  File "requests\adapters.py", line 516, in send
+requests.exceptions.ConnectionError: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /dataInfo/wtDataEventUpload/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000019A6FE05390>: Failed to establish a new connection: [WinError 10061] 由于目标计算机积极拒绝，无法连接。',))
+】
+2024-08-09 22:40:17,009 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223610_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:19,399 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223610_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:19,547 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223610_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:19,686 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223610_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:19,854 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223610_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:20,015 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223610_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:41,620 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:41,796 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:41,951 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:42,103 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:42,224 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:42,244 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:48,695 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:48,818 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:48,823 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:48,983 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:49,150 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:49,242 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:49,289 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:49,414 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:49,436 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:57,069 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:40:57,255 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:02,035 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:02,044 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:02,179 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:02,343 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:02,432 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:02,494 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:02,502 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:02,621 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:02,645 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:02,665 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:02,733 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:02,788 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:06,541 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:09,229 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:09,241 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:09,366 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:09,534 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:09,636 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:09,693 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:09,706 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:09,826 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:09,850 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:09,870 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:09,937 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:09,994 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:10,104 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:10,213 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:10,265 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:10,425 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:10,429 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:10,448 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:10,548 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:10,617 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:10,717 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:10,839 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:10,894 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:10,904 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,028 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,044 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,077 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,135 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,193 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,292 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,404 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,446 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,611 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,611 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,631 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,732 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,800 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:11,905 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,024 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,090 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,095 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,229 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,254 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,279 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,342 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,378 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,474 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,596 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,629 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,795 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,814 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,827 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,923 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:12,985 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,086 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,212 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,280 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,286 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,437 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,455 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,486 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,553 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,579 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,679 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,771 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,846 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,851 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,871 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:13,941 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,025 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,057 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,066 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,144 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,194 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,280 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,399 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,471 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,472 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,637 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,657 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,695 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,755 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,776 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,871 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:14,963 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,041 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,049 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,067 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,148 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,223 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,255 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,260 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,338 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,386 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,471 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,585 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,585 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,661 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,665 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,851 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,864 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,904 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,965 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:15,986 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,080 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,176 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,270 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,278 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,282 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,369 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,439 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,472 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,476 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,539 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,581 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,661 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,785 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,852 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:16,857 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,065 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,077 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,117 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,173 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,196 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,284 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,370 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,477 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,478 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,484 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,572 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,642 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,683 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,696 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,753 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,780 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,854 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:17,996 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:41:18,047 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:00,319 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:00,323 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:00,911 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:01,086 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:01,149 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:01,219 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:01,232 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:01,424 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:01,860 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:01,873 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:01,884 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:01,913 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:01,950 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:01,953 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,038 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,105 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,162 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,162 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,164 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,164 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,181 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,181 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,182 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,182 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,205 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,205 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,595 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,753 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:02,941 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:03,286 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:03,331 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:03,408 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:03,412 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:03,446 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:03,518 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:03,581 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:03,614 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:03,721 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:03,804 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:03,824 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:03,841 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:03,918 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,017 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,017 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,075 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,075 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,084 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,084 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,146 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,146 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,178 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,178 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,283 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,283 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,295 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,541 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,575 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,661 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,673 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,714 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,766 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,821 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,840 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:04,954 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,024 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,042 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,063 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,213 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,299 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,374 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,390 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,412 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,558 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,580 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,580 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,877 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,915 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:05,956 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,069 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,071 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,080 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,126 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,180 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,347 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,349 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,360 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,364 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,481 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,574 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,613 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,613 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,647 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,647 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,652 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,652 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,796 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,796 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,817 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:43:06,817 - wt_upload_image.py[line:262] - ERROR: 【违停事件扫描删除或移动出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 257, in event
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_224010_123_50.123.123.123_渝D71000_蓝.jpg'
+】

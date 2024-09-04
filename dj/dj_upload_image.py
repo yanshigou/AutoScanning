@@ -181,7 +181,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         )
                         try:
                             with requests.Session() as maxrequests:
-                                maxrequests = requests.Session()
+                                # maxrequests = requests.Session()
                                 maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
                                 res = maxrequests.post('http://' + ip_val + dj_url, files=files, data=data, timeout=5)
                                 res_json = res.json()

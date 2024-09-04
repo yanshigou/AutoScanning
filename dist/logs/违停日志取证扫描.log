@@ -1,0 +1,78 @@
+2024-08-09 22:21:03,249 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 451, in QZ
+IndexError: list index out of range
+】
+2024-08-09 22:21:04,254 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 451, in QZ
+IndexError: list index out of range
+】
+2024-08-09 22:21:05,257 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 451, in QZ
+IndexError: list index out of range
+】
+2024-08-09 22:21:06,263 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 451, in QZ
+IndexError: list index out of range
+】
+2024-08-09 22:21:07,269 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 451, in QZ
+IndexError: list index out of range
+】
+2024-08-09 22:21:08,274 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 451, in QZ
+IndexError: list index out of range
+】
+2024-08-09 22:21:09,278 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 451, in QZ
+IndexError: list index out of range
+】
+2024-08-09 22:21:10,283 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 451, in QZ
+IndexError: list index out of range
+】
+2024-08-09 22:21:11,288 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 451, in QZ
+IndexError: list index out of range
+】
+2024-08-09 22:29:02,799 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_222810_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:29:02,800 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 544, in QZ
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_222810_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:29:15,823 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_222810_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:29:21,826 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_222810_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:31:24,330 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:31:24,330 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 544, in QZ
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:31:37,343 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:32:19,481 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:32:31,485 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:32:49,492 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:34:01,620 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:34:01,622 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 544, in QZ
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:34:02,628 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:34:02,629 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 544, in QZ
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:34:03,638 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:34:03,638 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 544, in QZ
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:34:46,659 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:34:52,661 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:35:22,717 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:35:22,717 - wt_upload_image.py[line:569] - ERROR: 【违停取证扫描出错】【Traceback (most recent call last):
+  File "wt_upload_image.py", line 544, in QZ
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\dist\\新建文件夹\\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg'
+】
+2024-08-09 22:35:35,727 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:35:59,738 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223110_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:36:47,757 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223610_123_50.123.123.123_渝D71000_蓝.jpg
+2024-08-09 22:36:53,761 - wt_upload_image.py[line:543] - WARNING: 【违停取证扫描删除】【未在违法代码列表中】D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\dist\新建文件夹\2_20240809_223610_123_50.123.123.123_渝D71000_蓝.jpg
