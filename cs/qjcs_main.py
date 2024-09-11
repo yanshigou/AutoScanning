@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2022/8/3"
-__title__ = "区间测速扫描器v2.2_20240725"
+__title__ = "区间测速扫描器v2.3_20240911"
 
 from cs_file_manager import FileObjectManager, FileObject
 import requests

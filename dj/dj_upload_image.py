@@ -99,6 +99,7 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                 time2 = file_name_list[2]
                 speed = file_name_list[-3]  # 只有超速才能正确取到
                 lim_speed = file_name_list[-2]  # 只有超速才能正确取到
+                car_type = '02'
 
                 # 兼容未改格式
                 if not re.findall('^\d{1,3}$', speed, re.S):
@@ -133,6 +134,10 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                     if re_car_color:
                         car_color = i
 
+                    re_car_type = re.findall('^CAR\d{2}$', i, re.S)
+                    if re_car_type:
+                        car_type = i[3:].zfill(2)
+
                 i_type = file_name_list[0]
                 wf_time = time1 + time2
                 if "出口" in img_type:
@@ -153,18 +158,20 @@ def QZ(files_list, ip_val, qz_path, now_time, white_list, wf_list):
                         os.remove(file_path)
                         return {"status": "fail", "count": 0, "res_status": "error", "file_path": file_path}
 
-                    car_type = '02'
-                    if '黄' in car_color:
-                        car_type = '01'
-                    elif "渐" in car_color:  # 渐变绿
-                        car_type = "52"
-                    elif "绿" in car_color:
-                        car_type = "52"
+                    if car_type == "07":
+                        pass
+                    else:
+                        if '黄' in car_color:
+                            car_type = '01'
+                        elif "渐" in car_color:  # 渐变绿
+                            car_type = "52"
+                        elif "绿" in car_color:
+                            car_type = "52"
 
-                    if "黄绿" in car_color:  # 黄绿双拼
-                        car_type = "51"
-                    if "学" in car_id:
-                        car_type = "16"
+                        if "黄绿" in car_color:  # 黄绿双拼
+                            car_type = "51"
+                        if "学" in car_id:
+                            car_type = "16"
                     try:
                         f = open(file_path, 'rb')
                         files = {'image_file': (file_name, f, 'image/jpg')}
