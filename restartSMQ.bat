@@ -130,6 +130,8 @@ if "!PROCESS_FOUND7!"=="true" (
     timeout /t 1 /nobreak
 )
 
+timeout /t 5
+
 REM start
 echo Starting %EXE_NAME1%...
 start "" %EXE_PATH1%

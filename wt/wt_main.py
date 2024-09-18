@@ -56,7 +56,7 @@ def basic_info():
         return False
 
 
-def event_run(event_path, ip_val, white_list, sleep_time):
+def event_run(event_path, ip_val, white_list, sleep_time, qz_time):
     log_file = "logs\\" + '违停日志事件.log'
     # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
