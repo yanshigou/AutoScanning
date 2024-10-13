@@ -58,8 +58,8 @@ from loggmodel import Logger
 #         self.logger.addHandler(th)
 
 
-def event(event_files_list, ip_val, event_path, now_time, white_list):
-    log_file = "logs\\" + '违停日志事件扫描.log'
+def event(event_files_list, ip_val, event_path, now_time, white_list, file_folder):
+    log_file = os.path.join(file_folder, '违停日志事件.log')
     # flog = open(log_file, 'a+', encoding='utf-8')
     logg = Logger(log_file, level="info")
 
