@@ -14,6 +14,7 @@ from time import sleep
 import configparser
 import traceback
 import codecs
+import os
 
 
 # 建立连接 获取csrftoken
@@ -57,7 +58,9 @@ def basic_info():
 
 
 def event_run(event_path, ip_val, white_list, sleep_time, qz_time):
-    log_file = "logs\\" + '违停日志事件.log'
+    # log_file = "logs\\" + '违停日志事件.log'
+    file_folder = os.path.join(current_file_folder, "logs")
+    log_file = os.path.join(file_folder, '违停日志事件.log')
     # f = open(log_file, 'a+', encoding='utf-8', errors='ignore')
     text.insert(tk.END, "开始扫描事件文件夹：%s\n" % event_path)
     # f.write(codecs.BOM_UTF8.decode("utf-8"))
@@ -77,7 +80,7 @@ def event_run(event_path, ip_val, white_list, sleep_time, qz_time):
             # f.write(codecs.BOM_UTF8.decode("utf-8"))
             now_time = datetime.now()
             res = event(FileObjectManager(FileObject(event_path)).scan_with_depth(10).all_file_objects(),
-                        ip_val, event_path, now_time, white_list)
+                        ip_val, event_path, now_time, white_list, file_folder)
             # print(res)
             status = res.get('status')
             res_status = res.get('res_status')
@@ -300,7 +303,7 @@ def auto_run(event_path, ip_val, white_list, sleep_time, qz_time, thread_nums):
             thread_nums = 1
         for _ in range(thread_nums):
             sleep(float(qz_time))
-            thread_it(event_run, event_path, ip_val, white_list, sleep_time)
+            thread_it(event_run, event_path, ip_val, white_list, sleep_time, qz_time)
         sleep(0.1)
         thread_it(QZ_run, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list)
     except Exception as e:
@@ -320,6 +323,7 @@ if __name__ == '__main__':
     # log_file = "logs\\" + '违停日志.log'
 
     if basic_info():
+        current_file_folder = os.path.dirname(os.path.abspath(__file__))
         event_path, qz_path, ip_val, white_list, sleep_time, qz_time, wf_list, thread_nums = basic_info()
 
         root = tk.Tk()
@@ -371,7 +375,7 @@ if __name__ == '__main__':
 
         event_bt = tk.Button(lf, text='开始扫描事件文件夹', fg='red',
                              command=lambda: thread_it(event_run, event_path, ip_val, white_list,
-                                                       sleep_time))
+                                                       sleep_time, qz_time))
         qz_bt = tk.Button(lf, text='开始扫描取证文件夹', fg='red',
                           command=lambda: thread_it(QZ_run, qz_path, ip_val, white_list, sleep_time,
                                                     qz_time, wf_list))
