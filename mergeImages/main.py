@@ -8,11 +8,13 @@ from tkinter import filedialog, messagebox, ttk
 from ping3 import ping
 from PIL import Image, ImageTk
 from mergeImages.merge_images import merge_images_with_text, generate_security_code
-# import sys
-# from PyQt5.QtWidgets import QApplication, QFileDialog
 from mergeImages.GetCadId.main import get_carid
 import threading
 import re
+from datetime import datetime
+import requests
+
+# 保存地址与设备编号的映射
 
 
 def load_images_async(image_paths, frame):
@@ -93,11 +95,20 @@ def on_drag_release(event, label, frame):
     label.config(borderwidth=1, relief='solid', bg='white')
     display_images(selected_image_paths, frame)
 
+def is_valid_time_format(time_string):
+    """验证时间格式是否为 YYYY-MM-DD HH:MM:SS"""
+    pattern = re.compile(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$")
+    return pattern.match(time_string) is not None
 
 
 def generate_custom_text():
     """生成合成图片所需的custom_text"""
     time = time_entry.get()
+
+    if not is_valid_time_format(time):
+        messagebox.showerror("时间格式错误", "请确保时间格式为 YYYY-MM-DD HH:MM:SS")
+        return
+
     district = district_entry.get()
     location = location_entry.get()
     device_id = device_id_entry.get()
@@ -185,52 +196,71 @@ def select_images(image_frame):
         return
 
     selected_image_paths = list(filenames)
-    # display_images(selected_image_paths, image_frame)
     load_images_async(selected_image_paths, image_frame)
 
-# def select_images_pyqt(image_frame):
-#     """使用PyQt选择图片并展示"""
-#     global selected_image_paths
-#     app = QApplication(sys.argv)
-#
-#     dialog = QFileDialog()
-#     dialog.setFileMode(QFileDialog.ExistingFiles)
-#     dialog.setOption(QFileDialog.DontUseNativeDialog, True)
-#     dialog.setAcceptMode(QFileDialog.AcceptOpen)
-#     dialog.setViewMode(QFileDialog.List)
-#     dialog.setOption(QFileDialog.ShowDirsOnly, False)
-#
-#     if dialog.exec_() == QFileDialog.Accepted:
-#         file_paths = dialog.selectedFiles()
-#         if len(file_paths) != 4:
-#             messagebox.showwarning("选择错误", "请确保选择4张图片！")
-#             return
-#         selected_image_paths = list(file_paths)
-#         display_images(selected_image_paths, image_frame)
-#
-#     app.quit()
+    # 填充当前时间
+    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    time_entry.delete(0, tk.END)
+    time_entry.insert(0, current_time)
+
 
 
 def is_valid_ip(ip):
-    pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
+    pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}(?::[0-9]{1,5})?$")
     return pattern.match(ip) is not None
 
 
 def check_server_connection():
     """检查服务器连接并反馈"""
     ip_val = ip_entry.get()
+    url = f"http://{ip_val}/devices/infoForMergeImages/"
+    print(f"测试连接URL: {url}")
+
     if not is_valid_ip(ip_val):
         messagebox.showerror("连接测试", f"无效的IP地址: {ip_val}")
+        test_connection_btn.config(text='连接无效', fg='red')
         return
 
     delay = ping(ip_val, timeout=1)
     if delay is not None:
+        test_connection_btn.config(text='已连接', fg='green')
         messagebox.showinfo("连接测试", f"服务器连接成功: {ip_val}")
+
+        try:
+            response = requests.post(url, data={
+                "district": "全部区域",
+                "area": "全部片区",
+                "address": "全部地址"
+            })
+            data = response.json().get('data', [])
+            print("服务器返回数据:", data)
+            populate_address_dropdown(data)
+        except Exception as e:
+            messagebox.showerror("连接测试", f"获取数据失败: {e}")
+            test_connection_btn.config(text='连接失败', fg='red')
     else:
         messagebox.showerror("连接测试", f"服务器连接失败，请检查服务器：{ip_val}")
+        test_connection_btn.config(text='连接失败', fg='red')
+
+def populate_address_dropdown(data):
+    """根据返回数据填充违法地点下拉框并建立地址-设备编号映射"""
+    global address_device_map
+    address_device_map = {item['address']: item['device_id'] for item in data}
+
+    address_dropdown['values'] = list(address_device_map.keys())
+    address_dropdown.bind("<<ComboboxSelected>>", on_address_selected)
+
+def on_address_selected(event):
+    """当选择违法地点时，自动填充对应的设备编号"""
+    selected_address = location_entry.get()
+    device_id = address_device_map.get(selected_address, "")
+    device_id_entry.delete(0, tk.END)
+    device_id_entry.insert(0, device_id)
 
 
 if __name__ == '__main__':
+
+    address_device_map = {}
     selected_image_paths = []
 
     root = tk.Tk()
@@ -241,38 +271,50 @@ if __name__ == '__main__':
     input_frame = tk.Frame(root)
     input_frame.grid(row=0, column=0, padx=10, pady=10)
 
-    # 初始化输入框
+    # 手动定义每个标签和输入框
+    # 违法时间
+    tk.Label(input_frame, text="违法时间：").grid(row=0, column=0, sticky="w")
     time_entry = tk.Entry(input_frame)
-    district_entry = tk.Entry(input_frame)
-    location_entry = tk.Entry(input_frame)
-    device_id_entry = tk.Entry(input_frame)
-    plate_number_entry = tk.Entry(input_frame)
-    ip_entry = tk.Entry(input_frame)
+    time_entry.grid(row=0, column=1, padx=5, pady=5)
 
-    # 车辆类型下拉框
+    # 行政区划
+    tk.Label(input_frame, text="行政区划：").grid(row=1, column=0, sticky="w")
+    district_entry = tk.Entry(input_frame)
+    district_entry.grid(row=1, column=1, padx=5, pady=5)
+    district_entry.insert(0, "沙坪坝区")
+
+    # 违法地点
+    tk.Label(input_frame, text="违法地点：").grid(row=2, column=0, sticky="w")
+    location_entry = tk.StringVar()
+    address_dropdown = ttk.Combobox(input_frame, textvariable=location_entry, state="readonly")
+    address_dropdown.grid(row=2, column=1, padx=5, pady=5)
+
+    # 设备编号
+    tk.Label(input_frame, text="设备编号：").grid(row=3, column=0, sticky="w")
+    device_id_entry = tk.Entry(input_frame)
+    device_id_entry.grid(row=3, column=1, padx=5, pady=5)
+
+    # 车牌号
+    tk.Label(input_frame, text="车牌号：").grid(row=4, column=0, sticky="w")
+    plate_number_entry = tk.Entry(input_frame)
+    plate_number_entry.grid(row=4, column=1, padx=5, pady=5)
+
+    # 车辆类型（下拉框）
+    tk.Label(input_frame, text="车辆类型：").grid(row=5, column=0, sticky="w")
     vehicle_types = ["小型汽车", "大型汽车", "新能源小型汽车", "新能源大型汽车", "摩托车", "教练车"]
     vehicle_type_combobox = ttk.Combobox(input_frame, values=vehicle_types)
-    vehicle_type_combobox.set("选择车辆类型")  # 默认提示文本
+    vehicle_type_combobox.set("选择车辆类型")
+    vehicle_type_combobox.grid(row=5, column=1, padx=5, pady=5)
 
-    # 输入框和标签的列表
-    labels_and_entries = [
-        ("违法时间：", time_entry),
-        ("行政区划：", district_entry),
-        ("违法地点：", location_entry),
-        ("设备编号：", device_id_entry),
-        ("车牌号：", plate_number_entry),
-        ("车辆类型：", vehicle_type_combobox),  # 添加车辆类型标签和选择框
-        ("服务器IP：", ip_entry),
-    ]
-
-    # 遍历列表并创建标签和输入框
-    for idx, (label_text, entry) in enumerate(labels_and_entries):
-        tk.Label(input_frame, text=label_text).grid(row=idx, column=0, sticky="w")
-        entry.grid(row=idx, column=1, padx=5, pady=5)
+    # 服务器IP
+    tk.Label(input_frame, text="服务器IP：").grid(row=6, column=0, sticky="w")
+    ip_entry = tk.Entry(input_frame)
+    ip_entry.grid(row=6, column=1, padx=5, pady=5)
+    ip_entry.insert(0, "127.0.0.1:8000")
 
     # 测试连接按钮
     test_connection_btn = tk.Button(input_frame, text='测试连接', command=check_server_connection)
-    test_connection_btn.grid(row=len(labels_and_entries), column=0, columnspan=2, pady=10)
+    test_connection_btn.grid(row=7, column=0, columnspan=2, pady=10)
 
     # 图片展示区域的 Frame
     image_frame = tk.Frame(root, width=600, height=300, bg='lightgray')
@@ -284,10 +326,10 @@ if __name__ == '__main__':
 
     # 合成图片按钮
     merge_btn = tk.Button(root, text='合成图片', command=create_image)
-    merge_btn.grid(row=3, column=1, padx=5, pady=10)
+    merge_btn.grid(row=2, column=1, padx=5, pady=10)
 
     # 退出按钮
     quit_btn = tk.Button(root, text='退  出', command=root.quit)
-    quit_btn.grid(row=4, column=1, padx=5, pady=10)
+    quit_btn.grid(row=3, column=1, padx=5, pady=10)
 
     root.mainloop()
