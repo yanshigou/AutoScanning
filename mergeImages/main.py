@@ -11,13 +11,21 @@ from mergeImages.merge_images import merge_images_with_text, generate_security_c
 # import sys
 # from PyQt5.QtWidgets import QApplication, QFileDialog
 from mergeImages.GetCadId.main import get_carid
+import threading
+import re
+
+
+def load_images_async(image_paths, frame):
+    threading.Thread(target=display_images, args=(image_paths, frame)).start()
 
 
 def display_images(image_paths, frame):
-    """按2x2格式展示图片，支持交换位置，并添加选中边框效果"""
+    """按2x2格式展示图片，支持交换位置，并自动识别车牌和车辆类型"""
+    # 清空frame中的所有组件
     for widget in frame.winfo_children():
         widget.destroy()
 
+    # 遍历图片路径并展示
     for idx, path in enumerate(image_paths):
         image = Image.open(path)
         image.thumbnail((300, 300), Image.ANTIALIAS)
@@ -28,15 +36,41 @@ def display_images(image_paths, frame):
         label.path = path
         label.idx = idx  # 保存索引
 
-        # 使用 grid 布局展示
+        # 使用 grid 布局展示图片
         label.grid(row=idx // 2, column=idx % 2, padx=10, pady=10)
 
         # 绑定事件，用于拖动交换，并加选中边框
         label.bind("<ButtonPress-1>", lambda e, lbl=label: on_drag_start(e, lbl))
         label.bind("<ButtonRelease-1>", lambda e, lbl=label, fr=frame: on_drag_release(e, lbl, fr))
 
-    res = get_carid(image_paths[-1])
-    print(res)
+    # 调用 get_carid() 获取识别结果
+    res = get_carid(image_paths[-1])  # 取最后一张图片进行识别
+    if res:
+        car_id = res.get('car_id', '')
+        color = res.get('color', '')
+
+        # 根据颜色自动选择车辆类型
+        if color == '蓝色':
+            vehicle_type = "小型汽车"
+        elif color == '黄色':
+            vehicle_type = "大型汽车"
+        elif color == '渐变绿':
+            vehicle_type = "新能源大型汽车"
+        elif color == '绿':
+            vehicle_type = "新能源小型汽车"
+        else:
+            vehicle_type = "未知类型"
+
+        # 自动填充车牌号码和车辆类型
+        plate_number_entry.delete(0, tk.END)
+        plate_number_entry.insert(0, car_id)
+
+        vehicle_type_combobox.set(vehicle_type)
+
+        print(f"识别结果: 车牌号={car_id}, 颜色={color}, 车辆类型={vehicle_type}")
+    else:
+        print("未能识别车牌或车辆类型")
+
 
 def on_drag_start(event, label):
     """记录起始位置，并给当前图片加红色选中边框"""
@@ -46,16 +80,19 @@ def on_drag_start(event, label):
 
 
 def on_drag_release(event, label, frame):
-    """检测目标控件，并交换位置，恢复边框样式"""
+    """交换图片位置并刷新显示"""
     x, y = event.widget.winfo_pointerxy()
     target = event.widget.winfo_containing(x, y)
 
     if target and target != label:
-        i, j = label.idx, target.idx
-        selected_image_paths[i], selected_image_paths[j] = selected_image_paths[j], selected_image_paths[i]
+        selected_image_paths[label.idx], selected_image_paths[target.idx] = (
+            selected_image_paths[target.idx],
+            selected_image_paths[label.idx]
+        )
 
     label.config(borderwidth=1, relief='solid', bg='white')
     display_images(selected_image_paths, frame)
+
 
 
 def generate_custom_text():
@@ -68,16 +105,18 @@ def generate_custom_text():
 
     # 根据选择的车辆类型设置实际的 car_type
     vehicle_type = vehicle_type_combobox.get()
-    if vehicle_type == "小型汽车02":
+    if vehicle_type == "小型汽车":
         actual_car_type = "02"
-    elif vehicle_type == "大型汽车01":
+    elif vehicle_type == "大型汽车":
         actual_car_type = "01"
-    elif vehicle_type == "新能源小型汽车51":
+    elif vehicle_type == "新能源小型汽车":
         actual_car_type = "51"
-    elif vehicle_type == "新能源大型汽车52":
+    elif vehicle_type == "新能源大型汽车":
         actual_car_type = "52"
-    elif vehicle_type == "摩托车07":
+    elif vehicle_type == "摩托车":
         actual_car_type = "07"
+    elif vehicle_type == "教练车":
+        actual_car_type = "16"
     else:
         actual_car_type = "02"  # 或者根据需要设定默认值
 
@@ -146,8 +185,8 @@ def select_images(image_frame):
         return
 
     selected_image_paths = list(filenames)
-    display_images(selected_image_paths, image_frame)
-
+    # display_images(selected_image_paths, image_frame)
+    load_images_async(selected_image_paths, image_frame)
 
 # def select_images_pyqt(image_frame):
 #     """使用PyQt选择图片并展示"""
@@ -172,14 +211,23 @@ def select_images(image_frame):
 #     app.quit()
 
 
+def is_valid_ip(ip):
+    pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$")
+    return pattern.match(ip) is not None
+
+
 def check_server_connection():
-    """手动检查服务器连接"""
+    """检查服务器连接并反馈"""
     ip_val = ip_entry.get()
+    if not is_valid_ip(ip_val):
+        messagebox.showerror("连接测试", f"无效的IP地址: {ip_val}")
+        return
+
     delay = ping(ip_val, timeout=1)
     if delay is not None:
         messagebox.showinfo("连接测试", f"服务器连接成功: {ip_val}")
     else:
-        messagebox.showerror("连接测试", f"服务器连接失败，请验证服务器：{ip_val}")
+        messagebox.showerror("连接测试", f"服务器连接失败，请检查服务器：{ip_val}")
 
 
 if __name__ == '__main__':
@@ -202,7 +250,7 @@ if __name__ == '__main__':
     ip_entry = tk.Entry(input_frame)
 
     # 车辆类型下拉框
-    vehicle_types = ["小型汽车02", "大型汽车01", "新能源小型汽车51", "新能源大型汽车52", "摩托车07"]
+    vehicle_types = ["小型汽车", "大型汽车", "新能源小型汽车", "新能源大型汽车", "摩托车", "教练车"]
     vehicle_type_combobox = ttk.Combobox(input_frame, values=vehicle_types)
     vehicle_type_combobox.set("选择车辆类型")  # 默认提示文本
 
