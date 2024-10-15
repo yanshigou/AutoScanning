@@ -254,8 +254,26 @@ def on_address_selected(event):
     """当选择违法地点时，自动填充对应的设备编号"""
     selected_address = location_entry.get()
     device_id = address_device_map.get(selected_address, "")
-    device_id_entry.delete(0, tk.END)
-    device_id_entry.insert(0, device_id)
+    if device_id:
+        device_id_entry.delete(0, tk.END)
+        device_id_entry.insert(0, device_id)
+
+
+def thread_it(func, *args):
+    """
+    将函数打包进线程
+    :param func:
+    :param args:
+    :return:
+    """
+    # 创建
+    t = threading.Thread(target=func, args=args)
+    # 守护 !!!
+    t.setDaemon(True)
+    # 启动
+    t.start()
+    # 阻塞--卡死界面！
+    # t.join()
 
 
 if __name__ == '__main__':
@@ -313,7 +331,7 @@ if __name__ == '__main__':
     ip_entry.insert(0, "127.0.0.1:8000")
 
     # 测试连接按钮
-    test_connection_btn = tk.Button(input_frame, text='测试连接', command=check_server_connection)
+    test_connection_btn = tk.Button(input_frame, text='测试连接', command=lambda: thread_it(check_server_connection))
     test_connection_btn.grid(row=7, column=0, columnspan=2, pady=10)
 
     # 图片展示区域的 Frame
