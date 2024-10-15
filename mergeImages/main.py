@@ -14,8 +14,6 @@ import re
 from datetime import datetime
 import requests
 
-# 保存地址与设备编号的映射
-
 
 def load_images_async(image_paths, frame):
     threading.Thread(target=display_images, args=(image_paths, frame)).start()
@@ -95,6 +93,7 @@ def on_drag_release(event, label, frame):
     label.config(borderwidth=1, relief='solid', bg='white')
     display_images(selected_image_paths, frame)
 
+
 def is_valid_time_format(time_string):
     """验证时间格式是否为 YYYY-MM-DD HH:MM:SS"""
     pattern = re.compile(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$")
@@ -110,8 +109,8 @@ def generate_custom_text():
         return
 
     district = district_entry.get()
-    location = location_entry.get()
-    device_id = device_id_entry.get()
+    location = address_entry.get()
+    device_id = device_entry.get()
     plate_number = plate_number_entry.get()
 
     # 根据选择的车辆类型设置实际的 car_type
@@ -204,7 +203,6 @@ def select_images(image_frame):
     time_entry.insert(0, current_time)
 
 
-
 def is_valid_ip(ip):
     pattern = re.compile(r"^(?:[0-9]{1,3}\.){3}[0-9]{1,3}(?::[0-9]{1,5})?$")
     return pattern.match(ip) is not None
@@ -215,6 +213,7 @@ def check_server_connection():
     ip_val = ip_entry.get()
     url = f"http://{ip_val}/devices/infoForMergeImages/"
     print(f"测试连接URL: {url}")
+    test_connection_btn.config(text='连接中···')
 
     if not is_valid_ip(ip_val):
         messagebox.showerror("连接测试", f"无效的IP地址: {ip_val}")
@@ -223,8 +222,6 @@ def check_server_connection():
 
     delay = ping(ip_val, timeout=1)
     if delay is not None:
-        test_connection_btn.config(text='已连接', fg='green')
-        messagebox.showinfo("连接测试", f"服务器连接成功: {ip_val}")
 
         try:
             response = requests.post(url, data={
@@ -233,8 +230,13 @@ def check_server_connection():
                 "address": "全部地址"
             })
             data = response.json().get('data', [])
-            print("服务器返回数据:", data)
+            wf_data = response.json().get('wf_data', [])
+            print("data:", data)
+            print("wf_data:", wf_data)
             populate_address_dropdown(data)
+            populate_violation_dropdown(wf_data)
+            messagebox.showinfo("连接测试", f"服务器连接成功: {ip_val}")
+            test_connection_btn.config(text='已连接', fg='green')
         except Exception as e:
             messagebox.showerror("连接测试", f"获取数据失败: {e}")
             test_connection_btn.config(text='连接失败', fg='red')
@@ -242,21 +244,49 @@ def check_server_connection():
         messagebox.showerror("连接测试", f"服务器连接失败，请检查服务器：{ip_val}")
         test_connection_btn.config(text='连接失败', fg='red')
 
-def populate_address_dropdown(data):
-    """根据返回数据填充违法地点下拉框并建立地址-设备编号映射"""
-    global address_device_map
-    address_device_map = {item['address']: item['device_id'] for item in data}
 
-    address_dropdown['values'] = list(address_device_map.keys())
-    address_dropdown.bind("<<ComboboxSelected>>", on_address_selected)
+def populate_address_dropdown(data):
+    """根据服务器返回的地址和设备数据填充下拉框，并建立映射"""
+    global address_device_map, device_address_map
+    address_device_map = {item["address"]: item["device_id"] for item in data}
+    device_address_map = {item["device_id"]: item["address"] for item in data}
+
+    address_combobox['values'] = list(address_device_map.keys())
+    device_combobox['values'] = list(device_address_map.keys())
+
+    address_combobox.bind("<<ComboboxSelected>>", on_address_selected)
+    device_combobox.bind("<<ComboboxSelected>>", on_device_selected)
+
+    address_entry.trace("w", on_address_input)
+    device_entry.trace("w", on_device_input)
+
 
 def on_address_selected(event):
     """当选择违法地点时，自动填充对应的设备编号"""
-    selected_address = location_entry.get()
-    device_id = address_device_map.get(selected_address, "")
-    if device_id:
-        device_id_entry.delete(0, tk.END)
-        device_id_entry.insert(0, device_id)
+    address = address_combobox.get()
+    if address in address_device_map:
+        device_combobox.set(address_device_map[address])
+
+
+def on_device_selected(event):
+    """当选择设备编号时，自动填充对应的违法地点"""
+    device = device_combobox.get()
+    if device in device_address_map:
+        address_combobox.set(device_address_map[device])
+
+
+def on_address_input(*args):
+    """当违法地点输入时自动更新设备编号"""
+    address = address_entry.get()
+    if address in address_device_map:
+        device_combobox.set(address_device_map[address])
+
+
+def on_device_input(*args):
+    """当设备编号输入时自动更新违法地点"""
+    device = device_entry.get()
+    if device in device_address_map:
+        address_combobox.set(device_address_map[device])
 
 
 def thread_it(func, *args):
@@ -276,10 +306,60 @@ def thread_it(func, *args):
     # t.join()
 
 
+def populate_violation_dropdown(data):
+    """根据服务器返回数据填充违法行为和代码下拉框，并建立映射"""
+    global wf_code_name_map, wf_name_code_map
+    wf_code_name_map = {item["wf_code"]: item["wf_name"] for item in data}
+    wf_name_code_map = {item["wf_name"]: item["wf_code"] for item in data}
+
+    violation_code_combobox['values'] = list(wf_code_name_map.keys())
+    violation_name_combobox['values'] = list(wf_name_code_map.keys())
+
+    violation_code_combobox.bind("<<ComboboxSelected>>", on_violation_code_selected)
+    violation_name_combobox.bind("<<ComboboxSelected>>", on_violation_name_selected)
+
+    violation_code_entry.trace("w", on_violation_code_input)
+    violation_name_entry.trace("w", on_violation_name_input)
+
+
+def on_violation_code_selected(event):
+    """当选择违法代码时，自动填充对应的违法行为"""
+    code = violation_code_combobox.get()
+    if code in wf_code_name_map:
+        violation_name_combobox.set(wf_code_name_map[code])
+
+
+def on_violation_name_selected(event):
+    """当选择违法行为时，自动填充对应的违法代码"""
+    name = violation_name_combobox.get()
+    if name in wf_name_code_map:
+        violation_code_combobox.set(wf_name_code_map[name])
+
+
+def on_violation_code_input(*args):
+    """当违法代码输入时自动更新违法行为"""
+    code = violation_code_entry.get()
+    if code in wf_code_name_map:
+        violation_name_combobox.set(wf_code_name_map[code])
+
+
+def on_violation_name_input(*args):
+    """当违法行为输入时自动更新违法代码"""
+    name = violation_name_entry.get()
+    if name in wf_name_code_map:
+        violation_code_combobox.set(wf_name_code_map[name])
+
+
 if __name__ == '__main__':
 
-    address_device_map = {}
     selected_image_paths = []
+
+    # 用于保存违法行为与违法代码的映射
+    wf_code_name_map = {}
+    wf_name_code_map = {}
+    # 用于保存违法地点与设备编号的映射
+    address_device_map = {}
+    device_address_map = {}
 
     root = tk.Tk()
     root.title(__title__)
@@ -291,31 +371,32 @@ if __name__ == '__main__':
 
     # 手动定义每个标签和输入框
     # 违法时间
-    tk.Label(input_frame, text="违法时间：").grid(row=0, column=0, sticky="w")
+    tk.Label(input_frame, text="违法时间：").grid(row=0, column=0, sticky="e")
     time_entry = tk.Entry(input_frame)
-    time_entry.grid(row=0, column=1, padx=5, pady=5)
+    time_entry.grid(row=0, column=1, padx=5, pady=5, sticky="w")
 
     # 行政区划
-    tk.Label(input_frame, text="行政区划：").grid(row=1, column=0, sticky="w")
+    tk.Label(input_frame, text="行政区划：").grid(row=1, column=0, sticky="e")
     district_entry = tk.Entry(input_frame)
-    district_entry.grid(row=1, column=1, padx=5, pady=5)
+    district_entry.grid(row=1, column=1, padx=5, pady=5, sticky="w")
     district_entry.insert(0, "沙坪坝区")
 
+    # 车牌号
+    tk.Label(input_frame, text="车牌号：").grid(row=2, column=0, sticky="e")
+    plate_number_entry = tk.Entry(input_frame)
+    plate_number_entry.grid(row=2, column=1, padx=5, pady=5, sticky="w")
+
     # 违法地点
-    tk.Label(input_frame, text="违法地点：").grid(row=2, column=0, sticky="w")
-    location_entry = tk.StringVar()
-    address_dropdown = ttk.Combobox(input_frame, textvariable=location_entry, state="readonly")
-    address_dropdown.grid(row=2, column=1, padx=5, pady=5)
+    tk.Label(input_frame, text="违法地点：").grid(row=3, column=0, sticky="w")
+    address_entry = tk.StringVar()
+    address_combobox = ttk.Combobox(input_frame, textvariable=address_entry)
+    address_combobox.grid(row=3, column=1, padx=5, pady=5)
 
     # 设备编号
-    tk.Label(input_frame, text="设备编号：").grid(row=3, column=0, sticky="w")
-    device_id_entry = tk.Entry(input_frame)
-    device_id_entry.grid(row=3, column=1, padx=5, pady=5)
-
-    # 车牌号
-    tk.Label(input_frame, text="车牌号：").grid(row=4, column=0, sticky="w")
-    plate_number_entry = tk.Entry(input_frame)
-    plate_number_entry.grid(row=4, column=1, padx=5, pady=5)
+    tk.Label(input_frame, text="设备编号：").grid(row=4, column=0, sticky="w")
+    device_entry = tk.StringVar()
+    device_combobox = ttk.Combobox(input_frame, textvariable=device_entry)
+    device_combobox.grid(row=4, column=1, padx=5, pady=5)
 
     # 车辆类型（下拉框）
     tk.Label(input_frame, text="车辆类型：").grid(row=5, column=0, sticky="w")
@@ -324,15 +405,27 @@ if __name__ == '__main__':
     vehicle_type_combobox.set("选择车辆类型")
     vehicle_type_combobox.grid(row=5, column=1, padx=5, pady=5)
 
+    # 违法行为
+    tk.Label(input_frame, text="违法行为：").grid(row=6, column=0, sticky="w")
+    violation_name_entry = tk.StringVar()
+    violation_name_combobox = ttk.Combobox(input_frame, textvariable=violation_name_entry)
+    violation_name_combobox.grid(row=6, column=1, padx=5, pady=5)
+
+    # 违法代码
+    tk.Label(input_frame, text="违法代码：").grid(row=7, column=0, sticky="w")
+    violation_code_entry = tk.StringVar()
+    violation_code_combobox = ttk.Combobox(input_frame, textvariable=violation_code_entry)
+    violation_code_combobox.grid(row=7, column=1, padx=5, pady=5)
+
     # 服务器IP
-    tk.Label(input_frame, text="服务器IP：").grid(row=6, column=0, sticky="w")
+    tk.Label(input_frame, text="服务器IP：").grid(row=8, column=0, sticky="e")
     ip_entry = tk.Entry(input_frame)
-    ip_entry.grid(row=6, column=1, padx=5, pady=5)
+    ip_entry.grid(row=8, column=1, padx=5, pady=5, sticky="w")
     ip_entry.insert(0, "127.0.0.1:8000")
 
     # 测试连接按钮
     test_connection_btn = tk.Button(input_frame, text='测试连接', command=lambda: thread_it(check_server_connection))
-    test_connection_btn.grid(row=7, column=0, columnspan=2, pady=10)
+    test_connection_btn.grid(row=9, column=0, columnspan=2, pady=10)
 
     # 图片展示区域的 Frame
     image_frame = tk.Frame(root, width=600, height=300, bg='lightgray')
