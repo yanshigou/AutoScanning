@@ -63,15 +63,16 @@ def display_images(image_paths, frame):
         # else:
         #     vehicle_type = "未知类型"
 
-        if "学" in car_id:
-            vehicle_type = "教练车"
-            car_id -= car_id.replace("学", "")
+
         # 自动填充车牌号码和车辆类型
         plate_number_entry.delete(0, tk.END)
         plate_number_entry.insert(0, car_id)
 
         color_combobox.set(color)
-        # vehicle_type_combobox.set(vehicle_type)
+        if "学" in car_id:
+            vehicle_type = "教练车"
+            car_id -= car_id.replace("学", "")
+            vehicle_type_combobox.set(vehicle_type)  # 为了教练车
 
         # print(f"识别结果: 车牌号={car_id}, 颜色={color}, 车辆类型={vehicle_type}")
     else:
@@ -514,75 +515,79 @@ if __name__ == '__main__':
 
     root = tk.Tk()
     root.title(__title__)
-    root.geometry('920x450')  # 窗口默认大小
+    root.geometry('1000x460')  # 窗口默认大小
     root.grid_rowconfigure(0, weight=1)  # 使输入框部分自适应
-    # root.grid_columnconfigure(1, weight=1)  # 使图片展示部分自适应
+    root.grid_columnconfigure(1, weight=1)  # 使图片展示部分自适应
+
 
     # 输入框区域
     input_frame = tk.Frame(root)
-    input_frame.grid(row=0, column=0, padx=10, pady=10)
+    input_frame.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+
+    # 增加列权重，确保输入框宽度自适应
+    input_frame.grid_columnconfigure(1, weight=1)
 
     # 手动定义每个标签和输入框
     # 违法时间
     tk.Label(input_frame, text="违法时间：").grid(row=0, column=0, sticky="e")
-    time_entry = tk.Entry(input_frame)
-    time_entry.grid(row=0, column=1, padx=5, pady=5, sticky="w")
+    time_entry = tk.Entry(input_frame, width=30)
+    time_entry.grid(row=0, column=1, padx=5, pady=5, sticky="ew")
 
     # 行政区划
     tk.Label(input_frame, text="行政区划：").grid(row=1, column=0, sticky="e")
-    district_entry = tk.Entry(input_frame)
-    district_entry.grid(row=1, column=1, padx=5, pady=5, sticky="w")
+    district_entry = tk.Entry(input_frame, width=30)
+    district_entry.grid(row=1, column=1, padx=5, pady=5, sticky="ew")
     district_entry.insert(0, "重庆市沙坪坝")
 
     # 车牌号
     tk.Label(input_frame, text="车牌号码：").grid(row=2, column=0, sticky="e")
-    plate_number_entry = tk.Entry(input_frame)
-    plate_number_entry.grid(row=2, column=1, padx=5, pady=5, sticky="w")
+    plate_number_entry = tk.Entry(input_frame, width=30)
+    plate_number_entry.grid(row=2, column=1, padx=5, pady=5, sticky="ew")
 
     # 车牌颜色
     tk.Label(input_frame, text="车辆颜色：").grid(row=3, column=0, sticky="e")
     # color_types = ['蓝色', '黄色', '绿色', '渐变绿色']
     color_entry = tk.StringVar()
-    color_combobox = ttk.Combobox(input_frame, textvariable=color_entry)
-    color_combobox.grid(row=3, column=1, padx=5, pady=5, sticky="w")
+    color_combobox = ttk.Combobox(input_frame, textvariable=color_entry, width=30)
+    color_combobox.grid(row=3, column=1, padx=5, pady=5, sticky="ew")
 
     # 车辆类型（下拉框）
     tk.Label(input_frame, text="车辆类型：").grid(row=4, column=0, sticky="w")
     vehicle_types = ["小型汽车", "大型汽车", "新能源小型汽车", "新能源大型汽车", "摩托车", "教练车"]
     # type_entry = tk.StringVar()
-    vehicle_type_combobox = ttk.Combobox(input_frame, values=vehicle_types)
+    vehicle_type_combobox = ttk.Combobox(input_frame, values=vehicle_types, width=30)
     # vehicle_type_combobox = ttk.Combobox(input_frame, textvariable=type_entry)
     # vehicle_type_combobox.set("选择车辆类型")
-    vehicle_type_combobox.grid(row=4, column=1, padx=5, pady=5)
+    vehicle_type_combobox.grid(row=4, column=1, padx=5, pady=5, sticky="ew")
 
     # 违法地点
     tk.Label(input_frame, text="违法地点：").grid(row=5, column=0, sticky="w")
     address_entry = tk.StringVar()
-    address_combobox = ttk.Combobox(input_frame, textvariable=address_entry)
-    address_combobox.grid(row=5, column=1, padx=5, pady=5)
+    address_combobox = ttk.Combobox(input_frame, textvariable=address_entry, width=30)
+    address_combobox.grid(row=5, column=1, padx=5, pady=5, sticky="ew")
 
     # 设备编号
     tk.Label(input_frame, text="设备编号：").grid(row=6, column=0, sticky="w")
     device_entry = tk.StringVar()
-    device_combobox = ttk.Combobox(input_frame, textvariable=device_entry)
-    device_combobox.grid(row=6, column=1, padx=5, pady=5)
+    device_combobox = ttk.Combobox(input_frame, textvariable=device_entry, width=30)
+    device_combobox.grid(row=6, column=1, padx=5, pady=5, sticky="ew")
 
     # 违法代码
     tk.Label(input_frame, text="违法代码：").grid(row=7, column=0, sticky="w")
     violation_code_entry = tk.StringVar()
-    violation_code_combobox = ttk.Combobox(input_frame, textvariable=violation_code_entry)
-    violation_code_combobox.grid(row=7, column=1, padx=5, pady=5)
+    violation_code_combobox = ttk.Combobox(input_frame, textvariable=violation_code_entry, width=30)
+    violation_code_combobox.grid(row=7, column=1, padx=5, pady=5, sticky="ew")
 
     # 违法行为
     tk.Label(input_frame, text="违法行为：").grid(row=8, column=0, sticky="w")
     violation_name_entry = tk.StringVar()
-    violation_name_combobox = ttk.Combobox(input_frame, textvariable=violation_name_entry)
-    violation_name_combobox.grid(row=8, column=1, padx=5, pady=5)
+    violation_name_combobox = ttk.Combobox(input_frame, textvariable=violation_name_entry, width=30)
+    violation_name_combobox.grid(row=8, column=1, padx=5, pady=5, sticky="ew")
 
     # 服务器IP
     tk.Label(input_frame, text="服务器IP：").grid(row=9, column=0, sticky="e")
-    ip_entry = tk.Entry(input_frame)
-    ip_entry.grid(row=9, column=1, padx=5, pady=5, sticky="w")
+    ip_entry = tk.Entry(input_frame, width=30)
+    ip_entry.grid(row=9, column=1, padx=5, pady=5, sticky="ew")
     ip_entry.insert(0, "127.0.0.1:8000")
 
     # 测试连接按钮
@@ -593,20 +598,24 @@ if __name__ == '__main__':
     image_frame = tk.Frame(root, width=620, height=300, bg='lightgray')
     image_frame.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
 
+    # 使图片展示区域自适应大小
+    image_frame.grid_rowconfigure(0, weight=1)
+    image_frame.grid_columnconfigure(0, weight=1)
+
     # 新增按钮区域 Frame，用于放置上传、合成图片、退出按钮
     button_frame = tk.Frame(root)
-    button_frame.grid(row=1, column=1, padx=5, pady=10, sticky="w")
+    button_frame.grid(row=1, column=1, padx=5, pady=10, sticky="nsew")
 
     # 上传图片按钮
-    upload_btn = tk.Button(button_frame, text='上传4张图片', command=lambda: select_images(image_frame))
+    upload_btn = tk.Button(button_frame, text='上传4张图片', command=lambda: select_images(image_frame), width=15)
     upload_btn.pack(side=tk.LEFT, padx=40)
 
     # 合成图片按钮
-    merge_btn = tk.Button(button_frame, text='合成图片', command=create_image)
+    merge_btn = tk.Button(button_frame, text='合成图片', command=create_image, width=15)
     merge_btn.pack(side=tk.LEFT, padx=40)
 
     # 退出按钮
-    quit_btn = tk.Button(button_frame, text='退  出', command=root.quit)
-    quit_btn.pack(side=tk.LEFT, padx=100)
+    quit_btn = tk.Button(button_frame, text='退  出', command=root.quit, width=15)
+    quit_btn.pack(side=tk.LEFT, padx=40)
 
     root.mainloop()

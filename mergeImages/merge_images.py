@@ -29,12 +29,7 @@ def verify_security_code(security_code):
     return checksum == expected_checksum
 
 
-# 图片合成函数
-from PIL import Image, ImageDraw, ImageFont
-import os
-import textwrap
-
-def merge_images_with_text(image_paths, output_path, custom_text, max_text_width_ratio=0.9, padding=10):
+def merge_images_with_text(image_paths, output_path, custom_text, max_text_width_ratio=1, padding=10):
     # 打开所有图片
     images = [Image.open(img_path) for img_path in image_paths]
 
@@ -55,7 +50,7 @@ def merge_images_with_text(image_paths, output_path, custom_text, max_text_width
 
     # 设置支持中文的字体
     try:
-        font = ImageFont.truetype("pf10.ttf", 36)
+        font = ImageFont.truetype("pf10.ttf", 80)  # 调整字体大小
     except IOError:
         font = ImageFont.load_default()
 
@@ -65,15 +60,23 @@ def merge_images_with_text(image_paths, output_path, custom_text, max_text_width
     # 使用 textwrap 自动换行
     def wrap_text(text, font, max_width):
         """根据最大宽度自动换行"""
-        lines = []
-        for paragraph in text.split('\n'):  # 支持手动换行符
-            wrapped_lines = textwrap.wrap(paragraph, width=100)
-            for line in wrapped_lines:
-                # 按字体测量实际宽度，并在超出时换行
-                while draw.textsize(line, font=font)[0] > max_width:
-                    line = line[:-1]
-                lines.append(line)
-        return lines
+        wrapped_lines = []
+        lines = text.split('\n')  # 支持手动换行符
+        for line in lines:
+            words = line.split(' ')  # 按空格拆分单词
+            current_line = ''
+            for word in words:
+                # 测量当前行和下一个单词的宽度
+                test_line = current_line + word + ' '  # 添加下一个单词并测试
+                if draw.textsize(test_line, font=font)[0] <= max_width:
+                    current_line = test_line  # 更新当前行
+                else:
+                    if current_line:  # 如果当前行不为空，先保存当前行
+                        wrapped_lines.append(current_line.strip())
+                    current_line = word + ' '  # 开始新的行
+            if current_line:  # 将最后一行添加到结果中
+                wrapped_lines.append(current_line.strip())
+        return wrapped_lines
 
     # 获取换行后的所有文本行
     draw = ImageDraw.Draw(merged_image)  # 先创建绘图对象以测量文字
@@ -99,12 +102,10 @@ def merge_images_with_text(image_paths, output_path, custom_text, max_text_width
         fill=(0, 0, 0)
     )
 
-    # 将文本居中绘制在黑色背景内
+    # 将文本左对齐绘制在黑色背景内
     current_y = merged_image_height + padding
     for line in lines:
-        text_width, _ = draw.textsize(line, font=font)
-        text_x = (merged_image_width - text_width) // 2  # 水平居中
-        draw.text((text_x, current_y), line, font=font, fill=(255, 255, 255))
+        draw.text((padding, current_y), line, font=font, fill=(255, 255, 255))
         current_y += line_height  # 移动到下一行
 
     # 保存合成后的图片
@@ -113,7 +114,6 @@ def merge_images_with_text(image_paths, output_path, custom_text, max_text_width
 
 
 if __name__ == '__main__':
-
     # 生成一个随机的防伪码
     security_code = generate_security_code()
     print(f"生成的防伪码：{security_code}")
@@ -122,26 +122,15 @@ if __name__ == '__main__':
     is_valid = verify_security_code(security_code)
     print(f"防伪码验证结果：{'有效' if is_valid else '无效'}")
 
-
     # 图片路径和自定义文字
-    # image_paths = [
-    #     "/Users/yanshigou/dzt/trafficmgmtspb/apps/myutils/2_20240918_160305_410_50.123.123.322_渝CBC050_蓝牌.jpg",
-    #     "/Users/yanshigou/dzt/trafficmgmtspb/apps/myutils/2_20240918_160305_410_50.123.123.322_渝CBC050_蓝牌.jpg",
-    #     "/Users/yanshigou/dzt/trafficmgmtspb/apps/myutils/2_20240918_160305_410_50.123.123.322_渝CBC050_蓝牌.jpg",
-    #     "/Users/yanshigou/dzt/trafficmgmtspb/apps/myutils/2_20240918_160305_410_50.123.123.322_渝CBC050_蓝牌.jpg"
-    # ]
     image_paths = [
-        "D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\mergeImages\\1.jpg",
-        "D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\mergeImages\\2.jpg",
-        "D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\mergeImages\\3.jpg",
-        "D:\历史项目管理\AutoScanning交通扫描软件\AutoScanning\mergeImages\\4.jpg",
-
-
+        "D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\mergeImages\\1.jpg",
+        "D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\mergeImages\\2.jpg",
+        "D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\mergeImages\\3.jpg",
+        "D:\\历史项目管理\\AutoScanning交通扫描软件\\AutoScanning\\mergeImages\\4.jpg",
     ]
     output_path = "merged_image.jpg"
-    custom_text = "违法时间：2024-10-12 13:24:22 行政区划：重庆市沙坪坝 违法地点：都市花园东路临江苑亭车库 车牌号：渝A0LQ91 " \
-                  "车牌颜色：蓝色 违法代码：10398 违法行为：路中长时间停车 设备编号：1111111 车辆类型：小型汽车 " \
-                  "防伪码：1k20kqlQioBT43b1"
+    custom_text = "违法时间：2024-10-12 13:24:55 行政区划：重庆市沙坪坝 违法地点：都市花园东路临江苑停车库 车牌号：渝A0LQ91 车牌颜色：蓝色 违法代码：10398 违法行为：路中长时间停车 设备编号：1111111 车辆类型：小型汽车 防伪码：Td9gwkOTcXmJ16b3"
 
     # 合成图片并添加文字
     merge_images_with_text(image_paths, output_path, custom_text)
