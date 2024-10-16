@@ -1,9 +1,8 @@
-import sys
 import cv2
 import hyperlpr3 as lpr3
-import requests
 import numpy as np
 from PIL import Image
+from tkinter import messagebox
 
 catcher = lpr3.LicensePlateCatcher(logger_level=3)
 
@@ -11,10 +10,10 @@ catcher = lpr3.LicensePlateCatcher(logger_level=3)
 def get_carid(image_path):
 
     image = cv2.imread(image_path)
-
     # 检查图像是否成功加载
     if image is None:
-        print(f"图像加载失败: {image_path}")
+        # print(f"图像加载失败: {image_path}")
+        messagebox.showwarning(f"图像加载失败: {image_path}")
         return  # 或者抛出一个异常
     result = catcher(image)
     idx = 0
@@ -59,7 +58,8 @@ def get_carid(image_path):
 
         # 判断颜色是否匹配
         if yellow_pixels > 0 and green_pixels > 0:
-            print("车牌是新能源大车牌（前黄后绿）")
+            # print("车牌是新能源大车牌（前黄后绿）")
+            return {"car_id": car_id, "color": "渐变绿"}
         else:
             # 将图片转换为 HSV 色彩空间
             hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
