@@ -7,6 +7,7 @@ import random
 import string
 import hashlib
 import os
+import textwrap
 
 
 # 生成随机防伪码函数
@@ -29,68 +30,85 @@ def verify_security_code(security_code):
 
 
 # 图片合成函数
-def merge_images_with_text(image_paths, output_path, custom_text):
+from PIL import Image, ImageDraw, ImageFont
+import os
+import textwrap
+
+def merge_images_with_text(image_paths, output_path, custom_text, max_text_width_ratio=0.9, padding=10):
     # 打开所有图片
     images = [Image.open(img_path) for img_path in image_paths]
 
-    # 获取图像的宽度和高度（假设所有图像的大小相同）
+    # 获取每张图片的宽度和高度（假设所有图片大小相同）
     img_width, img_height = images[0].size
 
-    # 设置合成图片最大尺寸（原始图片宽高的两倍）
-    max_width = img_width * 2
-    max_height = img_height * 2
-
-    # 假设文本区域的高度为 100 像素
-    text_area_height = 100
-
-    # 计算新图像的大小，按 2x2 布局计算
+    # 创建合成图片的初始大小（2x2布局，不含文本区域）
     merged_image_width = 2 * img_width
-    merged_image_height = 2 * img_height + text_area_height
+    merged_image_height = 2 * img_height
 
-    # 如果超出最大尺寸，则按比例缩小图片
-    if merged_image_width > max_width or merged_image_height > max_height:
-        scale_factor = min(max_width / merged_image_width, max_height / merged_image_height)
-        img_width = int(img_width * scale_factor)
-        img_height = int(img_height * scale_factor)
-        merged_image_width = int(merged_image_width * scale_factor)
-        merged_image_height = int(merged_image_height * scale_factor)
-
-    # 创建新图像
+    # 创建合成图片并粘贴四张图片
     merged_image = Image.new('RGB', (merged_image_width, merged_image_height), (255, 255, 255))
-
-    # 将四张图片分别粘贴到新图像的四个象限中
     images_resized = [img.resize((img_width, img_height)) for img in images]
     merged_image.paste(images_resized[0], (0, 0))  # 左上
     merged_image.paste(images_resized[1], (img_width, 0))  # 右上
     merged_image.paste(images_resized[2], (0, img_height))  # 左下
     merged_image.paste(images_resized[3], (img_width, img_height))  # 右下
 
-    # 创建绘图对象以在图像上绘制文本
-    draw = ImageDraw.Draw(merged_image)
-
-    # 设置支持中文的字体路径
+    # 设置支持中文的字体
     try:
         font = ImageFont.truetype("pf10.ttf", 36)
     except IOError:
         font = ImageFont.load_default()
 
-    # 计算文本的宽度和高度，以便居中绘制
-    text_width, text_height = draw.textsize(custom_text, font=font)
-    text_x = (merged_image_width - text_width) // 2
-    text_y = 2 * img_height + (text_area_height - text_height) // 2
+    # 确定文本区域的最大宽度（根据图片宽度的比例）
+    max_text_width = int(merged_image_width * max_text_width_ratio)
 
-    # 绘制黑色背景的矩形框（作为文本框）
+    # 使用 textwrap 自动换行
+    def wrap_text(text, font, max_width):
+        """根据最大宽度自动换行"""
+        lines = []
+        for paragraph in text.split('\n'):  # 支持手动换行符
+            wrapped_lines = textwrap.wrap(paragraph, width=100)
+            for line in wrapped_lines:
+                # 按字体测量实际宽度，并在超出时换行
+                while draw.textsize(line, font=font)[0] > max_width:
+                    line = line[:-1]
+                lines.append(line)
+        return lines
+
+    # 获取换行后的所有文本行
+    draw = ImageDraw.Draw(merged_image)  # 先创建绘图对象以测量文字
+    lines = wrap_text(custom_text, font, max_text_width)
+
+    # 计算文本区域的高度
+    line_height = font.getsize('A')[1]
+    text_area_height = len(lines) * line_height + 2 * padding
+
+    # 创建一个新图片，增加文本区域高度
+    total_height = merged_image_height + text_area_height
+    final_image = Image.new('RGB', (merged_image_width, total_height), (255, 255, 255))
+
+    # 将原始合成图片粘贴到新图片的顶部
+    final_image.paste(merged_image, (0, 0))
+
+    # 更新绘图对象以在新图片上绘制文本
+    draw = ImageDraw.Draw(final_image)
+
+    # 绘制黑色背景作为文本框
     draw.rectangle(
-        [(0, 2 * img_height), (merged_image_width, merged_image_height)],
+        [(0, merged_image_height), (merged_image_width, total_height)],
         fill=(0, 0, 0)
     )
 
-    # 在黑色背景上绘制白色文本
-    draw.text((text_x, text_y), custom_text, font=font, fill=(255, 255, 255))
+    # 将文本居中绘制在黑色背景内
+    current_y = merged_image_height + padding
+    for line in lines:
+        text_width, _ = draw.textsize(line, font=font)
+        text_x = (merged_image_width - text_width) // 2  # 水平居中
+        draw.text((text_x, current_y), line, font=font, fill=(255, 255, 255))
+        current_y += line_height  # 移动到下一行
 
-    # 保存合成后的图像
-    merged_image.save(output_path)
-    # print(f"合成图片已保存为 {output_path}")
+    # 保存合成后的图片
+    final_image.save(output_path)
     return os.path.abspath(output_path)
 
 
@@ -121,9 +139,9 @@ if __name__ == '__main__':
 
     ]
     output_path = "merged_image.jpg"
-    custom_text = "违法时间：%s 行政区划：%s 违法地点：%s 设备编号：%s 车牌号：%s 防伪码：%s" % (
-        "2024-10-12 13:24:55", "重庆市沙坪坝区", "都市花园东路临江苑停车库", "501300000000070021", "渝A0LQ9", security_code
-    )
+    custom_text = "违法时间：2024-10-12 13:24:22 行政区划：重庆市沙坪坝 违法地点：都市花园东路临江苑亭车库 车牌号：渝A0LQ91 " \
+                  "车牌颜色：蓝色 违法代码：10398 违法行为：路中长时间停车 设备编号：1111111 车辆类型：小型汽车 " \
+                  "防伪码：1k20kqlQioBT43b1"
 
     # 合成图片并添加文字
     merge_images_with_text(image_paths, output_path, custom_text)
