@@ -9,10 +9,11 @@ from ping3 import ping
 from PIL import Image, ImageTk
 from mergeImages.merge_images import merge_images_with_text, generate_security_code
 from mergeImages.GetCadId.main import get_carid
+from mergeImages.date import extract_info_from_image
 import threading
 import re
-from datetime import datetime
 import requests
+from requests.adapters import HTTPAdapter
 
 
 def load_images_async(image_paths, frame):
@@ -44,32 +45,55 @@ def display_images(image_paths, frame):
         label.bind("<ButtonRelease-1>", lambda e, lbl=label, fr=frame: on_drag_release(e, lbl, fr))
 
     # 调用 get_carid() 获取识别结果
-    res = get_carid(image_paths[-1])  # 取最后一张图片进行识别
+    image_path = image_paths[-1]
+    res = get_carid(image_path)  # 取最后一张图片进行识别
     if res:
         car_id = res.get('car_id', '')
         color = res.get('color', '')
 
-        # 根据颜色自动选择车辆类型
-        if color == '蓝色':
-            vehicle_type = "小型汽车"
-        elif color == '黄色':
-            vehicle_type = "大型汽车"
-        elif color == '渐变绿':
-            vehicle_type = "新能源大型汽车"
-        elif color == '绿':
-            vehicle_type = "新能源小型汽车"
-        else:
-            vehicle_type = "未知类型"
+        # # 根据颜色自动选择车辆类型
+        # if color == '蓝色':
+        #     vehicle_type = "小型汽车"
+        # elif color == '黄色':
+        #     vehicle_type = "大型汽车"
+        # elif color == '渐变绿':
+        #     vehicle_type = "新能源大型汽车"
+        # elif color == '绿':
+        #     vehicle_type = "新能源小型汽车"
+        # else:
+        #     vehicle_type = "未知类型"
 
+        if "学" in car_id:
+            vehicle_type = "教练车"
+            car_id -= car_id.replace("学", "")
         # 自动填充车牌号码和车辆类型
         plate_number_entry.delete(0, tk.END)
         plate_number_entry.insert(0, car_id)
 
-        vehicle_type_combobox.set(vehicle_type)
+        color_combobox.set(color)
+        # vehicle_type_combobox.set(vehicle_type)
 
-        print(f"识别结果: 车牌号={car_id}, 颜色={color}, 车辆类型={vehicle_type}")
+        # print(f"识别结果: 车牌号={car_id}, 颜色={color}, 车辆类型={vehicle_type}")
     else:
-        print("未能识别车牌或车辆类型")
+        plate_number_entry.delete(0, tk.END)
+        plate_number_entry.insert(0, "")
+        # print("未能识别车牌或车辆类型")
+
+    time_info, address_info = extract_info_from_image(image_path)
+    if time_info:
+        time_entry.delete(0, tk.END)
+        time_entry.insert(0, time_info)
+    else:
+        time_entry.delete(0, tk.END)
+        time_entry.insert(0, "")
+
+    if address_info:
+        address_combobox.delete(0, tk.END)
+        address_combobox.insert(0, address_info)
+
+    else:
+        address_combobox.delete(0, tk.END)
+        address_combobox.set("")
 
 
 def on_drag_start(event, label):
@@ -102,19 +126,62 @@ def is_valid_time_format(time_string):
 
 def generate_custom_text():
     """生成合成图片所需的custom_text"""
-    time = time_entry.get()
 
-    if not is_valid_time_format(time):
-        messagebox.showerror("时间格式错误", "请确保时间格式为 YYYY-MM-DD HH:MM:SS")
+    wf_time = time_entry.get()
+    if not wf_time or not is_valid_time_format(wf_time):
+        messagebox.showerror("时间格式错误", "请确保输入有效的时间，并且格式为 YYYY-MM-DD HH:MM:SS")
         return
 
     district = district_entry.get()
-    location = address_entry.get()
+    if not district:
+        messagebox.showerror("输入错误", "行政区划不能为空")
+        return
+
+    car_id = plate_number_entry.get()
+    if not car_id:
+        messagebox.showerror("输入错误", "车牌号不能为空")
+        return
+
+    car_color = color_entry.get()
+    if not car_color:
+        messagebox.showerror("输入错误", "车牌颜色不能为空")
+        return
+
+    vehicle_type = vehicle_type_combobox.get()
+    if not vehicle_type:
+        messagebox.showerror("输入错误", "车辆类型不能为空")
+        return
+
+    address = address_entry.get()
+    if not address:
+        messagebox.showerror("输入错误", "违法地点不能为空")
+        return
+
     device_id = device_entry.get()
-    plate_number = plate_number_entry.get()
+    if not device_id:
+        messagebox.showerror("输入错误", "设备编号不能为空")
+        return
+
+    wf_code = violation_code_entry.get()
+    if not wf_code:
+        messagebox.showerror("输入错误", "违法代码不能为空")
+        return
+
+    wf_name = violation_name_entry.get()
+    if not wf_name:
+        messagebox.showerror("输入错误", "违法行为不能为空")
+        return
+    # district = district_entry.get()
+    # car_id = plate_number_entry.get()
+    # car_color = color_entry.get()
+    # vehicle_type = vehicle_type_combobox.get()
+    # address = address_entry.get()
+    # device_id = device_entry.get()
+    # wf_code = violation_code_entry.get()
+    # wf_name = violation_name_entry.get()
+
 
     # 根据选择的车辆类型设置实际的 car_type
-    vehicle_type = vehicle_type_combobox.get()
     if vehicle_type == "小型汽车":
         actual_car_type = "02"
     elif vehicle_type == "大型汽车":
@@ -132,29 +199,39 @@ def generate_custom_text():
 
     security_code = generate_security_code()
 
-    custom_text = f"违法时间：{time} 行政区划：{district} 违法地点：{location} 设备编号：{device_id} 车牌号：{plate_number} 车辆类型：{vehicle_type} 防伪码：{security_code}"
-    data = {
-        "wf_time": time,
-        "area": district,
-        "wfdd": location,
-        "device_id": device_id,
-        "car_id": plate_number,
-        "car_type": actual_car_type,  # 使用实际的 car_type
-        "security_code": security_code
-    }
+    custom_text = f"违法时间：{wf_time} 行政区划：{district} 违法地点：{address} 车牌号：{car_id} 车牌颜色：{car_color} " \
+                  f"违法代码：{wf_code} 违法行为：{wf_name} 设备编号：{device_id} 车辆类型：{vehicle_type} " \
+                  f"防伪码：{security_code}"
+    try:
+        ip = address_ip_map[address]
+    except Exception as e:
+        messagebox.showerror("违法地点识别错误", "违法地点识别错误，请手动选择违法地点")
+        return
+    data = dict(
+            data_type=wf_code,
+            ip=ip,
+            car_id=car_id,
+            car_type=actual_car_type,
+            wf_time=wf_time.replace(" ", "").replace("-", "").replace(":", ""),
+            speed="",
+            lim_speed="",
+            img_type="",
+            model_name="视频纠违"
+        )
     print(data)
-    return custom_text
+    print(custom_text)
+    return custom_text, data
 
 
 def create_image():
     """合成图片并展示"""
-    custom_text = generate_custom_text()
+    custom_text, data = generate_custom_text()
     output_path = "test.jpg"
     res = merge_images_with_text(selected_image_paths, output_path, custom_text)
-    show_merged_image(res)
+    show_merged_image(res, data)
 
 
-def show_merged_image(image_path):
+def show_merged_image(image_path, data):
     """在新窗口展示合成的图片"""
     new_window = tk.Toplevel()
     new_window.title("合成图片展示")
@@ -172,16 +249,43 @@ def show_merged_image(image_path):
     new_window.geometry(f"{photo.width()}x{photo.height() + 100}")
     new_window.minsize(400, 300)
 
-    push_btn = tk.Button(new_window, text='上传至平台', command=lambda: upload_to_platform(image_path))
+    push_btn = tk.Button(new_window, text='上传至平台', command=lambda: thread_it(upload_to_platform, image_path, data))
     push_btn.grid(row=1, column=0, padx=10, pady=10)
 
     new_window.grid_rowconfigure(0, weight=1)
     new_window.grid_columnconfigure(0, weight=1)
 
 
-def upload_to_platform(image_path):
+def upload_to_platform(image_path, data):
     """处理上传图片到平台的逻辑"""
-    messagebox.showinfo("上传", f"图片 {image_path} 已上传至平台！")
+    ip_val = ip_entry.get()
+    print(data)
+    try:
+        f = open(image_path, 'rb')
+        files = {'image_file': ("mergelImage.jpg", f, 'image/jpg')}
+
+        try:
+            with requests.Session() as maxrequests:
+                maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
+                res = maxrequests.post('http://' + ip_val + dj_url, files=files, data=data, timeout=5)
+                res_json = res.json()
+                status = res_json.get('status')
+                strexc = res_json.get('e')
+                if status == "success":
+                    messagebox.showinfo("上传", f"图片 {image_path} 已上传至平台！")
+                else:
+                    messagebox.showerror("错误", f"图片 {image_path} 上传错误！！" + strexc)
+                res.close()
+                maxrequests.cookies.clear()
+        except Exception as e:
+            print("Exception=" + str(e))
+            messagebox.showerror("错误", e)
+            return
+        finally:
+            f.close()
+    except Exception as e:
+        print(e)
+        messagebox.showerror("错误", e)
 
 
 def select_images(image_frame):
@@ -197,10 +301,10 @@ def select_images(image_frame):
     selected_image_paths = list(filenames)
     load_images_async(selected_image_paths, image_frame)
 
-    # 填充当前时间
-    current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    time_entry.delete(0, tk.END)
-    time_entry.insert(0, current_time)
+    # # 填充当前时间
+    # current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # time_entry.delete(0, tk.END)
+    # time_entry.insert(0, current_time)
 
 
 def is_valid_ip(ip):
@@ -212,7 +316,7 @@ def check_server_connection():
     """检查服务器连接并反馈"""
     ip_val = ip_entry.get()
     url = f"http://{ip_val}/devices/infoForMergeImages/"
-    print(f"测试连接URL: {url}")
+    # print(f"测试连接URL: {url}")
     test_connection_btn.config(text='连接中···')
 
     if not is_valid_ip(ip_val):
@@ -231,10 +335,11 @@ def check_server_connection():
             })
             data = response.json().get('data', [])
             wf_data = response.json().get('wf_data', [])
-            print("data:", data)
-            print("wf_data:", wf_data)
+            # print("data:", data)
+            # print("wf_data:", wf_data)
             populate_address_dropdown(data)
             populate_violation_dropdown(wf_data)
+            populate_color_dropdown()
             messagebox.showinfo("连接测试", f"服务器连接成功: {ip_val}")
             test_connection_btn.config(text='已连接', fg='green')
         except Exception as e:
@@ -247,8 +352,9 @@ def check_server_connection():
 
 def populate_address_dropdown(data):
     """根据服务器返回的地址和设备数据填充下拉框，并建立映射"""
-    global address_device_map, device_address_map
+    global address_device_map, device_address_map, address_ip_map
     address_device_map = {item["address"]: item["device_id"] for item in data}
+    address_ip_map = {item["address"]: item["ip"] for item in data}
     device_address_map = {item["device_id"]: item["address"] for item in data}
 
     address_combobox['values'] = list(address_device_map.keys())
@@ -306,6 +412,26 @@ def thread_it(func, *args):
     # t.join()
 
 
+def populate_color_dropdown():
+
+    color_combobox['values'] = list(color_types_map.keys())
+    color_combobox.bind("<<ComboboxSelected>>", on_color_selected)
+    color_entry.trace("w", on_color_input)
+
+
+def on_color_selected(event):
+    color = color_combobox.get()
+    if color in color_types_map:
+        vehicle_type_combobox.set(color_types_map[color])
+
+
+def on_color_input(*args):
+
+    color = color_entry.get()
+    if color in color_types_map:
+        vehicle_type_combobox.set(color_types_map[color])
+
+
 def populate_violation_dropdown(data):
     """根据服务器返回数据填充违法行为和代码下拉框，并建立映射"""
     global wf_code_name_map, wf_name_code_map
@@ -350,8 +476,17 @@ def on_violation_name_input(*args):
         violation_code_combobox.set(wf_name_code_map[name])
 
 
-if __name__ == '__main__':
+def resize_image(img, max_width, max_height):
+    """保持比例缩放图片"""
+    width_ratio = max_width / img.width
+    height_ratio = max_height / img.height
+    scale = min(width_ratio, height_ratio)  # 选择最小比例以适应
+    new_size = (int(img.width * scale), int(img.height * scale))
+    return img.resize(new_size, Image.ANTIALIAS)
 
+
+if __name__ == '__main__':
+    dj_url = "/djDataInfo/djDataInfoUpload/"
     selected_image_paths = []
 
     # 用于保存违法行为与违法代码的映射
@@ -359,11 +494,29 @@ if __name__ == '__main__':
     wf_name_code_map = {}
     # 用于保存违法地点与设备编号的映射
     address_device_map = {}
+    address_ip_map = {}
     device_address_map = {}
+
+    # 颜色类型
+    color_types_map = {
+        "蓝色": "小型汽车",
+        "黄色": "大型汽车",
+        "绿色": "新能源小型汽车",
+        "渐变绿色": "新能源大型汽车"
+    }
+
+    types_color_map = {
+        "小型汽车": "蓝色",
+        "大型汽车": "黄色",
+        "新能源小型汽车": "绿色",
+        "新能源大型汽车": "渐变绿色"
+    }
 
     root = tk.Tk()
     root.title(__title__)
-    root.geometry('1000x800+700+300')
+    root.geometry('920x450')  # 窗口默认大小
+    root.grid_rowconfigure(0, weight=1)  # 使输入框部分自适应
+    # root.grid_columnconfigure(1, weight=1)  # 使图片展示部分自适应
 
     # 输入框区域
     input_frame = tk.Frame(root)
@@ -379,37 +532,40 @@ if __name__ == '__main__':
     tk.Label(input_frame, text="行政区划：").grid(row=1, column=0, sticky="e")
     district_entry = tk.Entry(input_frame)
     district_entry.grid(row=1, column=1, padx=5, pady=5, sticky="w")
-    district_entry.insert(0, "沙坪坝区")
+    district_entry.insert(0, "重庆市沙坪坝")
 
     # 车牌号
-    tk.Label(input_frame, text="车牌号：").grid(row=2, column=0, sticky="e")
+    tk.Label(input_frame, text="车牌号码：").grid(row=2, column=0, sticky="e")
     plate_number_entry = tk.Entry(input_frame)
     plate_number_entry.grid(row=2, column=1, padx=5, pady=5, sticky="w")
 
-    # 违法地点
-    tk.Label(input_frame, text="违法地点：").grid(row=3, column=0, sticky="w")
-    address_entry = tk.StringVar()
-    address_combobox = ttk.Combobox(input_frame, textvariable=address_entry)
-    address_combobox.grid(row=3, column=1, padx=5, pady=5)
-
-    # 设备编号
-    tk.Label(input_frame, text="设备编号：").grid(row=4, column=0, sticky="w")
-    device_entry = tk.StringVar()
-    device_combobox = ttk.Combobox(input_frame, textvariable=device_entry)
-    device_combobox.grid(row=4, column=1, padx=5, pady=5)
+    # 车牌颜色
+    tk.Label(input_frame, text="车辆颜色：").grid(row=3, column=0, sticky="e")
+    # color_types = ['蓝色', '黄色', '绿色', '渐变绿色']
+    color_entry = tk.StringVar()
+    color_combobox = ttk.Combobox(input_frame, textvariable=color_entry)
+    color_combobox.grid(row=3, column=1, padx=5, pady=5, sticky="w")
 
     # 车辆类型（下拉框）
-    tk.Label(input_frame, text="车辆类型：").grid(row=5, column=0, sticky="w")
+    tk.Label(input_frame, text="车辆类型：").grid(row=4, column=0, sticky="w")
     vehicle_types = ["小型汽车", "大型汽车", "新能源小型汽车", "新能源大型汽车", "摩托车", "教练车"]
+    # type_entry = tk.StringVar()
     vehicle_type_combobox = ttk.Combobox(input_frame, values=vehicle_types)
-    vehicle_type_combobox.set("选择车辆类型")
-    vehicle_type_combobox.grid(row=5, column=1, padx=5, pady=5)
+    # vehicle_type_combobox = ttk.Combobox(input_frame, textvariable=type_entry)
+    # vehicle_type_combobox.set("选择车辆类型")
+    vehicle_type_combobox.grid(row=4, column=1, padx=5, pady=5)
 
-    # 违法行为
-    tk.Label(input_frame, text="违法行为：").grid(row=6, column=0, sticky="w")
-    violation_name_entry = tk.StringVar()
-    violation_name_combobox = ttk.Combobox(input_frame, textvariable=violation_name_entry)
-    violation_name_combobox.grid(row=6, column=1, padx=5, pady=5)
+    # 违法地点
+    tk.Label(input_frame, text="违法地点：").grid(row=5, column=0, sticky="w")
+    address_entry = tk.StringVar()
+    address_combobox = ttk.Combobox(input_frame, textvariable=address_entry)
+    address_combobox.grid(row=5, column=1, padx=5, pady=5)
+
+    # 设备编号
+    tk.Label(input_frame, text="设备编号：").grid(row=6, column=0, sticky="w")
+    device_entry = tk.StringVar()
+    device_combobox = ttk.Combobox(input_frame, textvariable=device_entry)
+    device_combobox.grid(row=6, column=1, padx=5, pady=5)
 
     # 违法代码
     tk.Label(input_frame, text="违法代码：").grid(row=7, column=0, sticky="w")
@@ -417,30 +573,40 @@ if __name__ == '__main__':
     violation_code_combobox = ttk.Combobox(input_frame, textvariable=violation_code_entry)
     violation_code_combobox.grid(row=7, column=1, padx=5, pady=5)
 
+    # 违法行为
+    tk.Label(input_frame, text="违法行为：").grid(row=8, column=0, sticky="w")
+    violation_name_entry = tk.StringVar()
+    violation_name_combobox = ttk.Combobox(input_frame, textvariable=violation_name_entry)
+    violation_name_combobox.grid(row=8, column=1, padx=5, pady=5)
+
     # 服务器IP
-    tk.Label(input_frame, text="服务器IP：").grid(row=8, column=0, sticky="e")
+    tk.Label(input_frame, text="服务器IP：").grid(row=9, column=0, sticky="e")
     ip_entry = tk.Entry(input_frame)
-    ip_entry.grid(row=8, column=1, padx=5, pady=5, sticky="w")
+    ip_entry.grid(row=9, column=1, padx=5, pady=5, sticky="w")
     ip_entry.insert(0, "127.0.0.1:8000")
 
     # 测试连接按钮
-    test_connection_btn = tk.Button(input_frame, text='测试连接', command=lambda: thread_it(check_server_connection))
-    test_connection_btn.grid(row=9, column=0, columnspan=2, pady=10)
+    test_connection_btn = tk.Button(input_frame, text='连接服务器', command=lambda: thread_it(check_server_connection))
+    test_connection_btn.grid(row=10, column=0, columnspan=2, pady=10)
 
     # 图片展示区域的 Frame
-    image_frame = tk.Frame(root, width=600, height=300, bg='lightgray')
+    image_frame = tk.Frame(root, width=620, height=300, bg='lightgray')
     image_frame.grid(row=0, column=1, padx=10, pady=10, sticky="nsew")
 
+    # 新增按钮区域 Frame，用于放置上传、合成图片、退出按钮
+    button_frame = tk.Frame(root)
+    button_frame.grid(row=1, column=1, padx=5, pady=10, sticky="w")
+
     # 上传图片按钮
-    upload_btn = tk.Button(root, text='上传4张图片', command=lambda: select_images(image_frame))
-    upload_btn.grid(row=1, column=1, padx=5, pady=10)
+    upload_btn = tk.Button(button_frame, text='上传4张图片', command=lambda: select_images(image_frame))
+    upload_btn.pack(side=tk.LEFT, padx=40)
 
     # 合成图片按钮
-    merge_btn = tk.Button(root, text='合成图片', command=create_image)
-    merge_btn.grid(row=2, column=1, padx=5, pady=10)
+    merge_btn = tk.Button(button_frame, text='合成图片', command=create_image)
+    merge_btn.pack(side=tk.LEFT, padx=40)
 
     # 退出按钮
-    quit_btn = tk.Button(root, text='退  出', command=root.quit)
-    quit_btn.grid(row=3, column=1, padx=5, pady=10)
+    quit_btn = tk.Button(button_frame, text='退  出', command=root.quit)
+    quit_btn.pack(side=tk.LEFT, padx=100)
 
     root.mainloop()
