@@ -17,7 +17,7 @@ from requests.adapters import HTTPAdapter
 
 
 def load_images_async(image_paths, frame):
-    threading.Thread(target=display_images, args=(image_paths, frame)).start()
+    thread_it(display_images, image_paths, frame)
 
 
 def display_images(image_paths, frame):
@@ -40,9 +40,13 @@ def display_images(image_paths, frame):
         # 使用 grid 布局展示图片
         label.grid(row=idx // 2, column=idx % 2, padx=10, pady=10)
 
-        # 绑定事件，用于拖动交换，并加选中边框
-        label.bind("<ButtonPress-1>", lambda e, lbl=label: on_drag_start(e, lbl))
-        label.bind("<ButtonRelease-1>", lambda e, lbl=label, fr=frame: on_drag_release(e, lbl, fr))
+        # # 绑定事件，用于拖动交换，并加选中边框
+        # label.bind("<ButtonPress-1>", lambda e, lbl=label: thread_it(on_drag_start, e, lbl))
+        # label.bind("<ButtonRelease-1>", lambda e, lbl=label, fr=frame: thread_it(on_drag_release, e, lbl, fr))
+        # 绑定事件：开始拖动、拖动过程、释放
+        label.bind("<ButtonPress-1>", lambda e, lbl=label: thread_it(on_drag_start, e, lbl))
+        label.bind("<B1-Motion>", lambda e, lbl=label, fr=frame: thread_it(on_drag_motion, e, lbl, fr))
+        label.bind("<ButtonRelease-1>", lambda e, lbl=label, fr=frame: thread_it(on_drag_release, e, lbl, fr))
 
     # 调用 get_carid() 获取识别结果
     image_path = image_paths[-1]
@@ -101,7 +105,21 @@ def on_drag_start(event, label):
     """记录起始位置，并给当前图片加红色选中边框"""
     label.startX = event.x
     label.startY = event.y
+    label.is_selected = True  # 标记为选中
     label.config(borderwidth=3, relief='ridge', bg='red')  # 选中时高亮显示
+
+
+def on_drag_motion(event, label, frame):
+    """拖动过程中高亮悬停的目标图片"""
+    x, y = event.widget.winfo_pointerxy()
+    target = event.widget.winfo_containing(x, y)
+
+    # 如果悬停在另一个图片上，则高亮它
+    if target and target != label and isinstance(target, tk.Label):
+        highlight_label(target)
+
+    # 移动离开时恢复默认样式
+    reset_labels_except(target, label, frame)
 
 
 def on_drag_release(event, label, frame):
@@ -110,13 +128,32 @@ def on_drag_release(event, label, frame):
     target = event.widget.winfo_containing(x, y)
 
     if target and target != label:
+        # 交换图片路径并刷新显示
         selected_image_paths[label.idx], selected_image_paths[target.idx] = (
-            selected_image_paths[target.idx],
-            selected_image_paths[label.idx]
+            selected_image_paths[target.idx], selected_image_paths[label.idx]
         )
 
-    label.config(borderwidth=1, relief='solid', bg='white')
-    display_images(selected_image_paths, frame)
+    # 重置所有标签样式
+    reset_labels(frame)
+    thread_it(display_images, selected_image_paths, frame)
+
+
+def highlight_label(label):
+    """高亮当前悬停的目标图片"""
+    label.config(borderwidth=3, relief='ridge', bg='red')
+
+
+def reset_labels_except(target, selected_label, frame):
+    """重置除选中和悬停标签以外的所有标签样式"""
+    for widget in frame.winfo_children():
+        if widget not in [target, selected_label]:
+            widget.config(borderwidth=1, relief='solid', bg='white')
+
+
+def reset_labels(frame):
+    """重置所有标签样式"""
+    for widget in frame.winfo_children():
+        widget.config(borderwidth=1, relief='solid', bg='white')
 
 
 def is_valid_time_format(time_string):
@@ -245,48 +282,85 @@ def show_merged_image(image_path, data):
 
     label = tk.Label(new_window, image=photo)
     label.image = photo
-    label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew")
+    label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew", columnspan=2)  # 修改为 columnspan=2
 
-    new_window.geometry(f"{photo.width()}x{photo.height() + 100}")
+    # 设置窗口大小和最小尺寸，并居中
+    new_window.update_idletasks()
+    center_window(new_window, photo.width(), photo.height() + 100)
     new_window.minsize(400, 300)
 
-    push_btn = tk.Button(new_window, text='上传至平台', command=lambda: thread_it(upload_to_platform, image_path, data))
-    push_btn.grid(row=1, column=0, padx=10, pady=10)
+    # 上传按钮
+    push_btn = tk.Button(
+        new_window, text='上传至平台',
+        command=lambda: thread_it(upload_to_platform, image_path, data, new_window), width=15
+    )
+    push_btn.grid(row=1, column=0, padx=10, pady=10, sticky="e")  # 右对齐
+
+    # 关闭按钮
+    close_btn = tk.Button(new_window, text='关闭', command=new_window.destroy, width=15)
+    close_btn.grid(row=1, column=1, padx=10, pady=10, sticky="w")  # 左对齐
 
     new_window.grid_rowconfigure(0, weight=1)
     new_window.grid_columnconfigure(0, weight=1)
+    new_window.grid_columnconfigure(1, weight=1)
 
 
-def upload_to_platform(image_path, data):
+def upload_to_platform(image_path, data, window):
     """处理上传图片到平台的逻辑"""
     ip_val = ip_entry.get()
     print(data)
+    # TODO 1. 图片存储 2. 界面手动关闭或自动关闭后应该重置动态信息和图片展示，进行下一次违法录入
+    data_type = data.get('data_type')
+    ip = data.get('ip')
+    car_id = data.get('car_id')
+    wf_time = data.get('wf_time')
+    data_type = data.get('data_type')
+    data_type = data.get('data_type')
+    data_type = data.get('data_type')
+    data_type = data.get('data_type')
+    image_name = ""
     try:
-        f = open(image_path, 'rb')
-        files = {'image_file': ("mergelImage.jpg", f, 'image/jpg')}
-
-        try:
+        with open(image_path, 'rb') as f:
+            files = {'image_file': ("mergelImage.jpg", f, 'image/jpg')}
             with requests.Session() as maxrequests:
-                maxrequests.mount('http://', HTTPAdapter(max_retries=2))  # 设置重试次数为3次
-                res = maxrequests.post('http://' + ip_val + dj_url, files=files, data=data, timeout=5)
+                res = maxrequests.post(f'http://{ip_val}{dj_url}', files=files, data=data, timeout=5)
                 res_json = res.json()
                 status = res_json.get('status')
                 strexc = res_json.get('e')
                 if status == "success":
-                    messagebox.showinfo("上传", f"图片 {image_path} 已上传至平台！")
+
+                    show_countdown_message(window, "图片上传成功！", 5)  # 显示倒计时提示框
                 else:
-                    messagebox.showerror("错误", f"图片 {image_path} 上传错误！！" + strexc)
-                res.close()
-                maxrequests.cookies.clear()
-        except Exception as e:
-            print("Exception=" + str(e))
-            messagebox.showerror("错误", e)
-            return
-        finally:
-            f.close()
+                    messagebox.showerror("错误", f"图片上传错误！！{strexc}")
+
     except Exception as e:
-        print(e)
-        messagebox.showerror("错误", e)
+        print(f"Exception: {e}")
+        messagebox.showerror("错误", str(e))
+
+
+def show_countdown_message(parent, message, seconds):
+    """显示带倒计时的自定义提示框"""
+    countdown_window = tk.Toplevel(parent)
+    countdown_window.title("提示")
+
+    label = tk.Label(countdown_window, text=f"{message} ({seconds}秒后关闭)", font=("pf10.tff", 12))
+    label.pack(padx=20, pady=20)
+
+    # 居中提示框
+    countdown_window.update_idletasks()
+    center_window(countdown_window, countdown_window.winfo_width(), countdown_window.winfo_height())
+
+    def update_label():
+        nonlocal seconds
+        seconds -= 1
+        if seconds > 0:
+            label.config(text=f"{message} ({seconds}秒后关闭)")
+            countdown_window.after(1000, update_label)
+        else:
+            countdown_window.destroy()
+            parent.destroy()
+
+    update_label()
 
 
 def select_images(image_frame):
@@ -336,11 +410,15 @@ def check_server_connection():
             })
             data = response.json().get('data', [])
             wf_data = response.json().get('wf_data', [])
+            district = response.json().get('district', "")
+            if district:
+                district_entry.delete(0, tk.END)
+                district_entry.insert(0, district)
             # print("data:", data)
             # print("wf_data:", wf_data)
-            populate_address_dropdown(data)
-            populate_violation_dropdown(wf_data)
-            populate_color_dropdown()
+            thread_it(populate_address_dropdown, data)
+            thread_it(populate_violation_dropdown, wf_data)
+            thread_it(populate_color_dropdown)
             messagebox.showinfo("连接测试", f"服务器连接成功: {ip_val}")
             test_connection_btn.config(text='已连接', fg='green')
         except Exception as e:
@@ -477,13 +555,13 @@ def on_violation_name_input(*args):
         violation_code_combobox.set(wf_name_code_map[name])
 
 
-def resize_image(img, max_width, max_height):
-    """保持比例缩放图片"""
-    width_ratio = max_width / img.width
-    height_ratio = max_height / img.height
-    scale = min(width_ratio, height_ratio)  # 选择最小比例以适应
-    new_size = (int(img.width * scale), int(img.height * scale))
-    return img.resize(new_size, Image.ANTIALIAS)
+def center_window(window, width, height):
+    """将窗口显示在屏幕中心"""
+    screen_width = window.winfo_screenwidth()
+    screen_height = window.winfo_screenheight()
+    x = (screen_width - width) // 2
+    y = (screen_height - height) // 2
+    window.geometry(f"{width}x{height}+{x}+{y}")
 
 
 if __name__ == '__main__':
@@ -515,7 +593,12 @@ if __name__ == '__main__':
 
     root = tk.Tk()
     root.title(__title__)
-    root.geometry('1000x460')  # 窗口默认大小
+
+    # 主窗口居中
+    # root.geometry('1000x460')  # 窗口默认大小
+    root.update_idletasks()
+    center_window(root, 1000, 460)
+
     root.grid_rowconfigure(0, weight=1)  # 使输入框部分自适应
     root.grid_columnconfigure(1, weight=1)  # 使图片展示部分自适应
 
@@ -537,7 +620,7 @@ if __name__ == '__main__':
     tk.Label(input_frame, text="行政区划：").grid(row=1, column=0, sticky="e")
     district_entry = tk.Entry(input_frame, width=30)
     district_entry.grid(row=1, column=1, padx=5, pady=5, sticky="ew")
-    district_entry.insert(0, "重庆市沙坪坝")
+    # district_entry.insert(0, "重庆市沙坪坝")
 
     # 车牌号
     tk.Label(input_frame, text="车牌号码：").grid(row=2, column=0, sticky="e")
@@ -607,11 +690,11 @@ if __name__ == '__main__':
     button_frame.grid(row=1, column=1, padx=5, pady=10, sticky="nsew")
 
     # 上传图片按钮
-    upload_btn = tk.Button(button_frame, text='上传4张图片', command=lambda: select_images(image_frame), width=15)
+    upload_btn = tk.Button(button_frame, text='上传4张图片', command=lambda: thread_it(select_images, image_frame), width=15)
     upload_btn.pack(side=tk.LEFT, padx=40)
 
     # 合成图片按钮
-    merge_btn = tk.Button(button_frame, text='合成图片', command=create_image, width=15)
+    merge_btn = tk.Button(button_frame, text='合成图片', command=lambda: thread_it(create_image), width=15)
     merge_btn.pack(side=tk.LEFT, padx=40)
 
     # 退出按钮
