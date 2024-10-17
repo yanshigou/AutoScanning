@@ -13,7 +13,7 @@ def get_carid(image_path):
     # 检查图像是否成功加载
     if image is None:
         # print(f"图像加载失败: {image_path}")
-        messagebox.showwarning(f"图像加载失败: {image_path}")
+        messagebox.showwarning("警告", f"图像加载失败: {image_path}")
         return  # 或者抛出一个异常
     result = catcher(image)
     idx = 0

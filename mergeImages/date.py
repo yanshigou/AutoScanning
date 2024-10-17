@@ -1,6 +1,7 @@
 import cv2
 import re
 from paddleocr import PaddleOCR
+from tkinter import messagebox
 
 # 初始化 PaddleOCR
 ocr = PaddleOCR(use_angle_cls=True, lang='ch')
@@ -67,20 +68,24 @@ def extract_address(texts):
 # 主函数：识别并提取信息
 def extract_info_from_image(image_path):
     # 使用 OCR 识别图片中的文本
-    texts = ocr_image(image_path)
+    try:
+        texts = ocr_image(image_path)
 
-    # print(f"OCR识别出的文本: {texts}")  # 打印识别出的所有文本，方便调试
+        # print(f"OCR识别出的文本: {texts}")  # 打印识别出的所有文本，方便调试
 
-    # 提取日期时间和地址信息
-    time_info = extract_dates_and_times(texts)
-    # try:
-    #     texts.remove(time_info)
-    # except Exception as e:
-    #     for i in time_info.split(" "):
-    #         texts.remove(i)
-    address_info = extract_address(texts)
+        # 提取日期时间和地址信息
+        time_info = extract_dates_and_times(texts)
+        # try:
+        #     texts.remove(time_info)
+        # except Exception as e:
+        #     for i in time_info.split(" "):
+        #         texts.remove(i)
+        address_info = extract_address(texts)
 
-    return time_info, address_info
+        return time_info, address_info
+    except Exception as e:
+        messagebox.showerror("错误", f"无法识别图片内容，请检查文件路径是否包含中文字符！")
+        return "", ""
 
 
 if __name__ == "__main__":
