@@ -3,92 +3,95 @@ import hyperlpr3 as lpr3
 import numpy as np
 from PIL import Image
 from tkinter import messagebox
+import os
 
 catcher = lpr3.LicensePlateCatcher(logger_level=3)
 
 
 def get_carid(image_path):
-
+    """识别车牌号并判断车牌颜色"""
     image = cv2.imread(image_path)
+
     # 检查图像是否成功加载
     if image is None:
-        # print(f"图像加载失败: {image_path}")
         messagebox.showwarning("警告", f"图像加载失败: {image_path}")
-        return  # 或者抛出一个异常
+        return None
+
+    # 使用 LicensePlateCatcher 识别车牌
     result = catcher(image)
-    idx = 0
-    img = Image.open(image_path)
     # print(result)
+    if not result:
+        messagebox.showwarning("警告", "未检测到车牌")
+        return None
+    if len(result) >= 2:
+        messagebox.showwarning("警告", "识别到多个车牌，请确保最后一张图只有一个车牌，或手动输入车牌信息！")
+        return None
 
-    for i in result:
+    # 获取车牌信息和坐标
+    car_id, bbox = result[0][0], result[0][3]
+    img = Image.open(image_path)
+
+    current_file_folder = os.path.dirname(os.path.abspath(__file__))
+    img_folder_path = os.path.join(current_file_folder, "mergeImgs")
+    # img_folder_path = os.path.join("D:\\" "mergeImgs")
+    # 检查 mergeImgs 文件夹是否存在，如果不存在则创建
+    if not os.path.exists(img_folder_path):
+        os.makedirs(img_folder_path)
+    output_path = os.path.join(img_folder_path, "cropped_image.jpg")
+
+    # 裁剪车牌区域并转换为 RGB 模式
+    cropped_img = img.crop((bbox[0], bbox[1], bbox[2], bbox[3])).convert("RGB")
+    cropped_img_path = output_path
+    cropped_img.save(cropped_img_path, format="JPEG")
+
+    # 加载裁剪后的车牌图像
+    cropped_image = cv2.imread(cropped_img_path)
+    height, width, _ = cropped_image.shape
+    half_width = width // 2
+
+    # 前半部分（检测黄色）和后半部分（检测绿色）
+    front_plate = cropped_image[:, :half_width]
+    back_plate = cropped_image[:, half_width:]
+
+    # 定义 HSV 色彩范围
+    yellow_range = (np.array([20, 100, 100]), np.array([30, 255, 255]))
+    green_range = (np.array([35, 100, 100]), np.array([85, 255, 255]))
+
+    # 检测颜色区域
+    if has_color(front_plate, yellow_range) and has_color(back_plate, green_range):
+        return {"car_id": car_id, "color": "渐变绿"}
+
+    # 使用 HSV 识别整体车牌颜色
+    predicted_color = detect_main_color(cropped_image)
+    return {"car_id": car_id, "color": predicted_color}
 
 
-        cropped_img = img.crop((i[3][0], i[3][1], i[3][2], i[3][3]))
-        cropped_img.save("cropped_image" + str(idx) + ".jpg")
+def has_color(image, color_range):
+    """检查图像是否包含指定颜色范围的像素"""
+    hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    mask = cv2.inRange(hsv_image, *color_range)
+    return cv2.countNonZero(mask) > 0
 
-        # 读取车牌图片
-        image = cv2.imread("cropped_image" + str(idx) + ".jpg")
 
-        # 获取图像尺寸，划分为前后两个区域
-        height, width, _ = image.shape
-        half_width = width // 2
+def detect_main_color(image):
+    """检测车牌的主要颜色"""
+    hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    color_ranges = {
+        '白色': (np.array([0, 0, 220]), np.array([180, 20, 255])),
+        '黄色': (np.array([20, 100, 100]), np.array([30, 255, 255])),
+        '蓝色': (np.array([100, 150, 0]), np.array([140, 255, 255])),
+        '绿色': (np.array([35, 100, 100]), np.array([85, 255, 255]))  # 绿色
+    }
 
-        # 将图像分为前半部分（黄色）和后半部分（绿色）
-        front_plate = image[:, :half_width]
-        back_plate = image[:, half_width:]
+    color_count = {color: 0 for color in color_ranges}
+    for color, (lower, upper) in color_ranges.items():
+        mask = cv2.inRange(hsv_image, lower, upper)
+        color_count[color] = cv2.countNonZero(mask)
 
-        # 定义黄色和绿色的 HSV 范围
-        yellow_lower = np.array([20, 100, 100])
-        yellow_upper = np.array([30, 255, 255])
+    return max(color_count, key=color_count.get)
 
-        green_lower = np.array([35, 100, 100])
-        green_upper = np.array([85, 255, 255])
-
-        # 将图像转换为 HSV
-        hsv_front = cv2.cvtColor(front_plate, cv2.COLOR_BGR2HSV)
-        hsv_back = cv2.cvtColor(back_plate, cv2.COLOR_BGR2HSV)
-
-        # 对前半部分检测黄色
-        yellow_mask = cv2.inRange(hsv_front, yellow_lower, yellow_upper)
-        yellow_pixels = cv2.countNonZero(yellow_mask)
-
-        # 对后半部分检测绿色
-        green_mask = cv2.inRange(hsv_back, green_lower, green_upper)
-        green_pixels = cv2.countNonZero(green_mask)
-
-        # 判断颜色是否匹配
-        if yellow_pixels > 0 and green_pixels > 0:
-            # print("车牌是新能源大车牌（前黄后绿）")
-            return {"car_id": car_id, "color": "渐变绿"}
-        else:
-            # 将图片转换为 HSV 色彩空间
-            hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-
-            # 定义颜色范围
-            color_ranges = {
-                '白色': (np.array([0, 0, 220]), np.array([180, 20, 255])),
-                '黄色': (np.array([20, 100, 100]), np.array([30, 255, 255])),
-                '蓝色': (np.array([100, 150, 0]), np.array([140, 255, 255])),
-                '新能源': (np.array([35, 100, 100]), np.array([85, 255, 255]))  # 绿色
-            }
-
-            # 初始化结果字典
-            color_count = {color: 0 for color in color_ranges}
-
-            # 生成掩码并统计像素
-            for color, (lower, upper) in color_ranges.items():
-                mask = cv2.inRange(hsv_image, lower, upper)
-                color_count[color] = cv2.countNonZero(mask)
-
-            # 找出最多的颜色
-            predicted_color = max(color_count, key=color_count.get)
-            car_id = i[0]
-            # print("车牌识别结果为：", i[0])
-            # print(f"车牌颜色是: {predicted_color}")
-            # print(f"idx: {idx}")
-            return {"car_id": car_id, "color": predicted_color}
-        idx += 1
 
 if __name__ == '__main__':
     res = get_carid("D:\\4.jpg")
-    print(res)
+    if res:
+        print(res)

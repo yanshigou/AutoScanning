@@ -49,6 +49,8 @@ def display_images(image_paths, frame):
         label.bind("<ButtonRelease-1>", lambda e, lbl=label, fr=frame: thread_it(on_drag_release, e, lbl, fr))
 
     # 调用 get_carid() 获取识别结果
+    if not image_paths:
+        return
     image_path = image_paths[-1]
     res = get_carid(image_path)  # 取最后一张图片进行识别
     if res:
@@ -69,8 +71,8 @@ def display_images(image_paths, frame):
 
 
         # 自动填充车牌号码和车辆类型
-        plate_number_entry.delete(0, tk.END)
-        plate_number_entry.insert(0, car_id)
+        car_id_entry.delete(0, tk.END)
+        car_id_entry.insert(0, car_id)
 
         color_combobox.set(color)
         if "学" in car_id:
@@ -80,8 +82,8 @@ def display_images(image_paths, frame):
 
         # print(f"识别结果: 车牌号={car_id}, 颜色={color}, 车辆类型={vehicle_type}")
     else:
-        plate_number_entry.delete(0, tk.END)
-        plate_number_entry.insert(0, "")
+        car_id_entry.delete(0, tk.END)
+        car_id_entry.insert(0, "")
         # print("未能识别车牌或车辆类型")
 
     time_info, address_info = extract_info_from_image(image_path)
@@ -175,7 +177,7 @@ def generate_custom_text():
         messagebox.showerror("输入错误", "行政区划不能为空")
         return
 
-    car_id = plate_number_entry.get()
+    car_id = car_id_entry.get()
     if not car_id:
         messagebox.showerror("输入错误", "车牌号不能为空")
         return
@@ -210,7 +212,7 @@ def generate_custom_text():
         messagebox.showerror("输入错误", "违法行为不能为空")
         return
     # district = district_entry.get()
-    # car_id = plate_number_entry.get()
+    # car_id = car_id_entry.get()
     # car_color = color_entry.get()
     # vehicle_type = vehicle_type_combobox.get()
     # address = address_entry.get()
@@ -254,22 +256,23 @@ def generate_custom_text():
             speed="",
             lim_speed="",
             img_type="",
-            model_name="视频纠违"
+            model_name="视频纠违",
+            car_color=car_color
         )
-    print(data)
-    print(custom_text)
+    # print(data)
+    # print(custom_text)
     return custom_text, data
 
 
 def create_image():
     """合成图片并展示"""
     custom_text, data = generate_custom_text()
-    output_path = "test.jpg"
-    res = merge_images_with_text(selected_image_paths, output_path, custom_text)
-    show_merged_image(res, data)
+
+    res, file_name = merge_images_with_text(selected_image_paths, custom_text, data)
+    show_merged_image(res, data, file_name)
 
 
-def show_merged_image(image_path, data):
+def show_merged_image(image_path, data, file_name):
     """在新窗口展示合成的图片"""
     new_window = tk.Toplevel()
     new_window.title("合成图片展示")
@@ -292,36 +295,36 @@ def show_merged_image(image_path, data):
     # 上传按钮
     push_btn = tk.Button(
         new_window, text='上传至平台',
-        command=lambda: thread_it(upload_to_platform, image_path, data, new_window), width=15
+        command=lambda: thread_it(upload_to_platform, image_path, data, new_window, file_name), width=15
     )
     push_btn.grid(row=1, column=0, padx=10, pady=10, sticky="e")  # 右对齐
 
     # 关闭按钮
-    close_btn = tk.Button(new_window, text='关闭', command=new_window.destroy, width=15)
-    close_btn.grid(row=1, column=1, padx=10, pady=10, sticky="w")  # 左对齐
+    close_btn = tk.Button(new_window, text='关闭并清空数据', command=lambda: close_and_reset(new_window), width=15)
+    close_btn.grid(row=1, column=1, padx=10, pady=10, sticky="w")
+
+    # # 监听窗口关闭事件
+    # new_window.protocol("WM_DELETE_WINDOW", lambda: close_and_reset(new_window))
 
     new_window.grid_rowconfigure(0, weight=1)
     new_window.grid_columnconfigure(0, weight=1)
     new_window.grid_columnconfigure(1, weight=1)
 
 
-def upload_to_platform(image_path, data, window):
+def close_and_reset(window):
+    """关闭合成图片窗口，并重置表单"""
+    window.destroy()
+    reset_form()
+
+
+def upload_to_platform(image_path, data, window, file_name):
     """处理上传图片到平台的逻辑"""
     ip_val = ip_entry.get()
-    print(data)
-    # TODO 1. 图片存储 2. 界面手动关闭或自动关闭后应该重置动态信息和图片展示，进行下一次违法录入
-    data_type = data.get('data_type')
-    ip = data.get('ip')
-    car_id = data.get('car_id')
-    wf_time = data.get('wf_time')
-    data_type = data.get('data_type')
-    data_type = data.get('data_type')
-    data_type = data.get('data_type')
-    data_type = data.get('data_type')
-    image_name = ""
+    # print(data)
+
     try:
         with open(image_path, 'rb') as f:
-            files = {'image_file': ("mergelImage.jpg", f, 'image/jpg')}
+            files = {'image_file': (file_name, f, 'image/jpg')}
             with requests.Session() as maxrequests:
                 res = maxrequests.post(f'http://{ip_val}{dj_url}', files=files, data=data, timeout=5)
                 res_json = res.json()
@@ -359,6 +362,7 @@ def show_countdown_message(parent, message, seconds):
         else:
             countdown_window.destroy()
             parent.destroy()
+            reset_form()
 
     update_label()
 
@@ -564,6 +568,24 @@ def center_window(window, width, height):
     window.geometry(f"{width}x{height}+{x}+{y}")
 
 
+def reset_form():
+    """重置动态信息和图片展示区域，准备下一次录入"""
+    # 清空输入框和下拉框
+    time_entry.delete(0, tk.END)
+    car_id_entry.delete(0, tk.END)
+    color_entry.set("")
+    vehicle_type_combobox.set("")
+    address_combobox.set("")
+    device_combobox.set("")
+    violation_code_combobox.set("")
+    violation_name_combobox.set("")
+
+    # 清空图片展示区域
+    global selected_image_paths
+    selected_image_paths = []
+    display_images(selected_image_paths, image_frame)
+
+
 if __name__ == '__main__':
     dj_url = "/djDataInfo/djDataInfoUpload/"
     selected_image_paths = []
@@ -624,8 +646,8 @@ if __name__ == '__main__':
 
     # 车牌号
     tk.Label(input_frame, text="车牌号码：").grid(row=2, column=0, sticky="e")
-    plate_number_entry = tk.Entry(input_frame, width=30)
-    plate_number_entry.grid(row=2, column=1, padx=5, pady=5, sticky="ew")
+    car_id_entry = tk.Entry(input_frame, width=30)
+    car_id_entry.grid(row=2, column=1, padx=5, pady=5, sticky="ew")
 
     # 车牌颜色
     tk.Label(input_frame, text="车辆颜色：").grid(row=3, column=0, sticky="e")

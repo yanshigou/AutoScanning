@@ -29,7 +29,7 @@ def verify_security_code(security_code):
     return checksum == expected_checksum
 
 
-def merge_images_with_text(image_paths, output_path, custom_text, max_text_width_ratio=1, padding=10):
+def merge_images_with_text(image_paths, custom_text, data, max_text_width_ratio=1, padding=10):
     # 打开所有图片
     images = [Image.open(img_path) for img_path in image_paths]
 
@@ -109,8 +109,25 @@ def merge_images_with_text(image_paths, output_path, custom_text, max_text_width
         current_y += line_height  # 移动到下一行
 
     # 保存合成后的图片
+    # 11160_20240714_115324_728_进口_教练车限行_50.22.36.211_渝AQ39C9_47_40_蓝.jpg
+    data_type = data.get('data_type')
+    ip = data.get('ip')
+    car_id = data.get('car_id')
+    wf_time = data.get('wf_time')
+    car_color = data.get('car_color')
+    file_name = f"{data_type}_{wf_time[:8]}_{wf_time[8:]}_000_视频纠违_{ip}_{car_id}_{car_color}.jpg"
+    current_file_folder = os.path.dirname(os.path.abspath(__file__))
+    img_folder_path = os.path.join(current_file_folder, "mergeImgs")
+    # 检查 mergeImgs 文件夹是否存在，如果不存在则创建
+    if not os.path.exists(img_folder_path):
+        os.makedirs(img_folder_path)
+    output_path = os.path.join(img_folder_path, file_name)
+
+    # print(img_folder_path)
+    # print(output_path)
+    # print(file_name)
     final_image.save(output_path)
-    return os.path.abspath(output_path)
+    return os.path.abspath(output_path), file_name
 
 
 if __name__ == '__main__':
