@@ -1,106 +1,113 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2024/10/12"
-__title__ = "4合1专用v1.0_20241012"
+__title__ = "视频纠违v1.0_20241020"
 
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from ping3 import ping
 from PIL import Image, ImageTk
-from mergeImages.merge_images import merge_images_with_text, generate_security_code
-from mergeImages.GetCadId.main import get_carid
-from mergeImages.date import extract_info_from_image
+from merge_images import merge_images_with_text, generate_security_code
+from GetCadId.main import get_carid
+from dateAndAddress import extract_info_from_image
 import threading
 import re
 import requests
-from requests.adapters import HTTPAdapter
+from loggmodel import Logger
+import traceback
+import os
+from datetime import datetime
 
-
-def load_images_async(image_paths, frame):
-    thread_it(display_images, image_paths, frame)
+# pyinstaller -D -w -i mergeImages\mg.ico mergeImages\main.py --collect-all paddleocr
+# 然后把 python 虚拟环境中的依赖项 paddle -> libs 文件夹内的文件 复制一份，粘贴到打包的项目的 paddle -> libs 文件夹内，全部替换即可
+# 已解决 字体放在同级exe下生效
 
 
 def display_images(image_paths, frame):
     """按2x2格式展示图片，支持交换位置，并自动识别车牌和车辆类型"""
-    # 清空frame中的所有组件
-    for widget in frame.winfo_children():
-        widget.destroy()
+    try:
+        # 清空frame中的所有组件
+        for widget in frame.winfo_children():
+            widget.destroy()
 
-    # 遍历图片路径并展示
-    for idx, path in enumerate(image_paths):
-        image = Image.open(path)
-        image.thumbnail((300, 300), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(image)
+        # 遍历图片路径并展示
+        for idx, path in enumerate(image_paths):
+            image = Image.open(path)
+            image.thumbnail((300, 300), Image.ANTIALIAS)
+            photo = ImageTk.PhotoImage(image)
 
-        label = tk.Label(frame, image=photo, bg='white', relief='solid', borderwidth=1)
-        label.image = photo  # 防止垃圾回收
-        label.path = path
-        label.idx = idx  # 保存索引
+            label = tk.Label(frame, image=photo, bg='white', relief='solid', borderwidth=1)
+            label.image = photo  # 防止垃圾回收
+            label.path = path
+            label.idx = idx  # 保存索引
 
-        # 使用 grid 布局展示图片
-        label.grid(row=idx // 2, column=idx % 2, padx=10, pady=10)
+            # 使用 grid 布局展示图片
+            label.grid(row=idx // 2, column=idx % 2, padx=10, pady=10)
 
-        # # 绑定事件，用于拖动交换，并加选中边框
-        # label.bind("<ButtonPress-1>", lambda e, lbl=label: thread_it(on_drag_start, e, lbl))
-        # label.bind("<ButtonRelease-1>", lambda e, lbl=label, fr=frame: thread_it(on_drag_release, e, lbl, fr))
-        # 绑定事件：开始拖动、拖动过程、释放
-        label.bind("<ButtonPress-1>", lambda e, lbl=label: thread_it(on_drag_start, e, lbl))
-        label.bind("<B1-Motion>", lambda e, lbl=label, fr=frame: thread_it(on_drag_motion, e, lbl, fr))
-        label.bind("<ButtonRelease-1>", lambda e, lbl=label, fr=frame: thread_it(on_drag_release, e, lbl, fr))
+            # # 绑定事件，用于拖动交换，并加选中边框
+            # label.bind("<ButtonPress-1>", lambda e, lbl=label: thread_it(on_drag_start, e, lbl))
+            # label.bind("<ButtonRelease-1>", lambda e, lbl=label, fr=frame: thread_it(on_drag_release, e, lbl, fr))
+            # 绑定事件：开始拖动、拖动过程、释放
+            label.bind("<ButtonPress-1>", lambda e, lbl=label: thread_it(on_drag_start, e, lbl))
+            label.bind("<B1-Motion>", lambda e, lbl=label, fr=frame: thread_it(on_drag_motion, e, lbl, fr))
+            label.bind("<ButtonRelease-1>", lambda e, lbl=label, fr=frame: thread_it(on_drag_release, e, lbl, fr))
 
-    # 调用 get_carid() 获取识别结果
-    if not image_paths:
-        return
-    image_path = image_paths[-1]
-    res = get_carid(image_path)  # 取最后一张图片进行识别
-    if res:
-        car_id = res.get('car_id', '')
-        color = res.get('color', '')
+        # 调用 get_carid() 获取识别结果
+        if not image_paths:
+            return
+        image_path = image_paths[-1]
+        res = get_carid(image_path, logg)  # 取最后一张图片进行识别
+        if res:
+            car_id = res.get('car_id', '')
+            color = res.get('color', '')
 
-        # # 根据颜色自动选择车辆类型
-        # if color == '蓝色':
-        #     vehicle_type = "小型汽车"
-        # elif color == '黄色':
-        #     vehicle_type = "大型汽车"
-        # elif color == '渐变绿':
-        #     vehicle_type = "新能源大型汽车"
-        # elif color == '绿':
-        #     vehicle_type = "新能源小型汽车"
-        # else:
-        #     vehicle_type = "未知类型"
+            # # 根据颜色自动选择车辆类型
+            # if color == '蓝色':
+            #     vehicle_type = "小型汽车"
+            # elif color == '黄色':
+            #     vehicle_type = "大型汽车"
+            # elif color == '渐变绿':
+            #     vehicle_type = "新能源大型汽车"
+            # elif color == '绿':
+            #     vehicle_type = "新能源小型汽车"
+            # else:
+            #     vehicle_type = "未知类型"
 
 
-        # 自动填充车牌号码和车辆类型
-        car_id_entry.delete(0, tk.END)
-        car_id_entry.insert(0, car_id)
+            # 自动填充车牌号码和车辆类型
+            car_id_entry.delete(0, tk.END)
+            car_id_entry.insert(0, car_id)
 
-        color_combobox.set(color)
-        if "学" in car_id:
-            vehicle_type = "教练车"
-            car_id -= car_id.replace("学", "")
-            vehicle_type_combobox.set(vehicle_type)  # 为了教练车
+            color_combobox.set(color)
+            if "学" in car_id:
+                vehicle_type = "教练车"
+                car_id -= car_id.replace("学", "")
+                vehicle_type_combobox.set(vehicle_type)  # 为了教练车
 
-        # print(f"识别结果: 车牌号={car_id}, 颜色={color}, 车辆类型={vehicle_type}")
-    else:
-        car_id_entry.delete(0, tk.END)
-        car_id_entry.insert(0, "")
-        # print("未能识别车牌或车辆类型")
+            # print(f"识别结果: 车牌号={car_id}, 颜色={color}, 车辆类型={vehicle_type}")
+        else:
+            car_id_entry.delete(0, tk.END)
+            car_id_entry.insert(0, "")
+            # print("未能识别车牌或车辆类型")
 
-    time_info, address_info = extract_info_from_image(image_path)
-    if time_info:
-        time_entry.delete(0, tk.END)
-        time_entry.insert(0, time_info)
-    else:
-        time_entry.delete(0, tk.END)
-        time_entry.insert(0, "")
+        time_info, address_info = extract_info_from_image(image_path, logg)
+        if time_info:
+            time_entry.delete(0, tk.END)
+            time_entry.insert(0, time_info)
+        else:
+            time_entry.delete(0, tk.END)
+            time_entry.insert(0, "")
 
-    if address_info:
-        address_combobox.delete(0, tk.END)
-        address_combobox.insert(0, address_info)
+        if address_info:
+            address_combobox.delete(0, tk.END)
+            address_combobox.insert(0, address_info)
 
-    else:
-        address_combobox.delete(0, tk.END)
-        address_combobox.set("")
+        else:
+            address_combobox.delete(0, tk.END)
+            address_combobox.set("")
+    except Exception as ee:
+        strexc = traceback.format_exc()
+        logg.logger.error(f"按2x2格式展示图片，支持交换位置，并自动识别车牌和车辆类型失败！{strexc}")
 
 
 def on_drag_start(event, label):
@@ -166,149 +173,166 @@ def is_valid_time_format(time_string):
 
 def generate_custom_text():
     """生成合成图片所需的custom_text"""
-
-    wf_time = time_entry.get()
-    if not wf_time or not is_valid_time_format(wf_time):
-        messagebox.showerror("时间格式错误", "请确保输入有效的时间，并且格式为 YYYY-MM-DD HH:MM:SS")
-        return
-
-    district = district_entry.get()
-    if not district:
-        messagebox.showerror("输入错误", "行政区划不能为空")
-        return
-
-    car_id = car_id_entry.get()
-    if not car_id:
-        messagebox.showerror("输入错误", "车牌号不能为空")
-        return
-
-    car_color = color_entry.get()
-    if not car_color:
-        messagebox.showerror("输入错误", "车牌颜色不能为空")
-        return
-
-    vehicle_type = vehicle_type_combobox.get()
-    if not vehicle_type:
-        messagebox.showerror("输入错误", "车辆类型不能为空")
-        return
-
-    address = address_entry.get()
-    if not address:
-        messagebox.showerror("输入错误", "违法地点不能为空")
-        return
-
-    device_id = device_entry.get()
-    if not device_id:
-        messagebox.showerror("输入错误", "设备编号不能为空")
-        return
-
-    wf_code = violation_code_entry.get()
-    if not wf_code:
-        messagebox.showerror("输入错误", "违法代码不能为空")
-        return
-
-    wf_name = violation_name_entry.get()
-    if not wf_name:
-        messagebox.showerror("输入错误", "违法行为不能为空")
-        return
-    # district = district_entry.get()
-    # car_id = car_id_entry.get()
-    # car_color = color_entry.get()
-    # vehicle_type = vehicle_type_combobox.get()
-    # address = address_entry.get()
-    # device_id = device_entry.get()
-    # wf_code = violation_code_entry.get()
-    # wf_name = violation_name_entry.get()
-
-
-    # 根据选择的车辆类型设置实际的 car_type
-    if vehicle_type == "小型汽车":
-        actual_car_type = "02"
-    elif vehicle_type == "大型汽车":
-        actual_car_type = "01"
-    elif vehicle_type == "新能源小型汽车":
-        actual_car_type = "51"
-    elif vehicle_type == "新能源大型汽车":
-        actual_car_type = "52"
-    elif vehicle_type == "摩托车":
-        actual_car_type = "07"
-    elif vehicle_type == "教练车":
-        actual_car_type = "16"
-    else:
-        actual_car_type = "02"  # 或者根据需要设定默认值
-
-    security_code = generate_security_code()
-
-    custom_text = f"违法时间：{wf_time} 行政区划：{district} 违法地点：{address} 车牌号：{car_id} 车牌颜色：{car_color} " \
-                  f"违法代码：{wf_code} 违法行为：{wf_name} 设备编号：{device_id} 车辆类型：{vehicle_type} " \
-                  f"防伪码：{security_code}"
     try:
-        ip = address_ip_map[address]
+        wf_time = time_entry.get()
+        if not wf_time or not is_valid_time_format(wf_time):
+            messagebox.showerror("时间格式错误", "请确保输入有效的时间，并且格式为 YYYY-MM-DD HH:MM:SS")
+            return
+
+        district = district_entry.get()
+        if not district:
+            messagebox.showerror("输入错误", "行政区划不能为空")
+            return
+
+        car_id = car_id_entry.get()
+        if not car_id:
+            messagebox.showerror("输入错误", "车牌号不能为空")
+            return
+
+        car_color = color_entry.get()
+        if not car_color:
+            messagebox.showerror("输入错误", "车牌颜色不能为空")
+            return
+
+        vehicle_type = vehicle_type_combobox.get()
+        if not vehicle_type:
+            messagebox.showerror("输入错误", "车辆类型不能为空")
+            return
+
+        address = address_entry.get()
+        if not address:
+            messagebox.showerror("输入错误", "违法地点不能为空")
+            return
+
+        device_id = device_entry.get()
+        if not device_id:
+            messagebox.showerror("输入错误", "设备编号不能为空")
+            return
+
+        wf_code = violation_code_entry.get()
+        if not wf_code:
+            messagebox.showerror("输入错误", "违法代码不能为空")
+            return
+
+        wf_name = violation_name_entry.get()
+        if not wf_name:
+            messagebox.showerror("输入错误", "违法行为不能为空")
+            return
+        # district = district_entry.get()
+        # car_id = car_id_entry.get()
+        # car_color = color_entry.get()
+        # vehicle_type = vehicle_type_combobox.get()
+        # address = address_entry.get()
+        # device_id = device_entry.get()
+        # wf_code = violation_code_entry.get()
+        # wf_name = violation_name_entry.get()
+
+
+        # 根据选择的车辆类型设置实际的 car_type
+        if vehicle_type == "小型汽车":
+            actual_car_type = "02"
+        elif vehicle_type == "大型汽车":
+            actual_car_type = "01"
+        elif vehicle_type == "新能源小型汽车":
+            actual_car_type = "51"
+        elif vehicle_type == "新能源大型汽车":
+            actual_car_type = "52"
+        elif vehicle_type == "摩托车":
+            actual_car_type = "07"
+        elif vehicle_type == "教练车":
+            actual_car_type = "16"
+        else:
+            actual_car_type = "02"  # 或者根据需要设定默认值
+
+        security_code = generate_security_code()
+
+        custom_text = f"违法时间：{wf_time} 行政区划：{district} 违法地点：{address} 车牌号：{car_id} 车牌颜色：{car_color} " \
+                      f"违法代码：{wf_code} 违法行为：{wf_name} 设备编号：{device_id} 车辆类型：{vehicle_type} " \
+                      f"防伪码：{security_code}"
+        try:
+            ip = address_ip_map[address]
+        except Exception as e:
+            strexc = traceback.format_exc()
+            logg.logger.error(f"违法地点识别错误！{strexc}")
+            messagebox.showerror("违法地点识别错误", "违法地点识别错误，请手动选择违法地点")
+            return
+        data = dict(
+                data_type=wf_code,
+                ip=ip,
+                car_id=car_id,
+                car_type=actual_car_type,
+                wf_time=wf_time.replace(" ", "").replace("-", "").replace(":", ""),
+                speed="",
+                lim_speed="",
+                img_type="",
+                model_name="视频纠违",
+                car_color=car_color
+            )
+        # print(data)
+        # print(custom_text)
+        logg.logger.info(f"识别成功{custom_text}")
+        return custom_text, data
     except Exception as e:
-        messagebox.showerror("违法地点识别错误", "违法地点识别错误，请手动选择违法地点")
-        return
-    data = dict(
-            data_type=wf_code,
-            ip=ip,
-            car_id=car_id,
-            car_type=actual_car_type,
-            wf_time=wf_time.replace(" ", "").replace("-", "").replace(":", ""),
-            speed="",
-            lim_speed="",
-            img_type="",
-            model_name="视频纠违",
-            car_color=car_color
-        )
-    # print(data)
-    # print(custom_text)
-    return custom_text, data
+        strexc = traceback.format_exc()
+        logg.logger.error(f"违法地点识别错误！{strexc}")
 
 
 def create_image():
     """合成图片并展示"""
-    custom_text, data = generate_custom_text()
+    try:
+        custom_text, data = generate_custom_text()
+        logg.logger.info(f"合成图片并展示按钮进程1")
+        res, file_name = merge_images_with_text(selected_image_paths, custom_text, data, logg)
+        logg.logger.info(f"合成图片并展示按钮进程2")
+        show_merged_image(res, data, file_name, logg)
+        logg.logger.info(f"合成图片并展示按钮进程3")
+    except Exception as e:
+        strexc = traceback.format_exc()
+        logg.logger.error(f"合成图片并展示失败！{strexc}")
 
-    res, file_name = merge_images_with_text(selected_image_paths, custom_text, data)
-    show_merged_image(res, data, file_name)
 
-
-def show_merged_image(image_path, data, file_name):
+def show_merged_image(image_path, data, file_name, logg):
     """在新窗口展示合成的图片"""
-    new_window = tk.Toplevel()
-    new_window.title("合成图片展示")
+    try:
+        new_window = tk.Toplevel()
+        new_window.title("合成图片展示")
 
-    merged_image = Image.open(image_path)
-    window_width = 1000
-    window_height = 600
-    merged_image.thumbnail((window_width, window_height), Image.ANTIALIAS)
-    photo = ImageTk.PhotoImage(merged_image)
+        merged_image = Image.open(image_path)
+        window_width = 1000
+        window_height = 600
+        merged_image.thumbnail((window_width, window_height), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(merged_image)
 
-    label = tk.Label(new_window, image=photo)
-    label.image = photo
-    label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew", columnspan=2)  # 修改为 columnspan=2
+        label = tk.Label(new_window, image=photo)
+        label.image = photo
+        label.grid(row=0, column=0, padx=10, pady=10, sticky="nsew", columnspan=2)  # 修改为 columnspan=2
 
-    # 设置窗口大小和最小尺寸，并居中
-    new_window.update_idletasks()
-    center_window(new_window, photo.width(), photo.height() + 100)
-    new_window.minsize(400, 300)
+        # 设置窗口大小和最小尺寸，并居中
+        new_window.update_idletasks()
+        center_window(new_window, photo.width(), photo.height() + 100)
+        new_window.minsize(400, 300)
 
-    # 上传按钮
-    push_btn = tk.Button(
-        new_window, text='上传至平台',
-        command=lambda: thread_it(upload_to_platform, image_path, data, new_window, file_name), width=15
-    )
-    push_btn.grid(row=1, column=0, padx=10, pady=10, sticky="e")  # 右对齐
+        # 上传按钮
+        push_btn = tk.Button(
+            new_window, text='上传至平台',
+            command=lambda: thread_it(upload_to_platform, image_path, data, new_window, file_name), width=15
+        )
+        push_btn.grid(row=1, column=0, padx=10, pady=10, sticky="e")  # 右对齐
 
-    # 关闭按钮
-    close_btn = tk.Button(new_window, text='关闭并清空数据', command=lambda: close_and_reset(new_window), width=15)
-    close_btn.grid(row=1, column=1, padx=10, pady=10, sticky="w")
+        # 关闭按钮
+        close_btn = tk.Button(new_window, text='关闭并清空数据', command=lambda: close_and_reset(new_window), width=15)
+        close_btn.grid(row=1, column=1, padx=10, pady=10, sticky="w")
 
-    # # 监听窗口关闭事件
-    # new_window.protocol("WM_DELETE_WINDOW", lambda: close_and_reset(new_window))
+        # # 监听窗口关闭事件
+        # new_window.protocol("WM_DELETE_WINDOW", lambda: close_and_reset(new_window))
 
-    new_window.grid_rowconfigure(0, weight=1)
-    new_window.grid_columnconfigure(0, weight=1)
-    new_window.grid_columnconfigure(1, weight=1)
+        new_window.grid_rowconfigure(0, weight=1)
+        new_window.grid_columnconfigure(0, weight=1)
+        new_window.grid_columnconfigure(1, weight=1)
+        logg.logger.info(f"在新窗口展示合成的图片成功！")
+    except Exception as e:
+        strexc = traceback.format_exc()
+        logg.logger.error(f"在新窗口展示合成的图片失败！{strexc}")
 
 
 def close_and_reset(window):
@@ -333,12 +357,16 @@ def upload_to_platform(image_path, data, window, file_name):
                 if status == "success":
 
                     show_countdown_message(window, "图片上传成功！", 5)  # 显示倒计时提示框
+                    logg.logger.info(f"图片上传成功{file_name}")
                 else:
                     messagebox.showerror("错误", f"图片上传错误！！{strexc}")
+                    logg.logger.warning(f"上传图片出错{strexc}")
 
     except Exception as e:
         print(f"Exception: {e}")
         messagebox.showerror("错误", str(e))
+        strexc = traceback.format_exc()
+        logg.logger.error(f"上传图片报错{strexc}")
 
 
 def show_countdown_message(parent, message, seconds):
@@ -378,7 +406,7 @@ def select_images(image_frame):
         return
 
     selected_image_paths = list(filenames)
-    load_images_async(selected_image_paths, image_frame)
+    thread_it(display_images, selected_image_paths, image_frame)
 
     # # 填充当前时间
     # current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -397,10 +425,12 @@ def check_server_connection():
     url = f"http://{ip_val}/devices/infoForMergeImages/"
     # print(f"测试连接URL: {url}")
     test_connection_btn.config(text='连接中···')
+    logg.logger.info(f"服务器【{ip_val}】连接中···")
 
     if not is_valid_ip(ip_val):
         messagebox.showerror("连接测试", f"无效的IP地址: {ip_val}")
         test_connection_btn.config(text='连接无效', fg='red')
+        logg.logger.info(f"服务器【{ip_val}】无效的IP地址！")
         return
 
     delay = ping(ip_val, timeout=1)
@@ -425,12 +455,16 @@ def check_server_connection():
             thread_it(populate_color_dropdown)
             messagebox.showinfo("连接测试", f"服务器连接成功: {ip_val}")
             test_connection_btn.config(text='已连接', fg='green')
+            logg.logger.info(f"服务器【{ip_val}】连接成功！")
         except Exception as e:
+            strexc = traceback.format_exc()
             messagebox.showerror("连接测试", f"获取数据失败: {e}")
             test_connection_btn.config(text='连接失败', fg='red')
+            logg.logger.info(f"服务器【{ip_val}】获取数据失败！{strexc}")
     else:
         messagebox.showerror("连接测试", f"服务器连接失败，请检查服务器：{ip_val}")
         test_connection_btn.config(text='连接失败', fg='red')
+        logg.logger.info(f"服务器【{ip_val}】服务器连接失败，请检查服务器！")
 
 
 def populate_address_dropdown(data):
@@ -586,7 +620,20 @@ def reset_form():
     display_images(selected_image_paths, image_frame)
 
 
+def logFile():
+    now_time = datetime.now().strftime("%Y年%m月%d日")
+    log_file = os.path.join(logs_file_folder, f'{now_time}.log')
+    return log_file
+
+
 if __name__ == '__main__':
+    file_folder = os.getcwd()
+    logs_file_folder = os.path.join(file_folder, "logs")
+    if not os.path.exists(logs_file_folder):
+        os.makedirs(logs_file_folder)
+    log_file = logFile()
+    logg = Logger(log_file, level="info")
+    logg.logger.info("开始")
     dj_url = "/djDataInfo/djDataInfoUpload/"
     selected_image_paths = []
 
