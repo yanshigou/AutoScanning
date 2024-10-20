@@ -8,7 +8,7 @@ from tkinter import filedialog, messagebox, ttk
 from ping3 import ping
 from PIL import Image, ImageTk
 from merge_images import merge_images_with_text, generate_security_code
-from GetCadId.main import get_carid
+from getCarId import get_carid
 from dateAndAddress import extract_info_from_image
 import threading
 import re
@@ -18,7 +18,7 @@ import traceback
 import os
 from datetime import datetime
 
-# pyinstaller -D -w -i mergeImages\mg.ico mergeImages\main.py --collect-all paddleocr
+# pyinstaller -D -w -i mergeImages\tv.ico mergeImages\trafficVideo.py --collect-all paddleocr --version-file mergeImages\version.txt
 # 然后把 python 虚拟环境中的依赖项 paddle -> libs 文件夹内的文件 复制一份，粘贴到打包的项目的 paddle -> libs 文件夹内，全部替换即可
 # 已解决 字体放在同级exe下生效
 
