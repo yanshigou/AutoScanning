@@ -296,7 +296,7 @@ def show_merged_image(image_path, data, file_name, logg):
     try:
         new_window = tk.Toplevel()
         new_window.title("合成图片展示")
-
+        root.iconbitmap(font_file)  # 设置窗口图标
         merged_image = Image.open(image_path)
         window_width = 1000
         window_height = 600
@@ -309,7 +309,7 @@ def show_merged_image(image_path, data, file_name, logg):
 
         # 设置窗口大小和最小尺寸，并居中
         new_window.update_idletasks()
-        center_window(new_window, photo.width(), photo.height() + 100)
+        center_window(new_window, photo.width() + 100, photo.height() + 100)
         new_window.minsize(400, 300)
 
         # 上传按钮
@@ -662,6 +662,9 @@ if __name__ == '__main__':
 
     root = tk.Tk()
     root.title(__title__)
+    file_folder = os.getcwd()
+    font_file = os.path.join(file_folder, "tv256.ico")
+    root.iconbitmap(font_file)  # 设置窗口图标
 
     # 主窗口居中
     # root.geometry('1000x460')  # 窗口默认大小

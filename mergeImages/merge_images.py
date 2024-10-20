@@ -29,60 +29,74 @@ def verify_security_code(security_code):
     return checksum == expected_checksum
 
 
+def resize_to_target_aspect_ratio(image, target_width, target_height):
+    """调整图片大小以符合目标宽高比，保持原始比例"""
+    img_width, img_height = image.size
+    target_aspect_ratio = target_width / target_height
+    img_aspect_ratio = img_width / img_height
+
+    if img_aspect_ratio > target_aspect_ratio:
+        # 图片太宽，按宽度调整
+        new_width = target_width
+        new_height = int(target_width / img_aspect_ratio)
+    else:
+        # 图片太高，按高度调整
+        new_height = target_height
+        new_width = int(target_height * img_aspect_ratio)
+
+    return image.resize((new_width, new_height), Image.ANTIALIAS)
+
+
 def merge_images_with_text(image_paths, custom_text, data, logg, max_text_width_ratio=1, padding=10):
-    # 打开所有图片
     try:
         images = [Image.open(img_path) for img_path in image_paths]
 
-        # 获取每张图片的宽度和高度（假设所有图片大小相同）
-        img_width, img_height = images[0].size
+        # 获取最大宽度和高度
+        max_width = max(img.size[0] for img in images)
+        max_height = max(img.size[1] for img in images)
 
-        # 创建合成图片的初始大小（2x2布局，不含文本区域）
-        merged_image_width = 2 * img_width
-        merged_image_height = 2 * img_height
+        # 创建合成图片的初始大小（2x2布局）
+        merged_image_width = 2 * max_width
+        merged_image_height = 2 * max_height
 
-        # 创建合成图片并粘贴四张图片
+        # 创建合成图片
         merged_image = Image.new('RGB', (merged_image_width, merged_image_height), (255, 255, 255))
-        images_resized = [img.resize((img_width, img_height)) for img in images]
-        merged_image.paste(images_resized[0], (0, 0))  # 左上
-        merged_image.paste(images_resized[1], (img_width, 0))  # 右上
-        merged_image.paste(images_resized[2], (0, img_height))  # 左下
-        merged_image.paste(images_resized[3], (img_width, img_height))  # 右下
 
-        # 设置支持中文的字体
+        # 调整所有图片大小并粘贴
+        for index, img in enumerate(images):
+            resized_img = resize_to_target_aspect_ratio(img, max_width, max_height)
+            x_offset = (index % 2) * max_width + (max_width - resized_img.size[0]) // 2  # 居中对齐
+            y_offset = (index // 2) * max_height + (max_height - resized_img.size[1]) // 2  # 居中对齐
+            merged_image.paste(resized_img, (x_offset, y_offset))
+
+        # 设置字体
         file_folder = os.getcwd()
         font_file = os.path.join(file_folder, "pf10.ttf")
-        try:
-            font = ImageFont.truetype(font_file, 80)  # 调整字体大小
-        except IOError:
-            font = ImageFont.load_default()
+        font = ImageFont.truetype(font_file, 80) if os.path.exists(font_file) else ImageFont.load_default()
 
-        # 确定文本区域的最大宽度（根据图片宽度的比例）
-        max_text_width = int(merged_image_width * max_text_width_ratio)
+        # 确定文本区域的最大宽度
+        max_text_width = merged_image_width - 2 * padding
 
-        # 使用 textwrap 自动换行
+        # 自动换行
         def wrap_text(text, font, max_width):
-            """根据最大宽度自动换行"""
             wrapped_lines = []
-            lines = text.split('\n')  # 支持手动换行符
+            lines = text.split('\n')
             for line in lines:
-                words = line.split(' ')  # 按空格拆分单词
+                words = line.split(' ')
                 current_line = ''
                 for word in words:
-                    # 测量当前行和下一个单词的宽度
-                    test_line = current_line + word + ' '  # 添加下一个单词并测试
+                    test_line = current_line + word + ' '
                     if draw.textsize(test_line, font=font)[0] <= max_width:
-                        current_line = test_line  # 更新当前行
+                        current_line = test_line
                     else:
-                        if current_line:  # 如果当前行不为空，先保存当前行
+                        if current_line:
                             wrapped_lines.append(current_line.strip())
-                        current_line = word + ' '  # 开始新的行
-                if current_line:  # 将最后一行添加到结果中
+                        current_line = word + ' '
+                if current_line:
                     wrapped_lines.append(current_line.strip())
             return wrapped_lines
 
-        # 获取换行后的所有文本行
-        draw = ImageDraw.Draw(merged_image)  # 先创建绘图对象以测量文字
+        draw = ImageDraw.Draw(merged_image)
         lines = wrap_text(custom_text, font, max_text_width)
 
         # 计算文本区域的高度
@@ -92,44 +106,30 @@ def merge_images_with_text(image_paths, custom_text, data, logg, max_text_width_
         # 创建一个新图片，增加文本区域高度
         total_height = merged_image_height + text_area_height
         final_image = Image.new('RGB', (merged_image_width, total_height), (255, 255, 255))
-
-        # 将原始合成图片粘贴到新图片的顶部
         final_image.paste(merged_image, (0, 0))
 
-        # 更新绘图对象以在新图片上绘制文本
         draw = ImageDraw.Draw(final_image)
+        draw.rectangle([(0, merged_image_height), (merged_image_width, total_height)], fill=(0, 0, 0))
 
-        # 绘制黑色背景作为文本框
-        draw.rectangle(
-            [(0, merged_image_height), (merged_image_width, total_height)],
-            fill=(0, 0, 0)
-        )
-
-        # 将文本左对齐绘制在黑色背景内
+        # 绘制文本
         current_y = merged_image_height + padding
         for line in lines:
             draw.text((padding, current_y), line, font=font, fill=(255, 255, 255))
-            current_y += line_height  # 移动到下一行
+            current_y += line_height
 
         # 保存合成后的图片
-        # 11160_20240714_115324_728_进口_教练车限行_50.22.36.211_渝AQ39C9_47_40_蓝.jpg
         data_type = data.get('data_type')
         ip = data.get('ip')
         car_id = data.get('car_id')
         wf_time = data.get('wf_time')
         car_color = data.get('car_color')
         file_name = f"{data_type}_{wf_time[:8]}_{wf_time[8:]}_000_视频纠违_{ip}_{car_id}_{car_color}.jpg"
-        # current_file_folder = os.path.dirname(os.path.abspath(__file__))
 
         img_folder_path = os.path.join(file_folder, "mergeImgs")
-        # 检查 mergeImgs 文件夹是否存在，如果不存在则创建
         if not os.path.exists(img_folder_path):
             os.makedirs(img_folder_path)
         output_path = os.path.join(img_folder_path, file_name)
 
-        # print(img_folder_path)
-        # print(output_path)
-        # print(file_name)
         final_image.save(output_path)
         logg.logger.info(f"合成图片及信息成功！保存至{output_path}，文件名称{file_name}")
         return os.path.abspath(output_path), file_name
