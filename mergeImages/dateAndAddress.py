@@ -2,10 +2,35 @@ import cv2
 import re
 from paddleocr import PaddleOCR
 from tkinter import messagebox
-import traceback
+import os
 
 # 初始化 PaddleOCR
-ocr = PaddleOCR(use_angle_cls=True, lang='ch')
+# ocr = PaddleOCR(use_angle_cls=True, lang='ch')
+
+file_folder = os.getcwd()
+# file_folder = "D:\\trafficVideo\\"
+logs_file_folder = os.path.join(file_folder, "_internal")
+_DEFAULT_FOLDER_ = os.path.join(logs_file_folder, ".paddleocr")
+
+# print(_DEFAULT_FOLDER_)
+# # 打印拼接后的路径
+# print(f"det_model_dir: {os.path.join(_DEFAULT_FOLDER_, 'ch_PP-OCRv4_det_infer')}")
+# print(f"rec_model_dir: {os.path.join(_DEFAULT_FOLDER_, 'ch_PP-OCRv4_rec_infer')}")
+# print(f"cls_model_dir: {os.path.join(_DEFAULT_FOLDER_, 'ch_ppocr_mobile_v2.0_cls_infer')}")
+#
+# # 检查文件是否存在
+# for folder in ["ch_PP-OCRv4_det_infer", "ch_PP-OCRv4_rec_infer", "ch_ppocr_mobile_v2.0_cls_infer"]:
+#     model_path = os.path.join(_DEFAULT_FOLDER_, folder, "inference.pdmodel")
+#     if not os.path.exists(model_path):
+#         raise FileNotFoundError(f"{model_path} 文件未找到，请检查路径或文件是否完整")
+
+ocr = PaddleOCR(
+    det_model_dir=os.path.join(_DEFAULT_FOLDER_, "ch_PP-OCRv4_det_infer"),
+    rec_model_dir=os.path.join(_DEFAULT_FOLDER_, "ch_PP-OCRv4_rec_infer"),
+    cls_model_dir=os.path.join(_DEFAULT_FOLDER_, "ch_ppocr_mobile_v2.0_cls_infer"),  # 可选
+    use_angle_cls=True,  # 如果需要使用方向分类模型
+    lang='ch'  # 识别中文
+)
 
 
 # 解析 OCR 结果并提取文本
@@ -91,11 +116,21 @@ def extract_info_from_image(image_path, logg):
 
 
 if __name__ == "__main__":
+
+    from loggmodel import Logger
+    from datetime import datetime
+
+    file_folder = os.getcwd()
+    logs_file_folder = os.path.join(file_folder, "logs")
+    now_time = datetime.now().strftime("%Y年%m月%d日")
+    log_file = os.path.join(logs_file_folder, f'{now_time}.log')
+    logg = Logger(log_file, level="info")
+
     # 图片路径
     image_path = "D:\\4.jpg"
 
     # 提取信息
-    time_info, address_info = extract_info_from_image(image_path)
+    time_info, address_info = extract_info_from_image(image_path, logg)
 
     # 打印结果
     if time_info:

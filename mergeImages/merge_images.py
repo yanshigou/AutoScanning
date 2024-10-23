@@ -71,7 +71,8 @@ def merge_images_with_text(image_paths, custom_text, data, logg, max_text_width_
 
         # 设置字体
         file_folder = os.getcwd()
-        font_file = os.path.join(file_folder, "pf10.ttf")
+        font_folder = os.path.join(file_folder, "_internal")
+        font_file = os.path.join(font_folder, "pf10.ttf")
         font = ImageFont.truetype(font_file, 80) if os.path.exists(font_file) else ImageFont.load_default()
 
         # 确定文本区域的最大宽度

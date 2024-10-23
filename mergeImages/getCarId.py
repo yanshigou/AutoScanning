@@ -36,7 +36,7 @@ def get_carid(image_path, logg):
         # current_file_folder = os.path.dirname(os.path.abspath(__file__))
         file_folder = os.getcwd()
         img_folder_path = os.path.join(file_folder, "mergeImgs")
-        # img_folder_path = os.path.join("D:\\" "mergeImgs")
+        img_folder_path = os.path.join("D:\\", "mergeImgs")
         # 检查 mergeImgs 文件夹是否存在，如果不存在则创建
         if not os.path.exists(img_folder_path):
             os.makedirs(img_folder_path)
@@ -100,6 +100,15 @@ def detect_main_color(image):
 
 
 if __name__ == '__main__':
-    res = get_carid("D:\\4.jpg")
+    from loggmodel import Logger
+    from datetime import datetime
+
+    file_folder = os.getcwd()
+    logs_file_folder = os.path.join(file_folder, "logs")
+    now_time = datetime.now().strftime("%Y年%m月%d日")
+    log_file = os.path.join(logs_file_folder, f'{now_time}.log')
+    logg = Logger(log_file, level="info")
+
+    res = get_carid("D:\\4.jpg", logg)
     if res:
         print(res)
