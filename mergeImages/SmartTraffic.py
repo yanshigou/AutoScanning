@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 __author__ = "dzt"
 __date__ = "2024/10/12"
-__title__ = "视频纠违v1.1_20241022"
+__title__ = "视频纠违v1.2_20241025"
 
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
@@ -17,13 +17,16 @@ from loggmodel import Logger
 import traceback
 import os
 from datetime import datetime
+import shutil
+
 
 # pyinstaller -D -w -i mergeImages\tv.ico mergeImages\SmartTraffic.py --collect-all paddleocr --version-file mergeImages\version.txt
 # 然后把 python 虚拟环境中的依赖项 paddle -> libs 文件夹内的文件 复制一份，粘贴到打包的项目的 paddle -> libs 文件夹内，全部替换即可
 # 已解决 字体放在同级exe下生效
 
-# pyinstaller -D -w -i tv256.ico SmartTraffic.py --collect-all paddleocr  --version-file version.txt --add-data "_internal;."
-# --add-data "D:\Env\py38env\Lib\site-packages\paddle\libs;paddle\libs"
+"""
+pyinstaller -D -w -i tv256.ico SmartTraffic.py --collect-all paddleocr  --version-file version.txt --add-data "_internal;." --add-data "D:\Env\py38env\Lib\site-packages\paddle\libs;paddle\libs" 
+"""
 # 打包环境中 _internal 含.paddleocr(orc离线包) models(hyperlpr3离线包) pf10.tff tv256.ico
 # 添加所需data至环境
 
@@ -74,6 +77,8 @@ def display_images(image_paths, frame):
             label.bind("<ButtonPress-1>", lambda e, lbl=label: thread_it(on_drag_start, e, lbl))
             label.bind("<B1-Motion>", lambda e, lbl=label, fr=frame: thread_it(on_drag_motion, e, lbl, fr))
             label.bind("<ButtonRelease-1>", lambda e, lbl=label, fr=frame: thread_it(on_drag_release, e, lbl, fr))
+            # 绑定双击事件以放大查看图片
+            label.bind("<Button-3>", lambda e, p=path: thread_it(open_image_in_new_window, p))
 
         # 调用 get_carid() 获取识别结果
         if not image_paths:
@@ -131,6 +136,34 @@ def display_images(image_paths, frame):
     except Exception as ee:
         strexc = traceback.format_exc()
         logg.logger.error(f"按2x2格式展示图片，支持交换位置，并自动识别车牌和车辆类型失败！{strexc}")
+
+
+def open_image_in_new_window(image_path):
+    """在新窗口中放大查看图片，并自适应窗口大小"""
+    new_window = tk.Toplevel()
+    new_window.title("放大查看图片")
+
+    # 设置窗口最大化
+    new_window.state('zoomed')
+
+    # 创建Canvas用于展示图片
+    canvas = tk.Canvas(new_window, bg='black')
+    canvas.pack(fill=tk.BOTH, expand=True)
+
+    # 加载图片并调整大小
+    original_image = Image.open(image_path)
+
+    def resize_image(event):
+        """根据窗口大小调整图片大小并重新显示"""
+        width, height = event.width, event.height
+        resized_image = original_image.resize((width, height), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(resized_image)
+        canvas.delete("all")  # 清空Canvas内容
+        canvas.create_image(0, 0, anchor="nw", image=photo)
+        canvas.image = photo  # 防止垃圾回收
+
+    # 绑定窗口尺寸变化事件
+    new_window.bind("<Configure>", resize_image)
 
 
 def on_drag_start(event, label):
@@ -418,6 +451,40 @@ def show_countdown_message(parent, message, seconds):
     update_label()
 
 
+def remove_chinese(text):
+    """去除字符串中的中文字符"""
+    return re.sub(r'[\u4e00-\u9fff]+', '', text)
+
+
+def generate_new_name(original_path):
+    """根据原路径生成新的文件名"""
+    folder, filename = os.path.split(original_path)
+    name, ext = os.path.splitext(filename)
+
+    # 去除中文部分
+    new_name = remove_chinese(name).strip()
+
+    # 如果名字为空，用时间戳代替
+    if not new_name:
+        new_name = datetime.now().strftime('%Y%m%d%H%M%S')
+
+    return new_name + ext
+
+
+def rename_and_copy_image(original_path):
+    """将图片重命名并复制到临时文件夹"""
+    folder, filename = os.path.split(original_path)
+    temp_folder = os.path.join(folder, 'temp_images')
+    os.makedirs(temp_folder, exist_ok=True)
+
+    # 生成新文件名并复制图片
+    new_filename = generate_new_name(original_path)
+    new_path = os.path.join(temp_folder, new_filename)
+    shutil.copy(original_path, new_path)
+
+    return new_path
+
+
 def select_images(image_frame):
     """选择4张图片并展示"""
     global selected_image_paths
@@ -428,13 +495,12 @@ def select_images(image_frame):
         messagebox.showwarning("选择错误", "请确保选择4张图片！")
         return
 
-    selected_image_paths = list(filenames)
-    thread_it(display_images, selected_image_paths, image_frame)
+    # 重命名图片并获取新的路径
+    renamed_paths = [rename_and_copy_image(path) for path in filenames]
+    selected_image_paths = list(renamed_paths)
 
-    # # 填充当前时间
-    # current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    # time_entry.delete(0, tk.END)
-    # time_entry.insert(0, current_time)
+    # 使用线程安全的方式展示图片
+    thread_it(display_images, selected_image_paths, image_frame)
 
 
 def is_valid_ip(ip):

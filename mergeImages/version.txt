@@ -2,8 +2,8 @@
 
 VSVersionInfo(
   ffi=FixedFileInfo(
-    filevers=(1, 0, 0, 1),   # 文件版本号
-    prodvers=(1, 0, 0, 1),   # 产品版本号
+    filevers=(1, 2, 0, 20241025),   # 文件版本号
+    prodvers=(1, 2, 0, 20241025),   # 产品版本号
     mask=0x3f,
     flags=0x0,
     OS=0x4,
@@ -19,12 +19,12 @@ VSVersionInfo(
         [
           StringStruct('CompanyName', '重庆企裕科技有限责任公司'),
           StringStruct('FileDescription', '智能交通视频纠违系统 2024'),
-          StringStruct('FileVersion', '1.0.0.20241022'),
+          StringStruct('FileVersion', '1.2.0.20241025'),
           StringStruct('InternalName', 'SmartTraffic.exe'),
           StringStruct('LegalCopyright', '© 董哲彤. All rights reserved.'),
           StringStruct('OriginalFilename', 'SmartTraffic.exe'),
           StringStruct('ProductName', '视频纠违'),
-          StringStruct('ProductVersion', '2024 (1.0.0.20241022)'),
+          StringStruct('ProductVersion', '2024 (1.2.0.20241025)'),
           StringStruct('Comments', '本软件受版权保护，版权所有人：董哲彤。'),
           StringStruct('Trademarks', '重庆企裕科技有限责任公司为相关商标所有者。')
         ]
