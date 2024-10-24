@@ -34,9 +34,9 @@ def get_carid(image_path, logg):
         img = Image.open(image_path)
 
         # current_file_folder = os.path.dirname(os.path.abspath(__file__))
+        # img_folder_path = os.path.join("D:\\", "mergeImgs")
         file_folder = os.getcwd()
         img_folder_path = os.path.join(file_folder, "mergeImgs")
-        img_folder_path = os.path.join("D:\\", "mergeImgs")
         # 检查 mergeImgs 文件夹是否存在，如果不存在则创建
         if not os.path.exists(img_folder_path):
             os.makedirs(img_folder_path)

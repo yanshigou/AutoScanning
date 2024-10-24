@@ -473,8 +473,9 @@ def generate_new_name(original_path):
 
 def rename_and_copy_image(original_path):
     """将图片重命名并复制到临时文件夹"""
-    folder, filename = os.path.split(original_path)
-    temp_folder = os.path.join(folder, 'temp_images')
+    # folder, filename = os.path.split(original_path)
+    file_folder = os.getcwd()
+    temp_folder = os.path.join(file_folder, 'temp_images')
     os.makedirs(temp_folder, exist_ok=True)
 
     # 生成新文件名并复制图片
